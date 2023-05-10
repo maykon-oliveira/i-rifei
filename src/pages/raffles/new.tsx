@@ -1,21 +1,24 @@
 import { type NextPage } from 'next';
 import { useRouter } from 'next/router'
 import { useForm, useWatch } from 'react-hook-form'
+import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "~/utils/trpc";
 import { CreateRaffleInput } from '~/server/schema/raffle';
 import RaffleTable from '~/components/raffle/raffle-table';
+import { CurrencyBRLInput, CurrencyBRLFormatter } from '~/components/input/currency';
 
 const RaffleNew: NextPage = () => {
     const router = useRouter()
-    const { handleSubmit, register, control } = useForm<CreateRaffleInput>({
+    const { handleSubmit, register, control, formState } = useForm<CreateRaffleInput>({
+        resolver: zodResolver(CreateRaffleInput),
         defaultValues: {
-            name: 'Um kimono',
-            description: 'Rifa de um kimono X',
-            drawDay: new Date(),
+            name: 'Rifa da Páscoa',
+            description: 'Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não só a cinco séculos, como também ao salto para a editoração eletrônica, permanecendo essencialmente inalterado.',
+            price: 2,
             size: 5
         }
     })
-    const raffleData = useWatch({ control });
+    const formValue = useWatch({ control });
 
     const { mutate, error } = api.raffle.create.useMutation({
         onSuccess: () => {
@@ -30,41 +33,79 @@ const RaffleNew: NextPage = () => {
     }
 
     return (
-        <section className="text-gray-600 body-font">
-            <div className="container px-5 py-10 mx-auto flex flex-wrap items-center">
-                <div className="w-full lg:w-2/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0 my-auto">
-                    <h2 className="text-gray-900 text-lg font-medium title-font mb-5">Criar Nova Rifa</h2>
+        <section className="flex flex-col lg:flex-row mx-auto py-10">
+            <div className="flex card bg-base-300 lg:w-96">
+                <div className="card-body">
+                    <h1 className="card-title">Criar Nova Rifa</h1>
                     <form onSubmit={handleSubmit(data => onSubmit(data))} action="">
-                        <div className="relative mb-4">
-                            <label htmlFor="name" className="leading-7 text-sm text-gray-600">Titulo</label>
-                            <input {...register("name")} id="name" className="w-full bg-white rounded border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+                        <div className="form-control w-full">
+                            <label className="label">
+                                <span className="label-text">Título</span>
+                            </label>
+                            <input type="text" {...register("name")} className={`input input-bordered w-full ${formState.errors.name ? 'input-error' : 'input-primary'}`} />
+                            <label className="label">
+                                <span className="label-text-alt">{formState.errors.name?.message}</span>
+                            </label>
                         </div>
-                        <div className="relative mb-4">
-                            <label htmlFor="description" className="leading-7 text-sm text-gray-600">Descrição</label>
-                            <textarea {...register("description")} id="description" className="w-full bg-white rounded border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+
+                        <div className="form-control w-full">
+                            <label className="label">
+                                <span className="label-text">Descrição</span>
+                            </label>
+                            <textarea {...register("description")} className={`textarea h-24 ${formState.errors.description ? 'input-error' : 'textarea-primary'}`} />
+                            <label className="label">
+                                <span className="label-text-alt">{formState.errors.description?.message}</span>
+                            </label>
                         </div>
-                        <div className="relative mb-4">
-                            <label htmlFor="drawDay" className="leading-7 text-sm text-gray-600">Dia do Sorteio</label>
-                            <input type='datetime-local' {...register("drawDay")} id="drawDay" className="w-full bg-white rounded border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+
+                        <div className="form-control w-full">
+                            <label className="label">
+                                <span className="label-text">Dia do Sorteio</span>
+                            </label>
+                            <input type="date" {...register("drawDay", { valueAsDate: true })} className={`input input-bordered w-full ${!formState.errors.drawDay ? 'input-primary' : 'input-error'}`} />
+                            <label className="label">
+                                <span className="label-text-alt">{formState.errors.drawDay?.message}</span>
+                            </label>
                         </div>
-                        <div className="relative mb-4">
-                            <label htmlFor="price" className="leading-7 text-sm text-gray-600">Preço</label>
-                            <input type='number' {...register("price")} id="price" className="w-full bg-white rounded border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+
+                        <div className="form-control w-full">
+                            <label className="label">
+                                <span className="label-text">Preço</span>
+                            </label>
+                            <CurrencyBRLInput control={control} name="price" />
                         </div>
-                        <div className="relative mb-4">
-                            <label htmlFor="size" className="leading-7 text-sm text-gray-00">Quantidade de Números</label>
-                            <input min={2} max={10} type='number' {...register("size")} id="size" className="w-full bg-white rounded border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+
+                        <div className="form-control w-full">
+                            <label className="label">
+                                <span className="label-text">Tamanho da Matriz</span>
+                            </label>
+                            <input type="number" min="2" max="10" {...register("size", { valueAsNumber: true })} className={`input input-bordered w-full ${formState.errors.size ? 'input-error' : 'input-primary'}`} />
+                            <label className="label">
+                                <span className="label-text-alt">{formState.errors.size?.message}</span>
+                            </label>
                         </div>
-                        <button type='submit' className="text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg">Criar</button>
+
+                        <div className="card-actions justify-end">
+                            <button type='submit' className="btn btn-primary">Criar</button>
+                        </div>
                     </form>
                 </div>
-
-                <div className="w-full mt-5 md:w-1/2 bg-green-100 rounded-lg p-6 flex flex-col md:ml-auto md:mt-0">
-                    <h1 className="title-font font-medium text-3xl text-gray-900 break-all">{raffleData.name}</h1>
-                    <p className="leading-relaxed mt-4 break-all">{raffleData.description}</p>
-                    <span className="ext-2xl text-gray-900">R$ {raffleData.price}</span>
-
-                    <RaffleTable size={raffleData.size || 9} />
+            </div>
+            <div className="divider lg:divider-horizontal"></div>
+            <div className="my-auto max-w-lg">
+                <div className="card bg-base-300">
+                    <div className="px-10 pt-10">
+                        <RaffleTable size={formValue.size || 9} />
+                    </div>
+                    <div className="card-body">
+                        <h2 className="card-title break-all justify-between">
+                            {formValue.name}
+                            <div className="badge badge-secondary">
+                                <CurrencyBRLFormatter displayType="text" value={formValue.price} />
+                            </div>
+                        </h2>
+                        <p className="leading-relaxed mt-4 break-all">{formValue.description}</p>
+                    </div>
                 </div>
             </div>
         </section>

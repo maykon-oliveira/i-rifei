@@ -3,11 +3,11 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "~/server/api/trpc";
-import { createRaffleSchema } from "~/server/schema/raffle";
+import { CreateRaffleInput } from "~/server/schema/raffle";
 
 export const raffleRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(createRaffleSchema)
+    .input(CreateRaffleInput)
     .mutation(async ({ input, ctx }) => {
       const userId = ctx.session.user.id;
       const raffle = await ctx.prisma.raffle.create({

@@ -38,7 +38,7 @@ const RaffleTable: React.FC<Props> = ({ size }) => {
     }, [matrix])
 
     return (
-        <div className={`grid ${gridClass} border border-green-600 my-2`}>
+        <div className={`grid ${gridClass} border my-2`}>
             {matrix.map(row => row.map((col, i) => (
                 <RaffleTableCell key={i} col={col} />
             )))}

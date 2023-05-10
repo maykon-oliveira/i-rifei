@@ -5,13 +5,15 @@ import { api } from "~/utils/trpc";
 
 const Home: NextPage = () => {
   return (
-    <>
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <div className="flex flex-col items-center gap-2">
+    <div className="hero min-h-screen bg-base-200">
+      <div className="hero-content text-center">
+        <div className="max-w-md">
+          <h1 className="text-5xl font-bold">Hello there</h1>
           <AuthShowcase />
+          <button className="btn btn-primary">Get Started</button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
@@ -26,8 +28,8 @@ const AuthShowcase: React.FC = () => {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <p className="text-center text-2xl text-white">
+    <div className="flex flex-col items-center justify-center gap-4 py-6">
+      <p className="text-center text-2xl">
         {data && <span>Logged in as {data.user?.name}</span>}
         {secretMessage && <span> - {secretMessage}</span>}
       </p>
