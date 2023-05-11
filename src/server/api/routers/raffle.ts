@@ -48,4 +48,34 @@ export const raffleRouter = createTRPCRouter({
     return raffle;
   }),
 
+  delete: protectedProcedure.input(z.object({
+    id: z.string()
+  })).mutation(async ({ ctx, input }) => {
+    const raffle = await ctx.prisma.raffle.findUnique({
+      where: {
+        id: input.id
+      }
+    });
+
+    if (!raffle) {
+      throw new TRPCError({
+        code: "NOT_FOUND"
+      });
+    }
+
+    if (raffle.userId !== ctx.session.user.id) {
+      throw new TRPCError({
+        code: "FORBIDDEN"
+      });
+    }
+
+    await ctx.prisma.raffle.delete({
+      where: {
+        id: input.id
+      }
+    });
+
+    return "Rifa deletada";
+  }),
+
 });
