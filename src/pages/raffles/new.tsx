@@ -6,30 +6,32 @@ import { api } from "~/utils/trpc";
 import { CreateRaffleInput } from '~/server/schema/raffle';
 import RaffleTable from '~/components/raffle/raffle-table';
 import { CurrencyBRLInput, CurrencyBRLFormatter } from '~/components/input/currency';
+import toast from "react-hot-toast";
 
 const RaffleNew: NextPage = () => {
     const router = useRouter()
+    const { mutate, isLoading } = api.raffle.create.useMutation();
     const { handleSubmit, register, control, formState } = useForm<CreateRaffleInput>({
         resolver: zodResolver(CreateRaffleInput),
         defaultValues: {
             name: 'Rifa da Páscoa',
-            description: 'Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não só a cinco séculos, como também ao salto para a editoração eletrônica, permanecendo essencialmente inalterado.',
+            description: 'Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não só a cinco séculos.',
             price: 2,
             size: 5
         }
     })
     const formValue = useWatch({ control });
 
-    const { mutate, error } = api.raffle.create.useMutation({
-        onSuccess: () => {
-            router.push('/raffles')
-        },
-    })
-
     function onSubmit(values: CreateRaffleInput) {
-        console.log(values);
-
-        // mutate(values)
+        mutate(values, {
+            onSuccess(data) {
+                toast.success(data);
+                router.push('/me/raffles');
+            },
+            onError(error) {
+                toast.error(error.message);
+            },
+        })
     }
 
     return (
@@ -60,7 +62,7 @@ const RaffleNew: NextPage = () => {
 
                         <div className="form-control w-full">
                             <label className="label">
-                                <span className="label-text">Dia do Sorteio</span>
+                                <span className="label-text">Data do Sorteio</span>
                             </label>
                             <input type="date" {...register("drawDay", { valueAsDate: true })} className={`input input-bordered w-full ${!formState.errors.drawDay ? 'input-primary' : 'input-error'}`} />
                             <label className="label">
@@ -86,7 +88,7 @@ const RaffleNew: NextPage = () => {
                         </div>
 
                         <div className="card-actions justify-end">
-                            <button type='submit' className="btn btn-primary">Criar</button>
+                            <button disabled={isLoading} type='submit' className="btn btn-primary">Criar</button>
                         </div>
                     </form>
                 </div>

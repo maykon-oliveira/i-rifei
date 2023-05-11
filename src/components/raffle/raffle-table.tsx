@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import RaffleTableCell from "./raffle-table-cell";
 
 type Props = {
-    size: number
+    size: number;
+    viewOnly?: boolean;
 }
 
 // https://tailwindcss.com/docs/content-configuration#class-detection-in-depth
@@ -20,7 +21,7 @@ const gridVariants = {
     '10': 'grid-cols-10',
 }
 
-const RaffleTable: React.FC<Props> = ({ size }) => {
+const RaffleTable: React.FC<Props> = ({ size, viewOnly = true }) => {
 
     const [matrix, setMatrix] = useState<number[][]>([]);
     const [gridClass, setGridClass] = useState<string>('');
@@ -40,7 +41,7 @@ const RaffleTable: React.FC<Props> = ({ size }) => {
     return (
         <div className={`grid ${gridClass} border my-2`}>
             {matrix.map(row => row.map((col, i) => (
-                <RaffleTableCell key={i} col={col} />
+                <RaffleTableCell key={i} col={col} viewOnly={viewOnly} />
             )))}
         </div>
     );
