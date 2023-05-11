@@ -11,6 +11,9 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
 
     return (
         <>
+            <li className="menu-title">
+                <span>Compartilhar</span>
+            </li>
             <li className="hover-bordered">
                 <SocialShareItem render={(ref => (
                     <a onClick={() => ref.current?.click()} className="flex justify-between">

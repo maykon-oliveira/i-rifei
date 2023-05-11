@@ -47,7 +47,7 @@ const MyRaffles: NextPage = () => {
                             <td>{raffle.drawDay ? formatter.format(raffle.drawDay) : '-'}</td>
                             <td><Drawn drawn={raffle.drawn} /></td>
                             <td className="text-center">
-                                <div className="dropdown dropdown-hover">
+                                <div className="dropdown dropdown-hover dropdown-end">
                                     <label tabIndex={0} className="btn m-1"><IoEllipsisVertical /></label>
                                     <ul tabIndex={0} className="dropdown-content menu menu-compact p-2 shadow bg-base-100 rounded-box w-52">
                                         <li className="hover-bordered">
@@ -55,9 +55,6 @@ const MyRaffles: NextPage = () => {
                                                 Deletar
                                                 <IoTrashOutline />
                                             </a>
-                                        </li>
-                                        <li className="menu-title">
-                                            <span>Compartilhar</span>
                                         </li>
                                         <SocialShare raffle={raffle} />
                                     </ul>

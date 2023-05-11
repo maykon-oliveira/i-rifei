@@ -39,7 +39,7 @@ const RaffleTable: React.FC<Props> = ({ size, viewOnly = true }) => {
     }, [matrix])
 
     return (
-        <div className={`grid ${gridClass} border my-2`}>
+        <div className={`grid ${gridClass} border min-h-full`}>
             {matrix.map(row => row.map((col, i) => (
                 <RaffleTableCell key={i} col={col} viewOnly={viewOnly} />
             )))}

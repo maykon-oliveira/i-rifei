@@ -64,7 +64,7 @@ const RaffleNew: NextPage = () => {
                             <label className="label">
                                 <span className="label-text">Data do Sorteio</span>
                             </label>
-                            <input type="date" {...register("drawDay", { valueAsDate: true })} className={`input input-bordered w-full ${!formState.errors.drawDay ? 'input-primary' : 'input-error'}`} />
+                            <input type="datetime-local" {...register("drawDay", { valueAsDate: true })} className={`input input-bordered w-full ${!formState.errors.drawDay ? 'input-primary' : 'input-error'}`} />
                             <label className="label">
                                 <span className="label-text-alt">{formState.errors.drawDay?.message}</span>
                             </label>
@@ -94,12 +94,13 @@ const RaffleNew: NextPage = () => {
                 </div>
             </div>
             <div className="divider lg:divider-horizontal"></div>
-            <div className="my-auto max-w-lg">
+            <div className="my-auto max-w-md">
                 <div className="card bg-base-300">
                     <div className="px-10 pt-10">
                         <RaffleTable size={formValue.size || 9} />
                     </div>
-                    <div className="card-body">
+                    <div className="divider"></div>
+                    <div className="card-body pt-0">
                         <h2 className="card-title break-all justify-between">
                             {formValue.name}
                             <div className="badge badge-secondary">
