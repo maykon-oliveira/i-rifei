@@ -22,6 +22,10 @@ export const raffleRouter = createTRPCRouter({
       return "Nova Rifa Criada";
     }),
 
+  getAll: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.raffle.findMany();
+  }),
+
   getMyRaffles: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.raffle.findMany({
       where: {
