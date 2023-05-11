@@ -20,6 +20,9 @@ const NavBar: React.FC = () => {
                             <Link href={'/'}>Início</Link>
                         </li>
                         {sessionData && (<li>
+                            <Link href={'/me/raffles'}>Minhas Rifas</Link>
+                        </li>)}
+                        {sessionData && (<li>
                             <Link href={'/raffles/new'}>Nova Rifa</Link>
                         </li>)}
                     </ul>
@@ -31,6 +34,9 @@ const NavBar: React.FC = () => {
                     <li>
                         <Link href={'/'}>Início</Link>
                     </li>
+                    {sessionData && (<li>
+                        <Link href={'/me/raffles'}>Minhas Rifas</Link>
+                    </li>)}
                     {sessionData && (<li>
                         <Link href={'/raffles/new'}>Nova Rifa</Link>
                     </li>)}
