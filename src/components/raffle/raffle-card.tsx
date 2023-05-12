@@ -4,12 +4,16 @@ import RaffleTable from "./raffle-table";
 import { CurrencyBRLFormatter } from "../input/currency";
 import { IoShareSocialOutline } from "react-icons/io5";
 import SocialShare from "../social-share";
+import { useSession } from "next-auth/react";
 
 type Props = {
     raffle: Raffle
 }
 
 const RaffleCard: React.FC<Props> = ({ raffle }) => {
+    const { data } = useSession();
+    const canBuy = (data?.user.id != raffle.userId);
+
     return (
         <div className="card bg-base-300 w-10/12 mx-auto indicator">
             <span className="indicator-item">
@@ -18,12 +22,12 @@ const RaffleCard: React.FC<Props> = ({ raffle }) => {
                         <IoShareSocialOutline />
                     </button>
                     <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                        <SocialShare raffle={raffle}/>
+                        <SocialShare raffle={raffle} />
                     </ul>
                 </div>
             </span>
-            <div className="px-10 pt-10 flex-1">
-                <RaffleTable size={raffle.size || 9} />
+            <div className={`px-10 pt-10 flex-1 ${canBuy && 'tooltip'} tooltip-secondary`} data-tip="Escolha um número para comprar">
+                <RaffleTable size={raffle.size} />
             </div>
             <div className="divider"></div>
             <div className="card-body flex-grow-0 pt-0">
@@ -33,7 +37,7 @@ const RaffleCard: React.FC<Props> = ({ raffle }) => {
                         <CurrencyBRLFormatter displayType="text" value={raffle.price} />
                     </div>
                 </h2>
-                <p className="leading-relaxed mt-4 break-all">{raffle.description}</p>
+                <p className="leading-relaxed mt-4 break-words">{raffle.description}</p>
             </div>
         </div>
     );
