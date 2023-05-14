@@ -11,13 +11,37 @@ export const raffleRouter = createTRPCRouter({
   create: protectedProcedure
     .input(CreateRaffleInput)
     .mutation(async ({ input, ctx }) => {
-      const userId = ctx.session.user.id;
-      const raffle = await ctx.prisma.raffle.create({
-        data: {
-          ...input,
-          userId
-        }
-      });
+      try {
+        await ctx.prisma.$transaction(async (prisma) => {
+          const ownerId = ctx.session.user.id;
+          const { awards, ...data } = input;
+
+          const createdRaffle = await prisma.raffle.create({
+            data: {
+              ...data,
+              ownerId,
+            }
+          });
+
+          const awardsPromise = awards.map(({ name }) => {
+            return prisma.raffleAward.create({
+              data: {
+                name,
+                raffleId: createdRaffle.id,
+              },
+            });
+          });
+
+          await Promise.all(awardsPromise);
+        });
+
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+        })
+      } finally {
+        await ctx.prisma.$disconnect();
+      }
 
       return "Nova Rifa Criada";
     }),
@@ -29,7 +53,7 @@ export const raffleRouter = createTRPCRouter({
   getMyRaffles: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.raffle.findMany({
       where: {
-        userId: ctx.session.user.id
+        ownerId: ctx.session.user.id
       }
     });
   }),
@@ -67,7 +91,7 @@ export const raffleRouter = createTRPCRouter({
       });
     }
 
-    if (raffle.userId !== ctx.session.user.id) {
+    if (raffle.ownerId !== ctx.session.user.id) {
       throw new TRPCError({
         code: "FORBIDDEN"
       });

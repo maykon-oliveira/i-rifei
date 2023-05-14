@@ -12,7 +12,7 @@ type Props = {
 
 const RaffleCard: React.FC<Props> = ({ raffle }) => {
     const { data } = useSession();
-    const canBuy = (data?.user.id != raffle.userId);
+    const canBuy = (data?.user.id != raffle.ownerId);
 
     return (
         <div className="card bg-base-300 w-10/12 mx-auto indicator">
@@ -32,7 +32,7 @@ const RaffleCard: React.FC<Props> = ({ raffle }) => {
             <div className="divider"></div>
             <div className="card-body flex-grow-0 pt-0">
                 <h2 className="card-title break-all justify-between">
-                    {raffle.name}
+                    {raffle.title}
                     <div className="badge badge-secondary">
                         <CurrencyBRLFormatter displayType="text" value={raffle.price} />
                     </div>

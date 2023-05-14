@@ -43,8 +43,8 @@ const MyRaffles: NextPage = () => {
                                     <IoEyeOutline />
                                 </Link>
                             </th>
-                            <td>{raffle.name}</td>
-                            <td>{raffle.drawDay ? formatter.format(raffle.drawDay) : '-'}</td>
+                            <td>{raffle.title}</td>
+                            <td>{formatter.format(raffle.drawDate)}</td>
                             <td><Drawn drawn={raffle.drawn} /></td>
                             <td className="text-center">
                                 <div className="dropdown dropdown-hover dropdown-end">
