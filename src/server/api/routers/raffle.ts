@@ -47,7 +47,11 @@ export const raffleRouter = createTRPCRouter({
     }),
 
   getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.raffle.findMany();
+    return ctx.prisma.raffle.findMany({
+      include: {
+        awards: true
+      }
+    });
   }),
 
   getMyRaffles: protectedProcedure.query(({ ctx }) => {
@@ -64,6 +68,9 @@ export const raffleRouter = createTRPCRouter({
     const raffle = await ctx.prisma.raffle.findUnique({
       where: {
         id: input.id
+      },
+      include: {
+        awards: true
       }
     });
 
