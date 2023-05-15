@@ -36,7 +36,7 @@ const RaffleNew: NextPage = () => {
             <div className="divider lg:divider-horizontal">
                 <IoTicketOutline size={64} />
             </div>
-            <div className="my-auto max-w-md">
+            <div className="max-w-md sm:m-auto">
                 <div className="card bg-base-300">
                     <div className="px-10 pt-10">
                         <RaffleTable size={formValue.size || 9} />
