@@ -43,7 +43,8 @@ const RaffleView: NextPage = () => {
                     <RaffleCard raffle={raffle} onTicketClick={() => { }} />
                 </div>
                 <div className="px-10">
-                    <h3 className="text-center">Compradores</h3>
+                    <h2 className="text-lg text-center">Compradores</h2>
+                    {!buyers.length && (<h3 className="mt-3 text-sm">Sem rifas vendidas.</h3>)}
                     {buyers.map(user => (
                         <div className="py-3 border-b">
                             <div className="text-lg font-extrabold">{user.name}</div>
