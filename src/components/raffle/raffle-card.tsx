@@ -3,6 +3,8 @@ import React, { useRef, useState } from "react";
 import RaffleTable from "./raffle-table";
 import { CurrencyBRLFormatter } from "../input/currency";
 import { useSession } from "next-auth/react";
+import { IoShareSocialOutline } from "react-icons/io5";
+import SocialShare from "../social-share";
 
 type Props = {
     raffle: Raffle & {
@@ -45,10 +47,10 @@ const RaffleCard: React.FC<Props> = ({ raffle, onTicketClick }) => {
     return (
         <div className="max-w-lg mx-auto flex flex-col">
             <div className="tabs w-full">
-                <a onClick={switchTab} className={`tab tab-lifted tab-lg flex-1 ${(tab === Tab.DETAILS) && 'text-base-content bg-base-300'}`}>
+                <a onClick={switchTab} className={`tab tab-lifted tab-border-none tab-lg flex-1 ${(tab === Tab.DETAILS) && 'text-base-content bg-base-300'}`}>
                     Detalhes
                 </a>
-                <a onClick={switchTab} className={`tab tab-lifted tab-lg flex-1 ${(tab === Tab.AWARDS) && 'text-base-content bg-base-300'}`}>
+                <a onClick={switchTab} className={`tab tab-lifted tab-border-none tab-lg flex-1 ${(tab === Tab.AWARDS) && 'text-base-content bg-base-300'}`}>
                     Prêmios
                 </a>
             </div>
@@ -60,13 +62,23 @@ const RaffleCard: React.FC<Props> = ({ raffle, onTicketClick }) => {
                         </div>
                         <div className="divider"></div>
                         <div className="flex-grow-0">
-                            <h2 className="card-title break-all justify-between">
-                                {raffle.title}
-                                <div className="badge badge-secondary">
-                                    <CurrencyBRLFormatter displayType="text" value={raffle.price} />
+                            <div className="flex items-center mb-3">
+                                <div className="flex-1">
+                                    <h2 className="text-2xl font-extrabold break-words">{raffle.title}</h2>
+                                    <p className="text-sm text-slate-400">Data do Sorteio: {formatter.format(raffle.drawDate)}</p>
                                 </div>
-                            </h2>
-                            <p className="text-sm text-slate-400 mb-3">Data do Sorteio: {formatter.format(raffle.drawDate)}</p>
+                                <div>
+                                    <div className="badge badge-secondary">
+                                        <CurrencyBRLFormatter displayType="text" value={raffle.price} />
+                                    </div>
+                                    <div className="dropdown dropdown-hover dropdown-left">
+                                        <label tabIndex={0} className="ml-3 btn btn-sm btn-circle btn-outline"><IoShareSocialOutline /></label>
+                                        <ul tabIndex={0} className="dropdown-content menu menu-compact p-2 shadow bg-base-100 rounded-box w-52">
+                                            <SocialShare raffle={raffle} />
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                             <p className="break-words">{raffle.description}</p>
                         </div>
                     </div>
