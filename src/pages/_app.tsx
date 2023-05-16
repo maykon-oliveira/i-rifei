@@ -6,6 +6,7 @@ import { api } from "~/utils/trpc";
 
 import "~/styles/globals.css";
 import Layout from "~/components/layout";
+import { ModalProvider } from "~/utils/context/modal";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -13,9 +14,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <ModalProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ModalProvider>
+      <div id="modal-root"></div>
     </SessionProvider>
   );
 };

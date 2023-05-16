@@ -6,7 +6,7 @@ import RaffleCardShowcase from "~/components/raffle/raffles-card-showcase";
 const Home: NextPage = () => {
   return (
     <>
-      <div className="hero min-h-screen bg-base-200">
+      <div className="hero min-h-screen bg-base-300">
         <div className="hero-content flex-col lg:flex-row">
           <img src="/index-hero.jpg" className="max-w-md rounded-lg shadow-2xl" />
           <div>
@@ -88,9 +88,9 @@ const Home: NextPage = () => {
           </div>
         </div>
       </div>
-      <div className="bg-base-200 p-10">
+      <div className="bg-base-300 glass p-10">
         <div className="text-center">
-          <h1 className="text-5xl font-bold">Rifas</h1>
+          <h1 className="text-5xl font-bold pb-10">Rifas</h1>
         </div>
         <RaffleCardShowcase />
       </div>

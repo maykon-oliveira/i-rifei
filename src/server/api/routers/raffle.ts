@@ -49,7 +49,12 @@ export const raffleRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.raffle.findMany({
       include: {
-        awards: true
+        awards: true,
+        tickets: {
+          select: {
+            number: true
+          }
+        }
       }
     });
   }),
@@ -62,7 +67,7 @@ export const raffleRouter = createTRPCRouter({
     });
   }),
 
-  getOne: publicProcedure.input(z.object({
+  allDetails: protectedProcedure.input(z.object({
     id: z.string()
   })).query(async ({ ctx, input }) => {
     const raffle = await ctx.prisma.raffle.findUnique({
@@ -70,7 +75,17 @@ export const raffleRouter = createTRPCRouter({
         id: input.id
       },
       include: {
-        awards: true
+        awards: true,
+        tickets: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true
+              }
+            }
+          }
+        }
       }
     });
 
@@ -111,6 +126,50 @@ export const raffleRouter = createTRPCRouter({
     });
 
     return "Rifa deletada";
+  }),
+
+  buyTicket: protectedProcedure.input(z.object({
+    id: z.string(),
+    ticket: z.number(),
+  })).mutation(async ({ ctx, input }) => {
+    const raffle = await ctx.prisma.raffle.findUnique({
+      where: {
+        id: input.id,
+      },
+      include: {
+        tickets: true
+      }
+    });
+
+    if (!raffle) {
+      throw new TRPCError({
+        code: 'NOT_FOUND'
+      })
+    }
+
+    const ticketBought = raffle.tickets.find(({ number }) => number === input.ticket);
+
+    if (!ticketBought) {
+      await ctx.prisma.ticket.create({
+        data: {
+          raffleId: raffle.id,
+          userId: ctx.session.user.id,
+          number: input.ticket
+        }
+      });
+
+      return "Número comprado";
+    }
+
+    if (ticketBought.userId === ctx.session.user.id) {
+      // Usuario ja comprou, so passar.
+      return;
+    }
+    
+    throw new TRPCError({
+      code: 'CONFLICT',
+      message: `${ticketBought.userId} já comprou esse número.`
+    })
   }),
 
 });
