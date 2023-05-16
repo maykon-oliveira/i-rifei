@@ -9,6 +9,7 @@ import { IoTicketOutline } from 'react-icons/io5';
 import StepperProvider from '~/utils/context/stepper';
 
 const RaffleNew: NextPage = () => {
+    const formatter = new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC' });
     const form = useForm<CreateRaffleInput>({
         shouldFocusError: true,
         resolver: zodResolver(CreateRaffleInput),
@@ -49,7 +50,8 @@ const RaffleNew: NextPage = () => {
                                 <CurrencyBRLFormatter displayType="text" value={formValue.price} />
                             </div>
                         </h2>
-                        <p className="leading-relaxed mt-4 break-all">{formValue.description}</p>
+                        <p className="text-sm text-slate-400 mb-3">Data do Sorteio: {formatter.format(formValue.drawDate)}</p>
+                        <p className="mt-4 break-words">{formValue.description}</p>
                     </div>
                 </div>
             </div>

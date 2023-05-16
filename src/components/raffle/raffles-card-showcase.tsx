@@ -1,14 +1,39 @@
-import React from "react";
+import React, { useContext } from "react";
 import RaffleCard from "./raffle-card";
 import { api } from "~/utils/trpc";
 import { IoSadOutline } from "react-icons/io5";
+import { ModalContext } from "~/utils/context/modal";
+import RaffleBuyModal from "./raffle-buy-modal";
+import { Raffle } from "@prisma/client";
+import { toast } from "react-hot-toast";
 
 type Props = {
 
 }
 
 const RaffleCardShowcase: React.FC<Props> = () => {
-    const { data: raffles } = api.raffle.getAll.useQuery();
+    const { data: raffles, refetch } = api.raffle.getAll.useQuery();
+    const { mutate } = api.raffle.buyTicket.useMutation();
+    const { openModal } = useContext(ModalContext);
+
+    const onTicketClick = (raffle: Raffle, ticket: number) => {
+        openModal(<RaffleBuyModal ticketNumber={ticket} onConfirm={() => buyTicket(raffle, ticket)} />)
+    }
+
+    const buyTicket = (raffle: Raffle, ticket: number) => {
+        mutate({
+            id: raffle.id,
+            ticket
+        }, {
+            onSuccess(data) {
+                toast.success(data || 'Sucesso');
+                refetch();
+            },
+            onError(error) {
+                toast.error(error.message)
+            },
+        })
+    }
 
     if (!raffles?.length) {
         return (
@@ -26,8 +51,8 @@ const RaffleCardShowcase: React.FC<Props> = () => {
     }
 
     return (
-        <div className="grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-y-10 pt-10">
-            {raffles?.map((raffle, i) => <RaffleCard key={i} raffle={raffle} />)}
+        <div className="grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-10 pt-10">
+            {raffles?.map((raffle, i) => <RaffleCard key={i} raffle={raffle} onTicketClick={onTicketClick} />)}
         </div>
     );
 }

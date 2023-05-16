@@ -1,15 +1,18 @@
-import { useState } from "react";
-
 type Props = {
     col: number;
-    viewOnly: boolean;
+    bought: boolean;
+    onClick: (ticket: number) => void
 }
 
-const RaffleTableCell: React.FC<Props> = ({ col, viewOnly }) => {
-    const [bought, setBought] = useState(false);
+const RaffleTableCell: React.FC<Props> = ({ col, bought, onClick }) => {
+    const handleClick = () => {
+        if (!bought) {
+            onClick(col);
+        }
+    }
 
     return (
-        <div onClick={() => !viewOnly && setBought(!bought)} className={`flex justify-center items-center py-2 px-3 border hover:bg-secondary hover:cursor-pointer ${bought && 'bg-error'}`}>
+        <div onClick={handleClick} className={`flex justify-center items-center py-2 px-3 border hover:bg-secondary ${bought ? 'bg-error cursor-not-allowed' : 'hover:cursor-pointer'}`}>
             {col}
         </div>
     );
