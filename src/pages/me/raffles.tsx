@@ -5,11 +5,12 @@ import { IoEllipsisVertical, IoTrashOutline, IoEyeOutline } from "react-icons/io
 import Link from 'next/link';
 import SocialShare from '~/components/social-share';
 import { toast } from 'react-hot-toast';
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 const MyRaffles: NextPage = () => {
     const { data, refetch } = api.raffle.getMyRaffles.useQuery();
     const { mutate } = api.raffle.delete.useMutation();
-    const formatter = new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC' });
 
     const onClickDelete = (id: string) => {
         mutate({ id }, {
@@ -30,6 +31,7 @@ const MyRaffles: NextPage = () => {
                     <tr>
                         <th></th>
                         <th>Título</th>
+                        <th className="flex justify-center">Nº Vendidos</th>
                         <th>Data do Sorteio</th>
                         <th>Sorteado</th>
                         <th className="text-center">Ações</th>
@@ -44,7 +46,12 @@ const MyRaffles: NextPage = () => {
                                 </Link>
                             </th>
                             <td>{raffle.title}</td>
-                            <td>{formatter.format(raffle.drawDate)}</td>
+                            <td>
+                                <div className="flex justify-center">
+                                    <div className="badge">{raffle.tickets?.length}/{raffle.size * raffle.size}</div>
+                                </div>
+                            </td>
+                            <td>{format(raffle.drawDate, 'P p', { locale: ptBR })}</td>
                             <td><Drawn drawn={raffle.drawn} /></td>
                             <td className="text-center">
                                 <div className="dropdown dropdown-hover dropdown-end">
