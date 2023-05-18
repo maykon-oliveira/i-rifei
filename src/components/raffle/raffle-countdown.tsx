@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
+import { differenceInMilliseconds } from "date-fns";
 
 type Props = {
     date: Date;
 }
 
 const RaffleCountdown: React.FC<Props> = ({ date }) => {
-    const [timeleft, setTimeleft] = useState(calculateTimeleft(date.getTime()));
+    const [timeleft, setTimeleft] = useState(calculateTimeleft(date));
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setTimeleft(calculateTimeleft(date.getTime()));
+            setTimeleft(calculateTimeleft(date));
         }, 1000);
 
         return () => clearInterval(interval);
@@ -25,13 +26,13 @@ const RaffleCountdown: React.FC<Props> = ({ date }) => {
             <span className="countdown font-mono text-5xl">
                 {days}
             </span>
-            days
+            dias
         </div>
         <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
             <span className="countdown font-mono text-5xl">
                 {hours}
             </span>
-            hours
+            horas
         </div>
         <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
             <span className="countdown font-mono text-5xl">
@@ -43,15 +44,15 @@ const RaffleCountdown: React.FC<Props> = ({ date }) => {
             <span className="countdown font-mono text-5xl">
                 {seconds}
             </span>
-            sec
+            seg
         </div>
     </div>
 }
 
 export default RaffleCountdown;
 
-function calculateTimeleft(targetDate: number) {
-    const timeRemaining = Math.max(0, targetDate - Date.now());
+function calculateTimeleft(targetDate: Date) {
+    const timeRemaining = Math.max(0, differenceInMilliseconds(targetDate, new Date()));
     const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
     const hours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24);
     const minutes = Math.floor((timeRemaining / (1000 * 60)) % 60);

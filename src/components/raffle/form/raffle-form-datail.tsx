@@ -33,7 +33,7 @@ const RaffleFormDetail: React.FC<Props> = ({ form: { register, formState, contro
             <label className="label">
                 <span className="label-text">Data do Sorteio</span>
             </label>
-            <input type="datetime-local" {...register("drawDate", { valueAsDate: true })} className={`input input-bordered w-full ${!formState.errors.drawDate ? 'input-primary' : 'input-error'}`} />
+            <input type="datetime-local" {...register("drawDate")} className={`input input-bordered w-full ${!formState.errors.drawDate ? 'input-primary' : 'input-error'}`} />
             <label className="label">
                 <span className="label-text-alt">{formState.errors.drawDate?.message}</span>
             </label>

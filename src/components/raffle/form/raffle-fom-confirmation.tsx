@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast";
 import { CreateRaffleInput } from "~/server/schema/raffle";
 import { StepperContext } from "~/utils/context/stepper";
 import { api } from "~/utils/trpc";
+import { parse, formatISO } from "date-fns";
 
 type Props = {
     form: UseFormReturn<CreateRaffleInput>
@@ -48,7 +49,9 @@ const RaffleFormConfirmation: React.FC<Props> = ({ form }) => {
     }
 
     function onSubmit(value: CreateRaffleInput) {
-        mutate(value, {
+        const drawDate = parse(value.drawDate, 'yyyy-MM-dd\'T\'hh:mm', new Date());
+
+        mutate({ ...value, drawDate: formatISO(drawDate) }, {
             onSuccess(data) {
                 toast.success(data);
                 router.push('/me/raffles');

@@ -6,6 +6,7 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import { CreateRaffleInput } from "~/server/schema/raffle";
+import { parseISO } from "date-fns";
 
 export const raffleRouter = createTRPCRouter({
   create: protectedProcedure
@@ -14,11 +15,12 @@ export const raffleRouter = createTRPCRouter({
       try {
         await ctx.prisma.$transaction(async (prisma) => {
           const ownerId = ctx.session.user.id;
-          const { awards, ...data } = input;
+          const { awards, drawDate, ...data } = input;
 
           const createdRaffle = await prisma.raffle.create({
             data: {
               ...data,
+              drawDate: parseISO(drawDate),
               ownerId,
             }
           });
@@ -63,6 +65,13 @@ export const raffleRouter = createTRPCRouter({
     return ctx.prisma.raffle.findMany({
       where: {
         ownerId: ctx.session.user.id
+      },
+      include: {
+        tickets: {
+          select: {
+            id: true
+          }
+        }
       }
     });
   }),
@@ -165,7 +174,7 @@ export const raffleRouter = createTRPCRouter({
       // Usuario ja comprou, so passar.
       return;
     }
-    
+
     throw new TRPCError({
       code: 'CONFLICT',
       message: `${ticketBought.userId} já comprou esse número.`

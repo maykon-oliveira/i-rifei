@@ -7,7 +7,11 @@ type Props = {
 }
 
 const SocialShare: React.FC<Props> = ({ raffle }) => {
-    const baseurl = location.origin;
+    let baseurl = '';
+
+    if (typeof window !== 'undefined') {
+        baseurl = location.origin;
+    }
 
     return (
         <>
