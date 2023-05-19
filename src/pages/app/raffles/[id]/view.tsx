@@ -34,7 +34,7 @@ const RaffleView: NextPage = () => {
     }, []);
 
     return (
-        <section className="flex flex-col m-auto mt-10">
+        <section className="flex flex-col m-auto">
             {raffle.drawDate && <div className="flex justify-center pb-10">
                 <RaffleCountdown date={raffle.drawDate} />
             </div>}

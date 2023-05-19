@@ -25,7 +25,7 @@ const RaffleNew: NextPage = () => {
     const raffle = { ...formValue, drawDate: new Date(formValue.drawDate || ''), tickets: [] };
 
     return (
-        <section className="flex flex-col lg:flex-row mx-auto py-10">
+        <section className="flex flex-col lg:flex-row mx-auto">
             <div className="flex card bg-base-300 lg:w-96">
                 <div className="card-body">
                     <h1 className="card-title">Criar Nova Rifa</h1>
