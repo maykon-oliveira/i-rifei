@@ -2,13 +2,13 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { IoLogOutOutline, IoSearchOutline, IoNotificationsOutline } from 'react-icons/io5';
 
 import Link from "next/link";
-import { ReactNode } from "react";
+import { RouteItem } from "~/utils/routes";
 
 type Props = {
-    navigation: { label: string, link: string, icon: ReactNode }[]
+    routes: RouteItem[];
 }
 
-const NavBar: React.FC<Props> = ({ navigation }) => {
+const NavBar: React.FC<Props> = ({ routes }) => {
     const { data: sessionData } = useSession();
 
     return (
@@ -20,11 +20,11 @@ const NavBar: React.FC<Props> = ({ navigation }) => {
                     </label>
                     <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                         {sessionData &&
-                            (navigation.map(nav => (
-                                <li>
-                                    <Link href={nav.link}>
-                                        {nav.icon}
-                                        {nav.label}
+                            (routes.map((route, i) => (
+                                <li key={i}>
+                                    <Link href={route.link}>
+                                        {route.icon}
+                                        {route.label}
                                     </Link>
                                 </li>
                             )))
@@ -34,7 +34,7 @@ const NavBar: React.FC<Props> = ({ navigation }) => {
                 <div className="form-control hidden md:flex">
                     <div className="input-group">
                         <button className="btn btn-square btn-ghost">
-                            <IoSearchOutline size={20} />
+                            <IoSearchOutline />
                         </button>
                         <input type="text" placeholder="Pesquisar…" className="input input-ghost" />
                     </div>
@@ -43,12 +43,12 @@ const NavBar: React.FC<Props> = ({ navigation }) => {
             <div className="navbar-end">
                 <div className="tooltip tooltip-bottom" data-tip="Notificações">
                     <button className="btn btn-ghost">
-                        <IoNotificationsOutline size={20} />
+                        <IoNotificationsOutline />
                     </button>
                 </div>
                 <div className="tooltip tooltip-bottom" data-tip="Sair">
                     <button className="btn btn-ghost" onClick={sessionData ? () => void signOut({ callbackUrl: '/' }) : () => void signIn()}>
-                        <IoLogOutOutline size={20} />
+                        <IoLogOutOutline />
                     </button>
                 </div>
             </div>

@@ -60,10 +60,10 @@ const AddOrDeleteButton: React.FC<{
     return (
         <>
             {(index !== size) && <button onClick={remove} className="btn btn-square">
-                <IoTrashOutline size={16} />
+                <IoTrashOutline />
             </button>}
             {(index === size) && <button onClick={add} className="btn btn-square">
-                <IoAddOutline size={16} />
+                <IoAddOutline />
             </button>}
         </>
     )

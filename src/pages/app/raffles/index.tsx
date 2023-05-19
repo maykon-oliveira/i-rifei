@@ -1,14 +1,21 @@
 import { type NextPage } from 'next';
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { api } from '~/utils/trpc';
-import { IoEllipsisVertical, IoTrashOutline, IoEyeOutline } from "react-icons/io5";
+import { IoEllipsisVertical, IoTrashOutline } from "react-icons/io5";
 import Link from 'next/link';
 import SocialShare from '~/components/social-share';
 import { toast } from 'react-hot-toast';
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { BreadcrumbsContext } from '~/utils/context/breadcrumbs';
+import { rafflesRouter } from '~/utils/routes';
+import { Raffle } from '@prisma/client';
 
 const MyRaffles: NextPage = () => {
+    const { setBreadcrumbs } = useContext(BreadcrumbsContext);
+
+    useEffect(() => setBreadcrumbs([rafflesRouter.list], [rafflesRouter.new]), []);
+
     const { data, refetch } = api.raffle.getMyRaffles.useQuery();
     const { mutate } = api.raffle.delete.useMutation();
 
@@ -40,9 +47,7 @@ const MyRaffles: NextPage = () => {
                 {data?.map((raffle, i) => (
                     <tr key={i}>
                         <th>
-                            <Link href={`./raffles/${raffle.id}/view`} className="btn btn-ghost">
-                                <IoEyeOutline />
-                            </Link>
+                            <ViewButton raffle={raffle} />
                         </th>
                         <td>{raffle.title}</td>
                         <td>
@@ -80,3 +85,8 @@ const Drawn: React.FC<{ drawn: boolean }> = ({ drawn }) => (
         {drawn ? 'Sim' : 'Não'}
     </div>
 );
+
+const ViewButton: React.FC<{ raffle: Raffle }> = ({ raffle }) => {
+    const routeItem = rafflesRouter.view(raffle);
+    return <Link href={routeItem.link} className="btn btn-ghost" >{routeItem.icon}</Link>
+};

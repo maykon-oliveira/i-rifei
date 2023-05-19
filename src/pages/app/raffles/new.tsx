@@ -7,8 +7,15 @@ import { IoTicketOutline } from 'react-icons/io5';
 import StepperProvider from '~/utils/context/stepper';
 import RaffleCard from '~/components/raffle/raffle-card';
 import { format } from "date-fns";
+import { BreadcrumbsContext } from '~/utils/context/breadcrumbs';
+import { useContext, useEffect } from 'react';
+import { rafflesRouter } from '~/utils/routes';
 
 const RaffleNew: NextPage = () => {
+    const { setBreadcrumbs } = useContext(BreadcrumbsContext);
+
+    useEffect(() => setBreadcrumbs([rafflesRouter.list, rafflesRouter.new], []), []);
+
     const form = useForm<CreateRaffleInput>({
         shouldFocusError: true,
         resolver: zodResolver(CreateRaffleInput),
