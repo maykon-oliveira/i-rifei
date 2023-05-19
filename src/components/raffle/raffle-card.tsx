@@ -25,7 +25,7 @@ enum Tab {
 
 const RaffleCard: React.FC<Props> = ({ raffle, onTicketClick }) => {
     const { data } = useSession();
-    const viewOnly = data ? (raffle.ownerId === data.user.id) : false;
+    const viewOnly = data ? (raffle.ownerId === data.user.id) : true;
     const [tab, setTab] = useState(Tab.DETAILS);
     const detailRef = useRef<HTMLDivElement>(null);
     const awardRef = useRef<HTMLDivElement>(null);

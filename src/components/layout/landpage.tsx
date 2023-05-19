@@ -7,7 +7,7 @@ type Props = {
     children: ReactNode
 }
 
-const Layout = ({ children }: Props) => {
+const LandpageLayout = ({ children }: Props) => {
     return (
         <>
             <Head>
@@ -16,7 +16,6 @@ const Layout = ({ children }: Props) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Toaster position="top-right"/>
-            <NavBar></NavBar>
             <main className="container mx-auto flex min-h-screen flex-col">
                 {children}
             </main>
@@ -24,4 +23,4 @@ const Layout = ({ children }: Props) => {
     );
 };
 
-export default Layout;
+export default LandpageLayout;

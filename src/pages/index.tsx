@@ -1,9 +1,10 @@
-import { type NextPage } from "next";
 import { IoArrowForwardOutline, IoTicketOutline } from "react-icons/io5";
+import LandpageLayout from "~/components/layout/landpage";
 
 import RaffleCardShowcase from "~/components/raffle/raffles-card-showcase";
+import { NextPageWithLayout } from "~/utils";
 
-const Home: NextPage = () => {
+const Home: NextPageWithLayout = () => {
   return (
     <>
       <div className="hero min-h-screen bg-base-300">
@@ -14,7 +15,7 @@ const Home: NextPage = () => {
             <div className="py-6">
               Participe da emoção e da expectativa de ganhar prêmios incríveis com nossa inovadora plataforma de sorteios. Nosso aplicativo web oferece uma forma fácil e agradável para os usuários criarem, participarem e compartilharem sorteios. Seja um entusiasta de sorteios ou um jogador de primeira viagem, temos algo emocionante reservado para você.
             </div>
-            <a href="/raffles/new" className="btn btn-primary">
+            <a href="/app/raffles/new" className="btn btn-primary">
               CRIAR
               <IoArrowForwardOutline />
             </a>
@@ -99,3 +100,7 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+Home.getLayout = function (page) {
+  return <LandpageLayout>{page}</LandpageLayout>
+}
