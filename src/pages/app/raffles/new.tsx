@@ -32,19 +32,21 @@ const RaffleNew: NextPage = () => {
     const raffle = { ...formValue, drawDate: new Date(formValue.drawDate || ''), tickets: [] };
 
     return (
-        <section className="flex flex-col lg:flex-row mx-auto">
-            <div className="flex card bg-base-300 lg:w-96">
-                <div className="card-body">
-                    <h1 className="card-title">Criar Nova Rifa</h1>
-                    <StepperProvider>
-                        <RaffleForm form={form} />
-                    </StepperProvider>
+        <section className="flex flex-col xl:flex-row">
+            <div className="flex items-center mb-5 xl:mb-0 xl:w-96 xl:mx-auto">
+                <div className="flex card bg-base-300 mx-auto w-full max-w-lg">
+                    <div className="card-body">
+                        <StepperProvider>
+                            <RaffleForm form={form} />
+                        </StepperProvider>
+                    </div>
                 </div>
             </div>
-            <div className="divider lg:divider-horizontal">
+            <div className="divider xl:divider-horizontal">
                 <IoTicketOutline size={64} />
             </div>
-            <div className="max-w-md sm:m-auto">
+            <div className="max-w-full mx-auto">
+                <h1 className="text-1xl font-thin text-center mb-5">Pre-visualização</h1>
                 <RaffleCard raffle={raffle as any} onTicketClick={() => { }} />
             </div>
         </section>
