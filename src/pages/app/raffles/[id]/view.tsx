@@ -46,11 +46,12 @@ const RaffleView: NextPage = () => {
 
     return (
         <section className="flex flex-col m-auto">
-            {raffle.drawDate && <div className="flex justify-center pb-10">
+            <div className="flex justify-center pb-10 flex-col items-center">
+                <p className="text-base-content/70 text-sm mb-3">Cronômetro para o dia do sorteio</p>
                 <RaffleCountdown date={raffle.drawDate} />
-            </div>}
+            </div>
             <div className="grid lg:grid-cols-2 gap-10">
-                <div className="flex max-w-xl">
+                <div className="flex max-w-xl mx-auto">
                     <RaffleCard raffle={raffle} onTicketClick={() => { }} />
                 </div>
                 <div className="px-10">

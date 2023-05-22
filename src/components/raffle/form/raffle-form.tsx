@@ -25,7 +25,7 @@ const RaffleForm: React.FC<Props> = ({ form }) => {
 
     return (
         <>
-            <form className="flex-1 min-h-12" action="">
+            <form className="flex-1 min-h-12 w-full">
                 {getStepComponent()}
             </form>
             <ul className="steps w-full pt-5">

@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { IoCreateOutline } from "react-icons/io5";
 import { BreadcrumbsContext } from "~/utils/context/breadcrumbs";
 
 type Props = {

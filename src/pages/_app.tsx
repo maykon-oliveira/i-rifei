@@ -9,6 +9,7 @@ import { ModalProvider } from "~/utils/context/modal";
 import { NextPageWithLayout } from "~/utils";
 import DashboardLayout from "~/components/layout/dashboard";
 import { IconContext } from "react-icons";
+import Notifications from "~/components/notifications";
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
@@ -22,7 +23,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
 
   return (
     <SessionProvider session={session}>
-      <IconContext.Provider value={{size: "1.3em"}}>
+      <IconContext.Provider value={{ size: "1.3em" }}>
+        <Notifications/>
         <ModalProvider>
           {getLayout(<Component {...pageProps} />)}
         </ModalProvider>

@@ -37,7 +37,7 @@ const stepsErrorHandlers: StepHasError[] = [
 const RaffleFormConfirmation: React.FC<Props> = ({ form }) => {
     const router = useRouter();
     const { goTo } = useContext(StepperContext);
-    const { mutate } = api.raffle.create.useMutation();
+    const { mutate, isLoading } = api.raffle.create.useMutation();
 
     const onError: SubmitErrorHandler<CreateRaffleInput> = (errors) => {
         for (const [index, stepHandler] of stepsErrorHandlers.entries()) {
@@ -54,7 +54,7 @@ const RaffleFormConfirmation: React.FC<Props> = ({ form }) => {
         mutate({ ...value, drawDate: formatISO(drawDate) }, {
             onSuccess(data) {
                 toast.success(data);
-                router.push('/me/raffles');
+                router.push('/app/raffles');
             },
             onError(error) {
                 toast.error(error.message);
@@ -71,8 +71,8 @@ const RaffleFormConfirmation: React.FC<Props> = ({ form }) => {
                     <h1 className="text-4xl font-bold">Estamos quase lá!</h1>
                     <p className="py-6">Veja uma prévia de como ficará a sua Rifa. Verifique as informações antes de confirmar.</p>
                 </div>
-                <div className="flex justify-center">
-                    <button onClick={form.handleSubmit(onSubmit, onError)} className="btn btn-primary">CONFIRMAR</button>
+                <div className="flex justify-center mb-5">
+                    <button disabled={isLoading} onClick={form.handleSubmit(onSubmit, onError)} className="btn btn-primary">CONFIRMAR</button>
                 </div>
             </div>
         </div>

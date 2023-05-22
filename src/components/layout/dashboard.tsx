@@ -29,7 +29,7 @@ const DashboardLayout: React.FC<Props> = ({ children }) => {
             </BreadcrumbsProvider>
             <div className="drawer-side bg-base-200">
                 <label htmlFor="drawer" className="drawer-overlay"></label>
-                <ul className="menu p-4 w-72">
+                <ul className="menu p-4 w-64 xl:w-72">
                     {routes.map((nav, i) => (
                         <li key={i} className="hover-bordered">
                             <Link className={(router.asPath.startsWith(nav.link)) ? "active" : ''} href={nav.link}>

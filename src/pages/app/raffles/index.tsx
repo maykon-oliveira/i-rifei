@@ -32,49 +32,55 @@ const MyRaffles: NextPage = () => {
     }
 
     return (
-        <table className="table table-zebra table-compact w-full">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Título</th>
-                    <th className="flex justify-center">Nº Vendidos</th>
-                    <th>Data do Sorteio</th>
-                    <th>Sorteado</th>
-                    <th className="text-center">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {data?.map((raffle, i) => (
-                    <tr key={i}>
-                        <th>
-                            <ViewButton raffle={raffle} />
-                        </th>
-                        <td>{raffle.title}</td>
-                        <td>
-                            <div className="flex justify-center">
-                                <div className="badge">{raffle.tickets?.length}/{raffle.size * raffle.size}</div>
-                            </div>
-                        </td>
-                        <td>{format(raffle.drawDate, 'P p', { locale: ptBR })}</td>
-                        <td><Drawn drawn={raffle.drawn} /></td>
-                        <td className="text-center">
-                            <div className="dropdown dropdown-hover dropdown-end">
-                                <label tabIndex={0} className="btn m-1"><IoEllipsisVertical /></label>
-                                <ul tabIndex={0} className="dropdown-content menu menu-compact p-2 shadow bg-base-100 rounded-box w-52">
-                                    <li className="hover-bordered">
-                                        <a onClick={() => onClickDelete(raffle.id)} className="flex justify-between">
-                                            Deletar
-                                            <IoTrashOutline />
-                                        </a>
-                                    </li>
-                                    <SocialShare raffle={raffle} />
-                                </ul>
-                            </div>
-                        </td>
+        <div className="sm:overflow-x-auto">
+            <table className="table table-zebra table-compact w-full">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Título</th>
+                        <th className="flex justify-center">Nº Vendidos</th>
+                        <th>Data do Sorteio</th>
+                        <th>Sorteado</th>
+                        <th className="text-center">Ações</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {data?.map((raffle, i) => {
+                        const totalTickets = raffle.size * raffle.size;
+
+                        return (
+                            <tr key={i}>
+                                <th>
+                                    <ViewButton raffle={raffle} />
+                                </th>
+                                <td>{raffle.title}</td>
+                                <td>
+                                    <div className="flex justify-center">
+                                        <div className={`badge ${raffle.tickets?.length === totalTickets && 'badge-success'}`}>{raffle.tickets?.length}/{totalTickets}</div>
+                                    </div>
+                                </td>
+                                <td>{format(raffle.drawDate, 'P p', { locale: ptBR })}</td>
+                                <td><Drawn drawn={raffle.drawn} /></td>
+                                <td className="text-center">
+                                    <div className="dropdown dropdown-hover dropdown-end">
+                                        <label tabIndex={0} className="btn m-1"><IoEllipsisVertical /></label>
+                                        <ul tabIndex={0} className="dropdown-content menu menu-compact p-2 shadow bg-base-100 rounded-box w-52">
+                                            <li className="hover-bordered">
+                                                <a onClick={() => onClickDelete(raffle.id)} className="flex justify-between">
+                                                    Deletar
+                                                    <IoTrashOutline />
+                                                </a>
+                                            </li>
+                                            <SocialShare raffle={raffle} />
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        )
+                    })}
+                </tbody>
+            </table>
+        </div>
     )
 }
 

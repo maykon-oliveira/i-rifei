@@ -7,6 +7,7 @@ import { IoShareSocialOutline } from "react-icons/io5";
 import SocialShare from "../social-share";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { toast } from "react-hot-toast";
 
 type Props = {
     raffle: Raffle & {
@@ -25,7 +26,6 @@ enum Tab {
 
 const RaffleCard: React.FC<Props> = ({ raffle, onTicketClick }) => {
     const { data } = useSession();
-    const viewOnly = data ? (raffle.ownerId === data.user.id) : true;
     const [tab, setTab] = useState(Tab.DETAILS);
     const detailRef = useRef<HTMLDivElement>(null);
     const awardRef = useRef<HTMLDivElement>(null);
@@ -50,6 +50,20 @@ const RaffleCard: React.FC<Props> = ({ raffle, onTicketClick }) => {
         }
     }
 
+    const handleTicketClick = (ticket: number) => {
+        if (!data) {
+            toast.custom("Você precisa fazer login para comprar um número")
+            return;
+        }
+
+        if (raffle.ownerId === data.user.id) {
+            toast.custom("Você não pode comprar números da sua rifa", { className: "alert-warning" })
+            return;
+        }
+
+        onTicketClick(raffle, ticket);
+    }
+
     return (
         <div className="max-w-lg mx-auto flex flex-col">
             <div className="tabs w-full">
@@ -64,7 +78,7 @@ const RaffleCard: React.FC<Props> = ({ raffle, onTicketClick }) => {
                 <div className="carousel h-full">
                     <div ref={detailRef} className="carousel-item flex-col w-full mx-1">
                         <div className="flex-1">
-                            <RaffleTable size={raffle.size} tickets={raffle.tickets.map(({ number }) => number)} viewOnly={viewOnly} onTicketClick={(ticket) => onTicketClick(raffle, ticket)} />
+                            <RaffleTable size={raffle.size} tickets={raffle.tickets.map(({ number }) => number)} onTicketClick={handleTicketClick} />
                         </div>
                         <div className="divider"></div>
                         <div className="flex-grow-0">
@@ -73,7 +87,7 @@ const RaffleCard: React.FC<Props> = ({ raffle, onTicketClick }) => {
                                 <div className="flex justify-between mb-3 items-center">
                                     <p className="text-base-content/70 text-sm">Data do Sorteio: {formattedDate}</p>
                                     <div className="flex items-center">
-                                        <div className="badge badge-secondary">
+                                        <div className="badge badge-primary">
                                             <CurrencyBRLFormatter displayType="text" value={raffle.price} />
                                         </div>
                                         {raffle.id && (
