@@ -5,7 +5,7 @@ import { IoEllipsisVertical, IoTrashOutline } from "react-icons/io5";
 import Link from 'next/link';
 import SocialShare from '~/components/social-share';
 import { toast } from 'react-hot-toast';
-import { format } from "date-fns";
+import { format, isBefore } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { BreadcrumbsContext } from '~/utils/context/breadcrumbs';
 import { rafflesRouter } from '~/utils/routes';
@@ -56,10 +56,14 @@ const MyRaffles: NextPage = () => {
                                 <td>{raffle.title}</td>
                                 <td>
                                     <div className="flex justify-center">
-                                        <div className={`badge ${raffle.tickets?.length === totalTickets && 'badge-success'}`}>{raffle.tickets?.length}/{totalTickets}</div>
+                                        <div className={`badge rounded ${raffle.tickets?.length === totalTickets && 'badge-success tooltip'}`} data-tip="Todos os números vendidos">{raffle.tickets?.length}/{totalTickets}</div>
                                     </div>
                                 </td>
-                                <td>{format(raffle.drawDate, 'P p', { locale: ptBR })}</td>
+                                <td>
+                                    <span className={`${isBefore(raffle.drawDate, new Date()) && 'bg-error tooltip rounded px-2'}`} data-tip="Data do sorteio expirou">
+                                        {format(raffle.drawDate, 'P p', { locale: ptBR })}
+                                    </span>
+                                </td>
                                 <td><Drawn drawn={raffle.drawn} /></td>
                                 <td className="text-center">
                                     <div className="dropdown dropdown-hover dropdown-end">

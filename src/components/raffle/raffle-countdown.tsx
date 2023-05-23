@@ -23,25 +23,25 @@ const RaffleCountdown: React.FC<Props> = ({ date }) => {
 
     return <div className="grid grid-flow-col gap-5 text-center auto-cols-max">
         <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-            <span className="countdown font-mono text-5xl">
+            <span className="countdown font-mono text-4xl">
                 {days}
             </span>
             dias
         </div>
         <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-            <span className="countdown font-mono text-5xl">
+            <span className="countdown font-mono text-4xl">
                 {hours}
             </span>
             horas
         </div>
         <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-            <span className="countdown font-mono text-5xl">
+            <span className="countdown font-mono text-4xl">
                 {minutes}
             </span>
             min
         </div>
         <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-            <span className="countdown font-mono text-5xl">
+            <span className="countdown font-mono text-4xl">
                 {seconds}
             </span>
             seg
