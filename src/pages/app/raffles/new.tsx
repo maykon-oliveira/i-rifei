@@ -11,7 +11,7 @@ import { BreadcrumbsContext } from '~/utils/context/breadcrumbs';
 import { useContext, useEffect } from 'react';
 import { rafflesRouter } from '~/utils/routes';
 
-const RaffleNew: NextPage = () => {
+const RaffleNewPage: NextPage = () => {
     const { setBreadcrumbs } = useContext(BreadcrumbsContext);
 
     useEffect(() => setBreadcrumbs([rafflesRouter.list, rafflesRouter.new], []), []);
@@ -53,4 +53,4 @@ const RaffleNew: NextPage = () => {
     )
 }
 
-export default RaffleNew;
+export default RaffleNewPage;

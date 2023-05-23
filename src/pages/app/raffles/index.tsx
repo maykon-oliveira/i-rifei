@@ -11,7 +11,7 @@ import { BreadcrumbsContext } from '~/utils/context/breadcrumbs';
 import { rafflesRouter } from '~/utils/routes';
 import { Raffle } from '@prisma/client';
 
-const MyRaffles: NextPage = () => {
+const MyRafflesPage: NextPage = () => {
     const { setBreadcrumbs } = useContext(BreadcrumbsContext);
 
     useEffect(() => setBreadcrumbs([rafflesRouter.list], [rafflesRouter.new]), []);
@@ -88,7 +88,7 @@ const MyRaffles: NextPage = () => {
     )
 }
 
-export default MyRaffles;
+export default MyRafflesPage;
 
 const Drawn: React.FC<{ drawn: boolean }> = ({ drawn }) => (
     <div className={`badge ${drawn ? 'badge-success' : 'badge-error'} gap-2`}>
