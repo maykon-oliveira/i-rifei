@@ -5,12 +5,12 @@ import RaffleCountdown from '~/components/raffle/raffle-countdown';
 import RaffleCard from '~/components/raffle/raffle-card';
 import { BreadcrumbsContext } from '~/utils/context/breadcrumbs';
 import { useContext, useEffect } from 'react';
-import { rafflesRouter } from '~/utils/routes';
+import { drawsRouter, rafflesRouter } from '~/utils/routes';
 import { CurrencyBRLFormatter } from '~/components/input/currency';
 
 type BuyerWithTicket = { id: string, name: string | null, tickets: number[] };
 
-const RaffleView: NextPage = () => {
+const RaffleViewPage: NextPage = () => {
     const { setBreadcrumbs } = useContext(BreadcrumbsContext);
     const router = useRouter()
     const { data: raffle, error, isLoading } = api.raffle.allDetails.useQuery({
@@ -19,7 +19,7 @@ const RaffleView: NextPage = () => {
 
     useEffect(() => {
         if (!!raffle) {
-            setBreadcrumbs([rafflesRouter.list, rafflesRouter.view(raffle)], [])
+            setBreadcrumbs([rafflesRouter.list, rafflesRouter.view(raffle)], [drawsRouter.draw(raffle)])
         }
     }, [raffle]);
 
@@ -75,4 +75,4 @@ const RaffleView: NextPage = () => {
     )
 }
 
-export default RaffleView;
+export default RaffleViewPage;

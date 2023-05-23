@@ -1,6 +1,6 @@
 import { Raffle } from '@prisma/client';
 import { ReactNode } from 'react';
-import { IoCreateOutline, IoEyeOutline, IoTicketOutline } from 'react-icons/io5';
+import { IoBagOutline, IoCreateOutline, IoExtensionPuzzleOutline, IoEyeOutline, IoTicketOutline } from 'react-icons/io5';
 
 export type RouteItem = {
     label: string;
@@ -20,6 +20,25 @@ export const rafflesRouter = {
     }
 };
 
-const routes: RouteItem[] = [rafflesRouter.list]
+export const drawsRouter = {
+    list: {
+        label: 'Sortear Rifa',
+        link: '/app/draws',
+        icon: <IoExtensionPuzzleOutline />
+    },
+    draw: (raffle: Raffle) => {
+        return { link: `/app/draws/${raffle.id}`, label: 'Sortear', icon: <IoExtensionPuzzleOutline /> }
+    }
+}
+
+export const purchasesRouter = {
+    list: {
+        label: 'Rifas Compradas',
+        link: '/app/purchases',
+        icon: <IoBagOutline />
+    },
+}
+
+const routes: RouteItem[] = [rafflesRouter.list, drawsRouter.list, purchasesRouter.list]
 
 export default routes;
