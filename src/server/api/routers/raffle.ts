@@ -72,6 +72,9 @@ export const raffleRouter = createTRPCRouter({
             id: true
           }
         }
+      },
+      orderBy: {
+        createdAt: 'desc'
       }
     });
   }),

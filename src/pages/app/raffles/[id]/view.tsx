@@ -6,6 +6,7 @@ import RaffleCard from '~/components/raffle/raffle-card';
 import { BreadcrumbsContext } from '~/utils/context/breadcrumbs';
 import { useContext, useEffect } from 'react';
 import { rafflesRouter } from '~/utils/routes';
+import { CurrencyBRLFormatter } from '~/components/input/currency';
 
 type BuyerWithTicket = { id: string, name: string | null, tickets: number[] };
 
@@ -51,18 +52,23 @@ const RaffleView: NextPage = () => {
                 <RaffleCountdown date={raffle.drawDate} />
             </div>
             <div className="grid lg:grid-cols-2 gap-10">
-                <div className="flex max-w-xl mx-auto">
+                <div className="flex w-full max-w-lg mx-auto">
                     <RaffleCard raffle={raffle} onTicketClick={() => { }} />
                 </div>
-                <div className="px-10">
+                <div className="flex flex-col">
                     <h2 className="text-lg text-center">Compradores</h2>
                     {!buyers.length && (<h3 className="mt-3 text-sm">Sem rifas vendidas.</h3>)}
-                    {buyers.map((user, i) => (
-                        <div key={i} className="py-3 border-b">
-                            <div className="text-lg font-extrabold">{user.name}</div>
-                            <div className="text-base-content/70 text-sm">Números: {user.tickets.join(", ")}</div>
-                        </div>
-                    ))}
+                    <div className="mx-auto w-full max-w-lg">
+                        {buyers.map((user, i) => (
+                            <div key={i} className="py-3 border-b">
+                                <div className="text-lg font-extrabold">{user.name}</div>
+                                <div className="flex text-sm">
+                                    <div className="flex-1 text-base-content/70">Números: {user.tickets.join(", ")}</div>
+                                    <div className="ml-2">Total: <CurrencyBRLFormatter displayType="text" value={raffle.price * user.tickets.length} /></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </section >

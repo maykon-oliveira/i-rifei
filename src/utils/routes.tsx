@@ -10,7 +10,7 @@ export type RouteItem = {
 
 export const rafflesRouter = {
     list: {
-        label: 'Rifas',
+        label: 'Minhas Rifas',
         link: '/app/raffles',
         icon: <IoTicketOutline />
     },
