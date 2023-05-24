@@ -184,4 +184,35 @@ export const raffleRouter = createTRPCRouter({
     })
   }),
 
+  overviewDetails: publicProcedure.input(z.object({
+    id: z.string()
+  })).query(async ({ ctx, input }) => {
+    const raffle = await ctx.prisma.raffle.findUnique({
+      where: {
+        id: input.id
+      },
+      include: {
+        awards: true,
+        tickets: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true
+              }
+            }
+          }
+        }
+      }
+    });
+
+    if (!raffle) {
+      throw new TRPCError({
+        code: "NOT_FOUND"
+      });
+    }
+
+    return raffle;
+  }),
+
 });

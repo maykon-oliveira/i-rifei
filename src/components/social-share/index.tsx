@@ -1,6 +1,7 @@
 import { WhatsappShareButton, WhatsappIcon, FacebookShareButton, FacebookIcon, TwitterShareButton, TwitterIcon, EmailShareButton, EmailIcon } from 'next-share';
 import React from "react";
 import SocialShareItem from './social-share-item';
+import { rafflesRouter } from '~/utils/routes';
 
 type Props = {
     raffle: any
@@ -13,6 +14,8 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
         baseurl = location.origin;
     }
 
+    const routeItem = rafflesRouter.overview(raffle.id);
+
     return (
         <>
             <li className="menu-title">
@@ -23,7 +26,7 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                     <a onClick={() => ref.current?.click()} className="flex justify-between">
                         Whatsapp
                         <WhatsappShareButton
-                            url={`${baseurl}/raffles/${raffle.id}/view`}
+                            url={`${baseurl}${routeItem.link}`}
                             title={raffle.description}
                             separator=":: "
                             ref={ref}
@@ -38,7 +41,7 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                     <a onClick={() => ref.current?.click()} className="flex justify-between">
                         Facebook
                         <FacebookShareButton
-                            url={`${baseurl}/raffles/${raffle.id}/view`}
+                            url={`${baseurl}${routeItem.link}`}
                             quote={raffle.description}
                             hashtag='#irifei'
                             ref={ref}
@@ -53,7 +56,7 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                     <a onClick={() => ref.current?.click()} className="flex justify-between">
                         Twitter
                         <TwitterShareButton
-                            url={`${baseurl}/raffles/${raffle.id}/view`}
+                            url={`${baseurl}${routeItem.link}`}
                             title={raffle.description}
                             ref={ref}
                         >
@@ -67,7 +70,7 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                     <a onClick={() => ref.current?.click()} className="flex justify-between">
                         Email
                         <EmailShareButton
-                            url={`${baseurl}/raffles/${raffle.id}/view`}
+                            url={`${baseurl}${routeItem.link}`}
                             subject={raffle.name}
                             body={raffle.description}
                             ref={ref}

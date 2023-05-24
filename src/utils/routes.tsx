@@ -17,6 +17,9 @@ export const rafflesRouter = {
     new: { link: '/app/raffles/new', label: 'Criar Nova Rifa', icon: <IoCreateOutline /> },
     view: (raffle: Raffle) => {
         return { link: `/app/raffles/${raffle.id}/view`, label: raffle.title, icon: <IoEyeOutline /> }
+    },
+    overview: (raffleId: string) => {
+        return { link: `/raffles/${raffleId}/overview`, label: '', icon: <IoEyeOutline /> }
     }
 };
 
