@@ -42,7 +42,7 @@ const Notifications: React.FC<Props> = () => {
                     <div
                         key={toast.id}
                         ref={ref}
-                        className={`alert shadow-lg ${toast.className}`}
+                        className={`alert shadow-lg ${toast.className || ''}`}
                         style={{
                             transition: 'all 0.5s ease-out',
                             opacity: toast.visible ? 1 : 0,

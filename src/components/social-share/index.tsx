@@ -2,6 +2,8 @@ import { WhatsappShareButton, WhatsappIcon, FacebookShareButton, FacebookIcon, T
 import React from "react";
 import SocialShareItem from './social-share-item';
 import { rafflesRouter } from '~/utils/routes';
+import { IoLinkOutline } from "react-icons/io5";
+import { toast } from 'react-hot-toast';
 
 type Props = {
     raffle: any
@@ -15,6 +17,12 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
     }
 
     const routeItem = rafflesRouter.overview(raffle.id);
+    const url = `${baseurl}${routeItem.link}`;
+
+    const onCopyLinkClick = () => {
+        navigator.clipboard.writeText(url);
+        toast.custom('Link copiado!');
+    }
 
     return (
         <>
@@ -22,11 +30,14 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                 <span>Compartilhar</span>
             </li>
             <li className="hover-bordered">
+                <a onClick={onCopyLinkClick} className="justify-between">Copiar Link <IoLinkOutline /></a>
+            </li>
+            <li className="hover-bordered">
                 <SocialShareItem render={(ref => (
                     <a onClick={() => ref.current?.click()} className="flex justify-between">
                         Whatsapp
                         <WhatsappShareButton
-                            url={`${baseurl}${routeItem.link}`}
+                            url={url}
                             title={raffle.description}
                             separator=":: "
                             ref={ref}
@@ -41,7 +52,7 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                     <a onClick={() => ref.current?.click()} className="flex justify-between">
                         Facebook
                         <FacebookShareButton
-                            url={`${baseurl}${routeItem.link}`}
+                            url={url}
                             quote={raffle.description}
                             hashtag='#irifei'
                             ref={ref}
@@ -56,7 +67,7 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                     <a onClick={() => ref.current?.click()} className="flex justify-between">
                         Twitter
                         <TwitterShareButton
-                            url={`${baseurl}${routeItem.link}`}
+                            url={url}
                             title={raffle.description}
                             ref={ref}
                         >
@@ -70,7 +81,7 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                     <a onClick={() => ref.current?.click()} className="flex justify-between">
                         Email
                         <EmailShareButton
-                            url={`${baseurl}${routeItem.link}`}
+                            url={url}
                             subject={raffle.name}
                             body={raffle.description}
                             ref={ref}

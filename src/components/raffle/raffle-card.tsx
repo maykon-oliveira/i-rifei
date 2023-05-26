@@ -8,6 +8,8 @@ import SocialShare from "../social-share";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { toast } from "react-hot-toast";
+import { rafflesRouter } from "~/utils/routes";
+import Link from "next/link";
 
 type Props = {
     raffle: Raffle & {
@@ -31,6 +33,7 @@ const RaffleCard: React.FC<Props> = ({ raffle, onTicketClick }) => {
     const awardRef = useRef<HTMLDivElement>(null);
     const roundedClass = tab === Tab.DETAILS ? 'rounded-tl-none' : 'rounded-tr-none';
     const [formattedDate, setFormattedDate] = useState('');
+    const routeItem = rafflesRouter.overview(raffle.id);
 
     useEffect(() => {
         setFormattedDate(format(raffle.drawDate, 'P p', { locale: ptBR }));
@@ -81,7 +84,7 @@ const RaffleCard: React.FC<Props> = ({ raffle, onTicketClick }) => {
                             <RaffleTable size={raffle.size} tickets={raffle.tickets.map(({ number }) => number)} onTicketClick={handleTicketClick} />
                         </div>
                         <div className="divider"></div>
-                        <div className="flex-grow-0">
+                        <div className="flex-1">
                             <div className="flex flex-col">
                                 <h2 className="text-2xl font-extrabold break-words">{raffle.title}</h2>
                                 <div className="flex justify-between mb-3 items-center">
@@ -91,12 +94,15 @@ const RaffleCard: React.FC<Props> = ({ raffle, onTicketClick }) => {
                                             <CurrencyBRLFormatter displayType="text" value={raffle.price} />
                                         </div>
                                         {raffle.id && (
-                                            <div className="dropdown dropdown-hover dropdown-left">
-                                                <label tabIndex={0} className="ml-3 btn btn-sm btn-circle btn-outline"><IoShareSocialOutline /></label>
-                                                <ul tabIndex={0} className="dropdown-content menu menu-compact p-2 shadow bg-base-100 rounded-box w-52">
-                                                    <SocialShare raffle={raffle} />
-                                                </ul>
-                                            </div>
+                                            <>
+                                                <Link href={routeItem.link} className="ml-2 btn btn-sm btn-circle btn-outline" >{routeItem.icon}</Link>
+                                                <div className="dropdown dropdown-hover dropdown-left">
+                                                    <label tabIndex={0} className="ml-3 btn btn-sm btn-circle btn-outline"><IoShareSocialOutline /></label>
+                                                    <ul tabIndex={0} className="dropdown-content menu menu-compact z-50 p-2 shadow bg-base-100 rounded-box w-52">
+                                                        <SocialShare raffle={raffle} />
+                                                    </ul>
+                                                </div>
+                                            </>
                                         )}
                                     </div>
                                 </div>
@@ -110,7 +116,7 @@ const RaffleCard: React.FC<Props> = ({ raffle, onTicketClick }) => {
                                 <span>Prêmios</span>
                             </li>
                             {raffle.awards.map(({ name }, i) => (
-                                <li key={i} className="hover-bordered"><a className="cursor-default">{name}</a></li>
+                                <li key={i} className="hover-bordered"><a className="cursor-default">{i+1}. {name}</a></li>
                             ))}
                         </ul>
                     </div>
