@@ -19,7 +19,8 @@ const RaffleViewPage: NextPage = () => {
 
     useEffect(() => {
         if (!!raffle) {
-            setBreadcrumbs([rafflesRouter.list, rafflesRouter.view(raffle)], [drawsRouter.draw(raffle)])
+            const actions = raffle.drawn ? [] : [drawsRouter.draw(raffle)];
+            setBreadcrumbs([rafflesRouter.list, rafflesRouter.view(raffle)], actions);
         }
     }, [raffle]);
 
@@ -47,20 +48,30 @@ const RaffleViewPage: NextPage = () => {
 
     return (
         <section className="flex flex-col m-auto">
-            <div className="flex justify-center pb-10 flex-col items-center">
-                <p className="text-base-content/70 text-sm mb-3">Cronômetro para o dia do sorteio</p>
-                <RaffleCountdown date={raffle.drawDate} />
-            </div>
+            {!raffle.drawn && (
+                <div className="flex justify-center pb-10 flex-col items-center">
+                    <p className="text-base-content/70 text-sm mb-3">Cronômetro para o dia do sorteio</p>
+                    <RaffleCountdown date={raffle.drawDate} />
+                </div>
+            )}
+            {raffle.drawn && (
+                <div className="flex justify-center pb-10 flex-col items-center">
+                    <h2 className="text-5xl">Rifa Sorteada</h2>
+                    <h3 className="my-5">
+                        <span className="font-semibold mr-1 text-base-content/70">Ganhador:</span> {raffle.winner?.name}
+                    </h3>
+                </div>
+            )}
             <div className="grid lg:grid-cols-2 gap-10">
                 <div className="flex w-full max-w-lg mx-auto">
                     <RaffleCard raffle={raffle} onTicketClick={() => { }} />
                 </div>
                 <div className="flex flex-col">
-                    <h2 className="text-lg text-center">Compradores</h2>
+                    <h2 className="text-lg text-center mb-3">Compradores</h2>
                     {!buyers.length && (<h3 className="mt-3 text-sm">Sem rifas vendidas.</h3>)}
                     <div className="mx-auto w-full max-w-lg">
                         {buyers.map((user, i) => (
-                            <div key={i} className="py-3 border-b">
+                            <div key={i} className={`p-3 border-b ${raffle.winnerId === user.id ? 'bg-base-300' : ''}`}>
                                 <div className="text-lg font-extrabold">{user.name}</div>
                                 <div className="flex text-sm">
                                     <div className="flex-1 text-base-content/70">Números: {user.tickets.join(", ")}</div>
