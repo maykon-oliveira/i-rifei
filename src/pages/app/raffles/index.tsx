@@ -60,7 +60,7 @@ const MyRafflesPage: NextPage = () => {
                                     </div>
                                 </td>
                                 <td>
-                                    <span className={`${isBefore(raffle.drawDate, new Date()) && 'bg-error tooltip rounded px-2'}`} data-tip="Data do sorteio expirou">
+                                    <span className={`${!raffle.drawn && isBefore(raffle.drawDate, new Date()) && 'bg-error tooltip rounded px-2'}`} data-tip="Data do sorteio expirou">
                                         {format(raffle.drawDate, 'P p', { locale: ptBR })}
                                     </span>
                                 </td>

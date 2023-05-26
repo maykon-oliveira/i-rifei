@@ -26,7 +26,7 @@ model Raffle {
   ownerId     String
   owner       User          @relation("raffles", fields: [ownerId], references: [id])
   winnerId    String?
-  winner      User?          @relation("rafflesWon", fields: [winnerId], references: [id])
+  winner      User?         @relation("rafflesWon", fields: [winnerId], references: [id])
   // tickets
   tickets     Ticket[]
   awards      RaffleAward[]
@@ -39,16 +39,17 @@ model RaffleAward {
   id       String @id @default(cuid())
   name     String
   raffleId String
-  raffle   Raffle @relation(fields: [raffleId], references: [id])
+  raffle   Raffle @relation(fields: [raffleId], references: [id], onDelete: Cascade)
 }
 
 model Ticket {
-  id       String @id @default(cuid())
+  id       String  @id @default(cuid())
   number   Int
+  drawn    Boolean @default(false)
   raffleId String
-  raffle   Raffle @relation(fields: [raffleId], references: [id], onDelete: Cascade)
+  raffle   Raffle  @relation(fields: [raffleId], references: [id], onDelete: Cascade)
   userId   String
-  user     User   @relation(fields: [userId], references: [id])
+  user     User    @relation(fields: [userId], references: [id])
 }
 
 // Necessary for Next auth

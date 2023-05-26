@@ -54,7 +54,8 @@ export const raffleRouter = createTRPCRouter({
         awards: true,
         tickets: {
           select: {
-            number: true
+            number: true,
+            drawn: true
           }
         }
       }
@@ -73,9 +74,14 @@ export const raffleRouter = createTRPCRouter({
           }
         }
       },
-      orderBy: {
-        createdAt: 'desc'
-      }
+      orderBy: [
+        {
+          drawn: 'asc'
+        },
+        {
+          createdAt: 'desc'
+        }
+      ]
     });
   }),
 
@@ -88,6 +94,7 @@ export const raffleRouter = createTRPCRouter({
       },
       include: {
         awards: true,
+        winner: true,
         tickets: {
           include: {
             user: {
@@ -116,6 +123,13 @@ export const raffleRouter = createTRPCRouter({
     const raffle = await ctx.prisma.raffle.findUnique({
       where: {
         id: input.id
+      },
+      include: {
+        tickets: {
+          select: {
+            id: true
+          }
+        }
       }
     });
 
@@ -128,6 +142,20 @@ export const raffleRouter = createTRPCRouter({
     if (raffle.ownerId !== ctx.session.user.id) {
       throw new TRPCError({
         code: "FORBIDDEN"
+      });
+    }
+
+    if (raffle.drawn) {
+      throw new TRPCError({
+        code: "CONFLICT",
+        message: "Rifa sorteada não pode ser apagada."
+      });
+    }
+
+    if (raffle.tickets.length > 0) {
+      throw new TRPCError({
+        code: "CONFLICT",
+        message: "Rifa com números vendidos não pode ser apagada."
       });
     }
 

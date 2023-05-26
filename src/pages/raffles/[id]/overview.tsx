@@ -65,7 +65,7 @@ const RaffleOverviewPage: NextPageWithLayout = () => {
                     <p className="py-6">{raffle.description}</p>
                 </div>
                 <div className="my-5 mb-10 shadow-xl">
-                    <RaffleTable size={raffle.size} tickets={raffle.tickets.map(({ number }) => number)} onTicketClick={handleTicketClick} />
+                    <RaffleTable size={raffle.size} tickets={raffle.tickets} onTicketClick={handleTicketClick} />
                 </div>
                 <div className="flex flex-col w-full">
                     <h3 className="text-3xl text-center mb-3">Prêmios</h3>

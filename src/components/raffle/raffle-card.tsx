@@ -1,4 +1,4 @@
-import { Raffle, RaffleAward } from "@prisma/client";
+import { Raffle, RaffleAward, Ticket } from "@prisma/client";
 import React, { useEffect, useRef, useState } from "react";
 import RaffleTable from "./raffle-table";
 import { CurrencyBRLFormatter } from "../input/currency";
@@ -15,6 +15,7 @@ type Props = {
     raffle: Raffle & {
         tickets: {
             number: number;
+            drawn: boolean;
         }[];
         awards: RaffleAward[];
     },
@@ -81,7 +82,7 @@ const RaffleCard: React.FC<Props> = ({ raffle, onTicketClick }) => {
                 <div className="carousel h-full">
                     <div ref={detailRef} className="carousel-item flex-col w-full mx-1">
                         <div className="flex-1">
-                            <RaffleTable size={raffle.size} tickets={raffle.tickets.map(({ number }) => number)} onTicketClick={handleTicketClick} />
+                            <RaffleTable size={raffle.size} tickets={raffle.tickets} onTicketClick={handleTicketClick} />
                         </div>
                         <div className="divider"></div>
                         <div className="flex-1">
