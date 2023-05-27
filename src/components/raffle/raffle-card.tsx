@@ -1,4 +1,4 @@
-import { Raffle, RaffleAward, Ticket } from "@prisma/client";
+import { Raffle, RaffleAward } from "@prisma/client";
 import React, { useEffect, useRef, useState } from "react";
 import RaffleTable from "./raffle-table";
 import { CurrencyBRLFormatter } from "../input/currency";
@@ -69,7 +69,7 @@ const RaffleCard: React.FC<Props> = ({ raffle, onTicketClick }) => {
     }
 
     return (
-        <div className="max-w-lg mx-auto flex flex-col">
+        <div className="max-w-xl mx-auto flex flex-col">
             <div className="tabs w-full">
                 <a onClick={switchTab} className={`tab tab-lifted tab-border-none tab-lg flex-1 ${(tab === Tab.DETAILS) && 'text-base-content bg-base-300'}`}>
                     Detalhes
@@ -79,39 +79,29 @@ const RaffleCard: React.FC<Props> = ({ raffle, onTicketClick }) => {
                 </a>
             </div>
             <div className={`bg-base-300 rounded-xl flex-1 ${roundedClass} p-10 shadow-xl`}>
-                <div className="carousel h-full">
-                    <div ref={detailRef} className="carousel-item flex-col w-full mx-1">
-                        <div className="flex-1">
+                <div className="carousel">
+                    <div ref={detailRef} className="carousel-item flex-col w-full mr-1">
+                        <div className="flex flex-1">
                             <RaffleTable size={raffle.size} tickets={raffle.tickets} onTicketClick={handleTicketClick} />
                         </div>
                         <div className="divider"></div>
-                        <div className="flex-1">
-                            <div className="flex flex-col">
-                                <h2 className="text-2xl font-extrabold break-words">{raffle.title}</h2>
-                                <div className="flex justify-between mb-3 items-center">
-                                    <p className="text-base-content/70 text-sm">Data do Sorteio: {formattedDate}</p>
-                                    <div className="flex items-center">
-                                        <div className="badge badge-primary">
-                                            <CurrencyBRLFormatter displayType="text" value={raffle.price} />
-                                        </div>
-                                        {raffle.id && (
-                                            <>
-                                                <Link href={routeItem.link} className="ml-2 btn btn-sm btn-circle btn-outline" >{routeItem.icon}</Link>
-                                                <div className="dropdown dropdown-hover dropdown-left">
-                                                    <label tabIndex={0} className="ml-3 btn btn-sm btn-circle btn-outline"><IoShareSocialOutline /></label>
-                                                    <ul tabIndex={0} className="dropdown-content menu menu-compact z-50 p-2 shadow bg-base-100 rounded-box w-52">
-                                                        <SocialShare raffle={raffle} />
-                                                    </ul>
-                                                </div>
-                                            </>
-                                        )}
+                        <div className="flex flex-1 flex-col">
+                            <h2 className="text-2xl font-extrabold break-words">{raffle.title}</h2>
+                            <div className="flex justify-between mb-3 items-center">
+                                <p className="text-base-content/70 text-sm">Data do Sorteio: {formattedDate}</p>
+                                <div className="flex items-center">
+                                    <div className="badge badge-primary">
+                                        <CurrencyBRLFormatter displayType="text" value={raffle.price} />
                                     </div>
+                                    {raffle.id && (
+                                        <Link href={routeItem.link} className="ml-2 btn btn-sm btn-circle btn-outline" >{routeItem.icon}</Link>
+                                    )}
                                 </div>
-                                <p className="break-words">{raffle.description}</p>
                             </div>
+                            <p className="break-words overflow-ellipsis line-clamp-4">{raffle.description}</p>
                         </div>
                     </div>
-                    <div ref={awardRef} className="carousel-item flex-col w-full mx-1">
+                    <div ref={awardRef} className="carousel-item flex-col w-full ml-1">
                         <ul className="menu">
                             <li className="menu-title">
                                 <span>Prêmios</span>

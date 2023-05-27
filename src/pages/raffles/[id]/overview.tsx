@@ -31,7 +31,7 @@ const RaffleOverviewPage: NextPageWithLayout = () => {
         }
 
         if (raffle.ownerId === loggedUser.user.id) {
-            toast.custom("Você não pode comprar números da sua rifa", { className: "alert-warning" })
+            toast.custom("Você não pode comprar números da sua rifa.", { className: "alert-warning" })
             return;
         }
 
@@ -60,7 +60,7 @@ const RaffleOverviewPage: NextPageWithLayout = () => {
                     <p className="text-base-content/70 text-sm mb-3">Cronômetro para o dia do sorteio</p>
                     <RaffleCountdown date={raffle.drawDate} />
                 </div>
-                <div className="max-w-lg text-center">
+                <div className="text-center">
                     <h1 className="text-5xl font-bold">{raffle.title}</h1>
                     <p className="py-6">{raffle.description}</p>
                 </div>

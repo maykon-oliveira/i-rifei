@@ -50,6 +50,9 @@ export const raffleRouter = createTRPCRouter({
 
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.raffle.findMany({
+      where: {
+        drawn: false
+      },
       include: {
         awards: true,
         tickets: {
@@ -177,7 +180,11 @@ export const raffleRouter = createTRPCRouter({
         id: input.id,
       },
       include: {
-        tickets: true
+        tickets: {
+          include: {
+            user: true
+          }
+        }
       }
     });
 
@@ -187,9 +194,16 @@ export const raffleRouter = createTRPCRouter({
       })
     }
 
+    if (raffle.ownerId === ctx.session.user.id) {
+      throw new TRPCError({
+        code: 'CONFLICT',
+        message: "Você não pode comprar números da sua rifa."
+      });
+    }
+
     const ticketBought = raffle.tickets.find(({ number }) => number === input.ticket);
 
-    if (!ticketBought) {
+    if (!ticketBought || (ticketBought.userId === ctx.session.user.id)) {
       await ctx.prisma.ticket.create({
         data: {
           raffleId: raffle.id,
@@ -201,15 +215,10 @@ export const raffleRouter = createTRPCRouter({
       return "Número comprado";
     }
 
-    if (ticketBought.userId === ctx.session.user.id) {
-      // Usuario ja comprou, so passar.
-      return;
-    }
-
     throw new TRPCError({
       code: 'CONFLICT',
-      message: `${ticketBought.userId} já comprou esse número.`
-    })
+      message: `${ticketBought.user.name} já comprou esse número.`
+    });
   }),
 
   overviewDetails: publicProcedure.input(z.object({
