@@ -40,7 +40,7 @@ const RaffleTable: React.FC<Props> = ({ size, tickets = [], onTicketClick = () =
     }, [matrix]);
 
     return (
-        <div className={`grid ${gridClass} border min-h-full`}>
+        <div style={{ aspectRatio: '1/1' }} className={`box-border grid ${gridClass} border w-full`}>
             {matrix.map(row => row.map((col, i) => {
                 const ticket = tickets.find(({ number }) => number === col);
 

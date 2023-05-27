@@ -51,7 +51,7 @@ const RaffleCardShowcase: React.FC<Props> = () => {
     }
 
     return (
-        <div className="grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-10 pt-10">
+        <div className="grid xl:grid-cols-2 gap-10 pt-10">
             {raffles?.map((raffle, i) => <RaffleCard key={i} raffle={raffle} onTicketClick={onTicketClick} />)}
         </div>
     );

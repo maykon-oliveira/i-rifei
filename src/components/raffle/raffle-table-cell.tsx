@@ -14,7 +14,8 @@ const RaffleTableCell: React.FC<Props> = ({ col, bought, drawn, onClick }) => {
 
     return (
         <div onClick={handleClick}
-            className={`flex justify-center items-center py-2 px-3 border hover:bg-secondary ${bought ? 'bg-accent cursor-not-allowed' : 'hover:cursor-pointer'} ${drawn ? 'bg-error tooltip' : ''}`}
+            style={{minWidth: '45px', aspectRatio: '1/1'}}
+            className={`box-border flex justify-center items-center border hover:bg-secondary ${bought ? 'bg-accent cursor-not-allowed' : 'hover:cursor-pointer'} ${drawn ? 'bg-error tooltip' : ''}`}
             data-tip="Número sorteado">
             {col}
         </div>
