@@ -7,6 +7,7 @@ import {
 } from "~/server/api/trpc";
 import { CreateRaffleInput } from "~/server/schema/raffle";
 import { parseISO } from "date-fns";
+import { Ticket, User } from "@prisma/client";
 
 export const raffleRouter = createTRPCRouter({
   create: protectedProcedure
@@ -250,6 +251,41 @@ export const raffleRouter = createTRPCRouter({
     }
 
     return raffle;
+  }),
+
+  startDrawn: protectedProcedure.input(z.object({
+    id: z.string()
+  })).mutation(async ({ ctx, input }) => {
+    const { tickets } = await ctx.prisma.raffle.findUniqueOrThrow({
+      where: {
+        id: input.id
+      },
+      include: {
+        tickets: {
+          include: {
+            user: true
+          }
+        }
+      }
+    });
+
+    const drawnNumbers: (Ticket & {
+      user: User;
+    })[] = [];
+
+    for (let time = 0; time < 10; time++) {
+      const randomIndex = Math.floor(Math.random() * tickets.length);
+      drawnNumbers.push(tickets[randomIndex]!!);
+    }
+
+    const { id, name } = drawnNumbers[drawnNumbers.length - 1]?.user!!;
+
+    return {
+      drawnNumbers: drawnNumbers.map(({ number }) => number),
+      winner: {
+        id, name
+      }
+    }
   }),
 
 });

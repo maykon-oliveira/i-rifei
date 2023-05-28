@@ -4,6 +4,7 @@ import RaffleTableCell from "./raffle-table-cell";
 type Props = {
     size: number;
     tickets?: { number: number, drawn: boolean }[];
+    numberHighlight?: number;
     onTicketClick?: (ticket: number) => void
 }
 
@@ -22,8 +23,7 @@ const gridVariants = {
     '10': 'grid-cols-10',
 }
 
-const RaffleTable: React.FC<Props> = ({ size, tickets = [], onTicketClick = () => { } }) => {
-
+const RaffleTable: React.FC<Props> = ({ size, tickets = [], onTicketClick = () => { }, numberHighlight }) => {
     const [matrix, setMatrix] = useState<number[][]>([]);
     const [gridClass, setGridClass] = useState<string>('');
 
@@ -43,9 +43,10 @@ const RaffleTable: React.FC<Props> = ({ size, tickets = [], onTicketClick = () =
         <div style={{ aspectRatio: '1/1' }} className={`box-border grid ${gridClass} border w-full`}>
             {matrix.map(row => row.map((col, i) => {
                 const ticket = tickets.find(({ number }) => number === col);
+                const highlight = !!numberHighlight && numberHighlight === col;
 
                 return (
-                    <RaffleTableCell key={i} col={col} bought={!!ticket} drawn={ticket?.drawn || false} onClick={onTicketClick} />
+                    <RaffleTableCell key={i} col={col} bought={!!ticket} drawn={ticket?.drawn || false} highlight={highlight} onClick={onTicketClick} />
                 )
             }))}
         </div>

@@ -3,7 +3,11 @@ import { type Config } from "tailwindcss";
 export default {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        'ping-once': 'ping 1s linear backwards',
+      }
+    },
   },
   plugins: [require("daisyui")],
   daisyui: {

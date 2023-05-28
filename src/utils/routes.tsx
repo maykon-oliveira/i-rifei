@@ -20,19 +20,11 @@ export const rafflesRouter = {
     },
     overview: (raffleId: string) => {
         return { link: `/raffles/${raffleId}/overview`, label: '', icon: <IoEyeOutline /> }
-    }
-};
-
-export const drawsRouter = {
-    list: {
-        label: 'Sortear Rifa',
-        link: '/app/draws',
-        icon: <IoExtensionPuzzleOutline />
     },
     draw: (raffle: Raffle) => {
-        return { link: `/app/draws/${raffle.id}`, label: 'Sortear', icon: <IoExtensionPuzzleOutline /> }
+        return { link: `/app/raffles/${raffle.id}/draw`, label: 'Sortear', icon: <IoExtensionPuzzleOutline /> }
     }
-}
+};
 
 export const purchasesRouter = {
     list: {
@@ -42,6 +34,6 @@ export const purchasesRouter = {
     },
 }
 
-const routes: RouteItem[] = [rafflesRouter.list, drawsRouter.list, purchasesRouter.list]
+const routes: RouteItem[] = [rafflesRouter.list, purchasesRouter.list]
 
 export default routes;
