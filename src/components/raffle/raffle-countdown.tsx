@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { differenceInMilliseconds } from "date-fns";
+import { differenceInMilliseconds, isBefore } from "date-fns";
 
 type Props = {
     date: Date;
@@ -7,6 +7,7 @@ type Props = {
 
 const RaffleCountdown: React.FC<Props> = ({ date }) => {
     const [timeleft, setTimeleft] = useState(calculateTimeleft(date));
+    const shouldBeDrawn = isBefore(date, new Date());
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -22,25 +23,25 @@ const RaffleCountdown: React.FC<Props> = ({ date }) => {
     const seconds = timeleft.seconds.toString().padStart(2, '0');
 
     return <div className="grid grid-flow-col gap-5 text-center auto-cols-max">
-        <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
+        <div className={`flex flex-col p-2 rounded-box ${shouldBeDrawn ? 'bg-error text-error-content' : 'bg-neutral text-neutral-content'}`}>
             <span className="countdown font-mono text-4xl">
                 {days}
             </span>
             dias
         </div>
-        <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
+        <div className={`flex flex-col p-2 rounded-box ${shouldBeDrawn ? 'bg-error text-error-content' : 'bg-neutral text-neutral-content'}`}>
             <span className="countdown font-mono text-4xl">
                 {hours}
             </span>
             horas
         </div>
-        <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
+        <div className={`flex flex-col p-2 rounded-box ${shouldBeDrawn ? 'bg-error text-error-content' : 'bg-neutral text-neutral-content'}`}>
             <span className="countdown font-mono text-4xl">
                 {minutes}
             </span>
             min
         </div>
-        <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
+        <div className={`flex flex-col p-2 rounded-box ${shouldBeDrawn ? 'bg-error text-error-content' : 'bg-neutral text-neutral-content'}`}>
             <span className="countdown font-mono text-4xl">
                 {seconds}
             </span>

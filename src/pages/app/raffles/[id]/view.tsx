@@ -5,8 +5,9 @@ import RaffleCountdown from '~/components/raffle/raffle-countdown';
 import RaffleCard from '~/components/raffle/raffle-card';
 import { BreadcrumbsContext } from '~/utils/context/breadcrumbs';
 import { useContext, useEffect } from 'react';
-import { drawsRouter, rafflesRouter } from '~/utils/routes';
+import { rafflesRouter } from '~/utils/routes';
 import { CurrencyBRLFormatter } from '~/components/input/currency';
+import { isBefore } from 'date-fns';
 
 type BuyerWithTicket = { id: string, name: string | null, tickets: number[] };
 
@@ -19,7 +20,7 @@ const RaffleViewPage: NextPage = () => {
 
     useEffect(() => {
         if (!!raffle) {
-            const actions = raffle.drawn ? [] : [drawsRouter.draw(raffle)];
+            const actions = raffle.drawn ? [] : [rafflesRouter.draw(raffle)];
             setBreadcrumbs([rafflesRouter.list, rafflesRouter.view(raffle)], actions);
         }
     }, [raffle]);
@@ -46,11 +47,15 @@ const RaffleViewPage: NextPage = () => {
         return [...acc];
     }, []);
 
+    const shouldBeDrawn = isBefore(raffle.drawDate, new Date());
+
     return (
         <section className="flex flex-col m-auto">
             {!raffle.drawn && (
                 <div className="flex justify-center pb-10 flex-col items-center">
-                    <p className="text-base-content/70 text-sm mb-3">Cronômetro para o dia do sorteio</p>
+                    <p className="text-base-content/70 text-sm mb-3">
+                        {shouldBeDrawn ? 'A Rifa já deveria ter sido sorteada.' : 'Cronômetro para o dia do sorteio'}
+                    </p>
                     <RaffleCountdown date={raffle.drawDate} />
                 </div>
             )}
@@ -68,7 +73,7 @@ const RaffleViewPage: NextPage = () => {
                 </div>
                 <div className="flex flex-col">
                     <h2 className="text-lg text-center mb-3">Compradores</h2>
-                    {!buyers.length && (<h3 className="mt-3 text-sm">Sem rifas vendidas.</h3>)}
+                    {!buyers.length && (<h3 className="mt-3 text-sm">Sem números vendidas.</h3>)}
                     <div className="mx-auto w-full max-w-lg">
                         {buyers.map((user, i) => (
                             <div key={i} className={`p-3 border-b ${raffle.winnerId === user.id ? 'bg-base-300' : ''}`}>
