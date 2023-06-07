@@ -59,11 +59,13 @@ export const raffleRouter = createTRPCRouter({
         tickets: {
           select: {
             number: true,
-            drawn: true
+            drawn: true,
+            paymentConfirmed: true
           }
         }
       }
-    });
+      // Filter for tickets paid
+    }).then(raffles => raffles.map(({ tickets, ...raffle }) => ({ tickets: tickets.filter(({ paymentConfirmed }) => paymentConfirmed), ...raffle })));
   }),
 
   getMyRaffles: protectedProcedure.query(({ ctx }) => {
@@ -104,9 +106,9 @@ export const raffleRouter = createTRPCRouter({
             user: {
               select: {
                 id: true,
-                name: true
+                name: true,
               }
-            }
+            },
           }
         }
       }

@@ -8,18 +8,20 @@ import { useContext, useEffect } from 'react';
 import { rafflesRouter } from '~/utils/routes';
 import { CurrencyBRLFormatter } from '~/components/input/currency';
 import { isBefore } from 'date-fns';
+import { toast } from 'react-hot-toast';
 
-type BuyerWithTicket = { id: string, name: string | null, tickets: number[] };
+type BuyerWithTicket = { id: string, name: string | null, tickets: number[], paymentConfirmed: boolean };
 
 const RaffleViewPage: NextPage = () => {
     const { setBreadcrumbs } = useContext(BreadcrumbsContext);
     const router = useRouter()
-    const { data: raffle, error, isLoading } = api.raffle.allDetails.useQuery({
+    const { mutate: confirmPayment } = api.ticket.confirmPayment.useMutation();
+    const { data: raffle, error, isLoading, refetch } = api.raffle.allDetails.useQuery({
         id: router.query.id as string
     });
 
     useEffect(() => {
-        if (!!raffle) {
+        if (raffle) {
             const actions = raffle.drawn ? [] : [rafflesRouter.draw(raffle)];
             setBreadcrumbs([rafflesRouter.list, rafflesRouter.view(raffle)], actions);
         }
@@ -36,7 +38,8 @@ const RaffleViewPage: NextPage = () => {
         if (!user) {
             user = {
                 ...curr.user,
-                tickets: [curr.number]
+                tickets: [curr.number],
+                paymentConfirmed: curr.paymentConfirmed
             }
 
             return [user, ...acc];
@@ -46,6 +49,18 @@ const RaffleViewPage: NextPage = () => {
 
         return [...acc];
     }, []);
+
+    const onConfirmPayment = async (buyerWithTicket: BuyerWithTicket, value: boolean) => {
+        confirmPayment({ userId: buyerWithTicket.id, raffleId: raffle.id, value }, {
+            onSuccess(data) {
+                toast.success(data);
+                refetch();
+            },
+            onError(error) {
+                toast.error(error.message);
+            },
+        });
+    };
 
     const shouldBeDrawn = isBefore(raffle.drawDate, new Date());
 
@@ -76,11 +91,16 @@ const RaffleViewPage: NextPage = () => {
                     {!buyers.length && (<h3 className="mt-3 text-sm">Sem números vendidas.</h3>)}
                     <div className="mx-auto w-full max-w-lg">
                         {buyers.map((user, i) => (
-                            <div key={i} className={`p-3 border-b ${raffle.winnerId === user.id ? 'bg-base-300' : ''}`}>
-                                <div className="text-lg font-extrabold">{user.name}</div>
-                                <div className="flex text-sm">
-                                    <div className="flex-1 text-base-content/70">Números: {user.tickets.join(", ")}</div>
-                                    <div className="ml-2">Total: <CurrencyBRLFormatter displayType="text" value={raffle.price * user.tickets.length} /></div>
+                            <div key={i} className={`p-3 border-b flex justify-between ${raffle.winnerId === user.id ? 'bg-base-300' : ''}`}>
+                                <div className="flex items-center mr-3">
+                                    <input type="checkbox" className="toggle toggle-success tooltip" data-tip="Confirmar pagamento" onChange={(e) => onConfirmPayment(user, e.target.checked)} checked={user.paymentConfirmed} />
+                                </div>
+                                <div className="flex-1">
+                                    <div className="text-lg font-extrabold">{user.name}</div>
+                                    <div className="flex text-sm">
+                                        <div className="flex-1 text-base-content/70">Números: {user.tickets.join(", ")}</div>
+                                        <div className="ml-2">Total: <CurrencyBRLFormatter displayType="text" value={raffle.price * user.tickets.length} /></div>
+                                    </div>
                                 </div>
                             </div>
                         ))}

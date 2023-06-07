@@ -14,31 +14,35 @@ const DashboardLayout: React.FC<Props> = ({ children }) => {
     const router = useRouter();
 
     return (
-        <div className="drawer drawer-mobile">
+        <div className="drawer lg:drawer-open">
             <input id="drawer" type="checkbox" className="drawer-toggle" />
             <BreadcrumbsProvider>
-                <div className="drawer-content flex flex-col bg-base-100 overflow-x-hidden">
-                    <div className="sticky top-0 left-0 z-30 flex bg-opacity-90 backdrop-blur shadow-md bg-base-100">
+                <div className="drawer-content flex flex-col bg-base-100">
+                    <div className="sticky top-0 z-10 flex bg-opacity-90 backdrop-blur shadow-md bg-base-100">
                         <NavBar routes={routes} />
                     </div>
-                    <Breadcrumbs />
-                    <main className="px-6 xl:pr-2 pb-16">
-                        {children}
-                    </main>
+                    <div className="flex-1 overflow-y-auto pt-3 px-6  bg-base-200">
+                        <Breadcrumbs />
+                        <main className="card bg-base-100 p-6 mt-5">
+                            {children}
+                        </main>
+                    </div>
                 </div>
             </BreadcrumbsProvider>
-            <div className="drawer-side bg-base-200">
+            <div className="drawer-side z-50">
                 <label htmlFor="drawer" className="drawer-overlay"></label>
-                <ul className="menu p-4 w-64 xl:w-72">
-                    {routes.map((nav, i) => (
-                        <li key={i} className="hover-bordered my-1">
-                            <Link className={(router.asPath.startsWith(nav.link)) ? "active" : ''} href={nav.link}>
-                                {nav.icon}
-                                {nav.label}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
+                <aside className="bg-base-100 w-80 h-full">
+                    <ul className="menu menu-sm lg:menu-md px-4">
+                        {routes.map((nav, i) => (
+                            <li key={i} className="hover-bordered my-1">
+                                <Link className={(router.asPath.startsWith(nav.link)) ? "active" : ''} href={nav.link}>
+                                    {nav.icon}
+                                    {nav.label}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </aside>
             </div>
         </div>
     );

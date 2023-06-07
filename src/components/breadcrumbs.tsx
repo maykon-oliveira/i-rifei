@@ -9,7 +9,7 @@ const Breadcrumbs: React.FC<Props> = () => {
     const { paths, actions } = useContext(BreadcrumbsContext);
 
     return (
-        <div className="flex flex-row justify-between items-center px-6 py-4 xl:pr-2">
+        <div className="flex flex-row justify-between items-center">
             <div className="text-sm breadcrumbs">
                 <ul>
                     {paths.map((path, i) => {                        
@@ -20,10 +20,10 @@ const Breadcrumbs: React.FC<Props> = () => {
                     })}
                 </ul>
             </div>
-            <div className="grig gap-x-2">
+            <div className="grid gap-x-2 mr-5">
                 {actions.map((action, i) => (
                     <div key={i} className="tooltip tooltip-bottom" data-tip={action.label}>
-                        <a href={action.link} className="btn btn-primary">
+                        <a href={action.link} className="btn btn-sm md:btn-md btn-primary">
                             {action.icon}
                         </a>
                     </div>
