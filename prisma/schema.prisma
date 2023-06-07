@@ -43,13 +43,14 @@ model RaffleAward {
 }
 
 model Ticket {
-  id       String  @id @default(cuid())
-  number   Int
-  drawn    Boolean @default(false)
-  raffleId String
-  raffle   Raffle  @relation(fields: [raffleId], references: [id], onDelete: Cascade)
-  userId   String
-  user     User    @relation(fields: [userId], references: [id])
+  id               String  @id @default(cuid())
+  number           Int
+  drawn            Boolean @default(false)
+  paymentConfirmed Boolean @default(false)
+  raffleId         String
+  raffle           Raffle  @relation(fields: [raffleId], references: [id], onDelete: Cascade)
+  userId           String
+  user             User    @relation(fields: [userId], references: [id])
 }
 
 // Necessary for Next auth
@@ -82,7 +83,7 @@ model Session {
 model User {
   id            String    @id @default(cuid())
   name          String
-  email         String   @unique
+  email         String    @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]

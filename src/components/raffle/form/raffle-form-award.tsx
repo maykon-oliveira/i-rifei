@@ -30,8 +30,8 @@ const RaffleFormAward: React.FC<Props> = ({ form: { control, register, formState
                 </label>
                 {fields.map((field, i) => (
                     <span key={field.id}>
-                        <div className="input-group">
-                            <input autoFocus onKeyDown={onPressEnter(addNew)} {...register(`awards.${i}.name`, { required: true })} type="text" className={`input input-bordered w-full ${errors.awards?.[i] ? 'input-error' : 'input-primary'}`} />
+                        <div className="join w-full">
+                            <input autoFocus onKeyDown={onPressEnter(addNew)} {...register(`awards.${i}.name`, { required: true })} type="text" className={`input input-bordered w-full join-item ${errors.awards?.[i] ? 'input-error' : 'input-primary'}`} />
                             <AddOrDeleteButton
                                 index={i}
                                 size={fields.length - 1}
@@ -59,10 +59,10 @@ const AddOrDeleteButton: React.FC<{
 }> = ({ index, size, add, remove }) => {
     return (
         <>
-            {(index !== size) && <button onClick={remove} className="btn btn-square">
+            {(index !== size) && <button onClick={remove} className="btn btn-square join-item">
                 <IoTrashOutline />
             </button>}
-            {(index === size) && <button onClick={add} className="btn btn-square">
+            {(index === size) && <button onClick={add} className="btn btn-square join-item">
                 <IoAddOutline />
             </button>}
         </>

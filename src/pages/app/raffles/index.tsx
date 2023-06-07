@@ -41,7 +41,7 @@ const MyRafflesPage: NextPage = () => {
                         <th className="flex justify-center">Nº Vendidos</th>
                         <th>Data do Sorteio</th>
                         <th>Sorteado</th>
-                        <th className="text-center">Ações</th>
+                        <th className="text-center"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -60,15 +60,15 @@ const MyRafflesPage: NextPage = () => {
                                     </div>
                                 </td>
                                 <td>
-                                    <span className={`${!raffle.drawn && isBefore(raffle.drawDate, new Date()) && 'bg-error tooltip rounded px-2'}`} data-tip="Data do sorteio expirou">
+                                    <span className={`${!raffle.drawn && isBefore(raffle.drawDate, new Date()) && 'badge-error tooltip rounded px-2'}`} data-tip="Data do sorteio expirou">
                                         {format(raffle.drawDate, 'P p', { locale: ptBR })}
                                     </span>
                                 </td>
                                 <td><Drawn drawn={raffle.drawn} /></td>
                                 <td className="text-center">
                                     <div className="dropdown dropdown-hover dropdown-end">
-                                        <label tabIndex={0} className="btn m-1"><IoEllipsisVertical /></label>
-                                        <ul tabIndex={0} className="dropdown-content menu menu-compact p-2 shadow bg-base-100 rounded-box w-52">
+                                        <label tabIndex={0} className="btn btn-ghost m-1"><IoEllipsisVertical /></label>
+                                        <ul tabIndex={0} className="dropdown-content z-30 menu menu-compact p-2 shadow bg-base-100 rounded-box w-52">
                                             <li className="hover-bordered">
                                                 <a onClick={() => onClickDelete(raffle.id)} className="flex justify-between">
                                                     Deletar

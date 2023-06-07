@@ -1,3 +1,5 @@
+import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 import {
     createTRPCRouter,
     protectedProcedure,
@@ -24,5 +26,47 @@ export const ticketRouter = createTRPCRouter({
                 }
             }
         });
+    }),
+    confirmPayment: protectedProcedure.input(z.object({
+        userId: z.string(),
+        raffleId: z.string(),
+        value: z.boolean()
+    })).mutation(async ({ ctx, input }) => {
+        const tickets = await ctx.prisma.ticket.findMany({
+            where: {
+                userId: input.userId,
+                raffleId: input.raffleId,
+                paymentConfirmed: !input.value
+            },
+            include: {
+                raffle: {
+                    select: {
+                        ownerId: true
+                    }
+                }
+            }
+        });
+
+        if (tickets.length === 0) {
+            return 'Pagamento confirmado';
+        }
+
+        if (tickets[0]?.raffle.ownerId !== ctx.session.user.id) {
+            throw new TRPCError({
+                code: 'FORBIDDEN',
+                message: 'Você não o dono dessa rifa para confirmar o pagamento.'
+            })
+        }
+
+        await ctx.prisma.ticket.updateMany({
+            data: {
+                paymentConfirmed: input.value
+            }, where: {
+                userId: input.userId,
+                raffleId: input.raffleId
+            },
+        });
+
+        return 'Pagamento confirmado';
     }),
 });
