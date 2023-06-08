@@ -15,6 +15,8 @@ export const raffleRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       try {
         await ctx.prisma.$transaction(async (prisma) => {
+          console.log(ctx.session.user);
+          
           const ownerId = ctx.session.user.id;
           const { awards, drawDate, ...data } = input;
 
@@ -38,9 +40,10 @@ export const raffleRouter = createTRPCRouter({
           await Promise.all(awardsPromise);
         });
 
-      } catch (error) {
+      } catch (error: any) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
+          message: error.message
         })
       } finally {
         await ctx.prisma.$disconnect();
@@ -64,8 +67,7 @@ export const raffleRouter = createTRPCRouter({
           }
         }
       }
-      // Filter for tickets paid
-    }).then(raffles => raffles.map(({ tickets, ...raffle }) => ({ tickets: tickets.filter(({ paymentConfirmed }) => paymentConfirmed), ...raffle })));
+    });
   }),
 
   getMyRaffles: protectedProcedure.query(({ ctx }) => {

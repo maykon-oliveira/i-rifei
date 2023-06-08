@@ -6,7 +6,7 @@ import {
 } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "~/server/db";
-import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -46,25 +46,9 @@ export const authOptions: NextAuthOptions = {
   },
   adapter: PrismaAdapter(prisma),
   providers: [
-    CredentialsProvider({
-      name: 'Login',
-      credentials: {
-        username: { label: "Email", type: "email" },
-        password: { label: "Senha", type: "password" }
-      },
-      async authorize(credentials, req) {
-        if (!credentials) {
-          return null;
-        }
-
-        const user = await prisma.user.findFirst({
-          where: {
-            email: credentials?.username
-          }
-        });
-
-        return user;
-      }
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? ''
     })
     /**
      * ...add more providers here.
