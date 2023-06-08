@@ -46,7 +46,7 @@ const RaffleTable: React.FC<Props> = ({ size, tickets = [], onTicketClick = () =
                 const highlight = !!numberHighlight && numberHighlight === col;
 
                 return (
-                    <RaffleTableCell key={i} col={col} bought={!!ticket} drawn={ticket?.drawn || false} highlight={highlight} onClick={onTicketClick} />
+                    <RaffleTableCell key={col} col={col} bought={!!ticket} drawn={ticket?.drawn ?? false} highlight={highlight} onClick={onTicketClick} />
                 )
             }))}
         </div>

@@ -31,6 +31,10 @@ const RaffleArtboard: React.FC<Props> = ({ raffle, onTicketClick = () => { } }) 
     }, [raffle.drawDate]);
 
     const handleTicketClick = (ticket: number) => {
+        if (raffle.drawnStarted) {
+            return;
+        }
+
         if (!data) {
             toast.custom("Você precisa fazer login para comprar um número.")
             return;

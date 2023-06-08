@@ -15,24 +15,25 @@ datasource db {
 }
 
 model Raffle {
-  id          String        @id @default(cuid())
-  title       String
-  description String
-  price       Float
-  size        Int
-  drawDate    DateTime
-  drawn       Boolean       @default(false)
+  id           String        @id @default(cuid())
+  title        String
+  description  String
+  price        Float
+  size         Int
+  drawDate     DateTime
+  drawn        Boolean       @default(false)
+  drawnStarted Boolean       @default(false)
   // owner and winner
-  ownerId     String
-  owner       User          @relation("raffles", fields: [ownerId], references: [id])
-  winnerId    String?
-  winner      User?         @relation("rafflesWon", fields: [winnerId], references: [id])
+  ownerId      String
+  owner        User          @relation("raffles", fields: [ownerId], references: [id])
+  winnerId     String?
+  winner       User?         @relation("rafflesWon", fields: [winnerId], references: [id])
   // tickets
-  tickets     Ticket[]
-  awards      RaffleAward[]
+  tickets      Ticket[]
+  awards       RaffleAward[]
   // audit
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
 
 model RaffleAward {

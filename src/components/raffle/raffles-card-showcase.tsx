@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { api } from "~/utils/trpc";
 import { IoSadOutline } from "react-icons/io5";
 import { ModalContext } from "~/utils/context/modal";
-import RaffleBuyModal from "./raffle-buy-modal";
+import RaffleBuyModal from "../modal/raffle-buy-modal";
 import { Raffle } from "@prisma/client";
 import { toast } from "react-hot-toast";
 import RaffleArtboard from "./artboard/raffle-artboard";
