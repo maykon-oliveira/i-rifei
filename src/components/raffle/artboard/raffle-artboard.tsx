@@ -67,7 +67,7 @@ const RaffleArtboard: React.FC<Props> = ({ raffle, onTicketClick = () => { } }) 
                                 <h2 className="menu-title">Prêmios</h2>
                                 <ul className="overflow-y-auto max-h-24">
                                     {raffle.awards.map((award, i) => (
-                                        <li key={award.id} className="hover-bordered">
+                                        <li key={i} className="hover-bordered">
                                             <a className="hover:cursor-default">{i + 1}º - {award.name}</a>
                                         </li>
                                     ))}

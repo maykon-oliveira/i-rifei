@@ -47,10 +47,10 @@ const RaffleDrawPage: React.FC<Props> = () => {
         <div className="flex flex-col items-center">
             <div className="text-center">
                 <h4 className="font-bold">Instruções</h4>
-                <p className="text-sm">Ao clicar em Sortear, será escolhido aleatoriamente 10 números da rifa, o último será o sorteado.</p>
+                <p className="text-sm">Ao clicar em Sortear, será escolhido aleatoriamente 1 números da rifa.</p>
             </div>
 
-            <div className="max-w-lg mx-auto my-10">
+            <div className="w-96 mx-auto my-10">
                 <RaffleTable size={raffle?.size} tickets={raffle.tickets} numberHighlight={numbersHighlight} />
             </div>
 
