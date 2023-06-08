@@ -1,7 +1,10 @@
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+import RaffleDrawnConfirmationModal from "~/components/modal/raffle-drawn-confirmation-modal";
 import RaffleTable from "~/components/raffle/raffle-table";
 import { BreadcrumbsContext } from "~/utils/context/breadcrumbs";
+import { ModalContext } from "~/utils/context/modal";
 import { rafflesRouter } from "~/utils/routes";
 import { api } from "~/utils/trpc";
 
@@ -11,17 +14,17 @@ type Props = {
 
 const RaffleDrawPage: React.FC<Props> = () => {
     const { setBreadcrumbs } = useContext(BreadcrumbsContext);
-    const router = useRouter()
-    const { data: raffle, isLoading, error } = api.raffle.allDetails.useQuery({
+    const { openModal, isOpen: modalIsOpen } = useContext(ModalContext);
+    const router = useRouter();
+    const { data: raffle, isLoading, error, refetch } = api.raffle.allDetails.useQuery({
         id: router.query.id as string
     });
-    const { mutateAsync: startDrawn } = api.raffle.startDrawn.useMutation();
+    const { mutateAsync: startDrawn, isLoading: isDrawning } = api.raffle.startDrawn.useMutation();
     const [numbersHighlight, setNumbersHighlight] = useState(0);
     const [drawning, setDrawning] = useState(false);
-    const [winner, setWinner] = useState<{ id: string, name: string } | null>(null);
 
     useEffect(() => {
-        if (!!raffle) {
+        if (raffle) {
             setBreadcrumbs([rafflesRouter.list, rafflesRouter.view(raffle), rafflesRouter.draw(raffle)], []);
         }
     }, [raffle]);
@@ -32,21 +35,31 @@ const RaffleDrawPage: React.FC<Props> = () => {
 
     const onStartDrawn = async () => {
         setDrawning(true);
-        const { drawnNumbers, winner } = await startDrawn({ id: raffle.id });
 
-        for (const drawnNumber of drawnNumbers) {
-            setNumbersHighlight(drawnNumber);
-            await new Promise((resolve) => setTimeout(resolve, 500));
+        try {
+            const { drawnNumbers } = await startDrawn({ id: raffle.id });
+
+            for (const drawnNumber of drawnNumbers) {
+                setNumbersHighlight(drawnNumber);
+                await new Promise((resolve) => setTimeout(resolve, 500));
+            }
+
+            refetch();
+        } catch (error: any) {
+            toast.error(error.message);
         }
 
-        setWinner(winner);
         setDrawning(false);
-    }
+    };
+
+    const onDrawnConfirm = async () => {
+        openModal(<RaffleDrawnConfirmationModal raffle={raffle} />)
+    };
 
     return (
         <div className="flex flex-col items-center">
             <div className="text-center">
-                <h4 className="font-bold">Instruções</h4>
+                <h4 className="font-bold mb-2">Instruções</h4>
                 <p className="text-sm">Ao clicar em Sortear, será escolhido aleatoriamente 1 números da rifa.</p>
             </div>
 
@@ -54,17 +67,22 @@ const RaffleDrawPage: React.FC<Props> = () => {
                 <RaffleTable size={raffle?.size} tickets={raffle.tickets} numberHighlight={numbersHighlight} />
             </div>
 
-            {(!(drawning || winner)) && (
-                <button onClick={onStartDrawn} className="btn btn-primary btn-wide">Sortear</button>
+            {(!(drawning || raffle.winner)) && (
+                <button disabled={isDrawning} onClick={onStartDrawn} className="btn btn-primary btn-wide">Sortear</button>
             )}
 
-            {!!winner && (
-                <div className="hero">
+            {!!raffle.winner && (
+                <div className="hero border-2">
                     <div className="hero-content text-center">
-                        <div className="max-w-md">
+                        <div className="max-w-md flex flex-col">
                             <h3 className="text-3xl font-bold text-base-content/70">Temos um Ganhador!</h3>
-                            <h2 className="text-2xl py-10 font-bold">{winner.name}</h2>
-                            <button className="btn btn-primary">Confirmar</button>
+                            <h2 className="text-2xl py-5 font-bold">{raffle.winner.name}</h2>
+                            <div className="avatar justify-center pb-10">
+                                <div className="w-24 rounded-full">
+                                    <img src={raffle.winner.image ?? ''} referrerPolicy="no-referrer" />
+                                </div>
+                            </div>
+                            <button disabled={modalIsOpen} onClick={onDrawnConfirm} className="btn btn-primary">Confirmar</button>
                         </div>
                     </div>
                 </div>

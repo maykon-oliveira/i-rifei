@@ -33,7 +33,7 @@ const MyRafflesPage: NextPage = () => {
 
     return (
         <div className="sm:overflow-x-auto">
-            <table className="table table-zebra table-compact w-full">
+            <table className="table table-zebra table-compact w-full mb-64">
                 <thead>
                     <tr>
                         <th></th>
@@ -49,7 +49,7 @@ const MyRafflesPage: NextPage = () => {
                         const totalTickets = raffle.size * raffle.size;
 
                         return (
-                            <tr key={i}>
+                            <tr key={raffle.id}>
                                 <th>
                                     <ViewButton raffle={raffle} />
                                 </th>

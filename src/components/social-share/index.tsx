@@ -4,9 +4,10 @@ import SocialShareItem from './social-share-item';
 import { rafflesRouter } from '~/utils/routes';
 import { IoLinkOutline } from "react-icons/io5";
 import { toast } from 'react-hot-toast';
+import { Raffle } from '@prisma/client';
 
 type Props = {
-    raffle: any
+    raffle: Raffle
 }
 
 const SocialShare: React.FC<Props> = ({ raffle }) => {
@@ -38,7 +39,7 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                         Whatsapp
                         <WhatsappShareButton
                             url={url}
-                            title={raffle.description}
+                            title={raffle.title}
                             separator=":: "
                             ref={ref}
                         >
@@ -82,7 +83,7 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                         Email
                         <EmailShareButton
                             url={url}
-                            subject={raffle.name}
+                            subject={raffle.title}
                             body={raffle.description}
                             ref={ref}
                         >

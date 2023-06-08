@@ -15,8 +15,6 @@ export const raffleRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       try {
         await ctx.prisma.$transaction(async (prisma) => {
-          console.log(ctx.session.user);
-          
           const ownerId = ctx.session.user.id;
           const { awards, drawDate, ...data } = input;
 
@@ -55,7 +53,8 @@ export const raffleRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.raffle.findMany({
       where: {
-        drawn: false
+        drawn: false,
+        drawnStarted: false
       },
       include: {
         awards: true,
@@ -199,6 +198,13 @@ export const raffleRouter = createTRPCRouter({
       })
     }
 
+    if (raffle.drawnStarted) {
+      throw new TRPCError({
+        code: 'CONFLICT',
+        message: 'Não é possivel comprar números.'
+      })
+    }
+
     if (raffle.ownerId === ctx.session.user.id) {
       throw new TRPCError({
         code: 'CONFLICT',
@@ -274,6 +280,20 @@ export const raffleRouter = createTRPCRouter({
       }
     });
 
+    if (tickets.length === 0) {
+      throw new TRPCError({
+        code: 'CONFLICT',
+        message: 'Nenhum número foi vendido para iniciar o sorteio.'
+      });
+    };
+
+    if (tickets.some(({ paymentConfirmed }) => !paymentConfirmed)) {
+      throw new TRPCError({
+        code: 'CONFLICT',
+        message: 'Confirme o pagamento de todos os número antes de sortear.'
+      });
+    };
+
     const drawnNumbers: (Ticket & {
       user: User;
     })[] = [];
@@ -283,14 +303,68 @@ export const raffleRouter = createTRPCRouter({
       drawnNumbers.push(tickets[randomIndex]!!);
     }
 
-    const { id, name } = drawnNumbers[drawnNumbers.length - 1]?.user!!;
+    const drawNumber = drawnNumbers[drawnNumbers.length - 1]!!;
+
+    try {
+      await ctx.prisma.$transaction(async (prisma) => {
+        await prisma.raffle.update({
+          data: {
+            drawnStarted: true,
+            winnerId: drawNumber.userId
+          },
+          where: {
+            id: drawNumber.raffleId
+          }
+        });
+        await prisma.ticket.update({
+          data: {
+            drawn: true
+          },
+          where: {
+            id: drawNumber.id
+          }
+        });
+      });
+
+    } catch (error: any) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: error.message
+      })
+    } finally {
+      await ctx.prisma.$disconnect();
+    }
 
     return {
-      drawnNumbers: drawnNumbers.map(({ number }) => number),
-      winner: {
-        id, name
-      }
+      drawnNumbers: drawnNumbers.map(({ number }) => number)
     }
+  }),
+
+  drawnConfirm: protectedProcedure.input(z.object({
+    id: z.string()
+  })).mutation(async ({ ctx, input }) => {
+    const raffle = await ctx.prisma.raffle.findUniqueOrThrow({
+      where: {
+        id: input.id
+      }
+    });
+
+    if (ctx.session.user.id !== raffle.ownerId) {
+      throw new TRPCError({
+        code: 'FORBIDDEN'
+      });
+    }
+
+    await ctx.prisma.raffle.update({
+      data: {
+        drawn: true
+      },
+      where: {
+        id: raffle.id
+      },
+    });
+
+    return 'Sorteio confirmado';
   }),
 
 });
