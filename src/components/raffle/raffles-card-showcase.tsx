@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
-import RaffleCard from "./raffle-card";
 import { api } from "~/utils/trpc";
 import { IoSadOutline } from "react-icons/io5";
 import { ModalContext } from "~/utils/context/modal";
 import RaffleBuyModal from "./raffle-buy-modal";
 import { Raffle } from "@prisma/client";
 import { toast } from "react-hot-toast";
+import RaffleArtboard from "./artboard/raffle-artboard";
 
 type Props = {
 
@@ -51,8 +51,8 @@ const RaffleCardShowcase: React.FC<Props> = () => {
     }
 
     return (
-        <div className="grid xl:grid-cols-2 gap-10 pt-10">
-            {raffles?.map((raffle, i) => <RaffleCard key={i} raffle={raffle} onTicketClick={onTicketClick} />)}
+        <div className="grid grid-flow-row-dense grid-cols-1 gap-10 justify-center lg:grid-cols-2 xl:grid-cols-3">
+            {raffles?.map((raffle) => <div key={raffle.id} className="mx-auto"><RaffleArtboard raffle={raffle} onTicketClick={onTicketClick} /></div>)}
         </div>
     );
 }

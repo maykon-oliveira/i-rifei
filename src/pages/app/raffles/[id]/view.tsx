@@ -2,13 +2,13 @@ import { type NextPage } from 'next';
 import { api } from "~/utils/trpc";
 import { useRouter } from 'next/router';
 import RaffleCountdown from '~/components/raffle/raffle-countdown';
-import RaffleCard from '~/components/raffle/raffle-card';
 import { BreadcrumbsContext } from '~/utils/context/breadcrumbs';
 import { useContext, useEffect } from 'react';
 import { rafflesRouter } from '~/utils/routes';
 import { CurrencyBRLFormatter } from '~/components/input/currency';
 import { isBefore } from 'date-fns';
 import { toast } from 'react-hot-toast';
+import RaffleArtboard from '~/components/raffle/artboard/raffle-artboard';
 
 type BuyerWithTicket = { id: string, name: string | null, tickets: number[], paymentConfirmed: boolean };
 
@@ -84,7 +84,7 @@ const RaffleViewPage: NextPage = () => {
             )}
             <div className="grid lg:grid-cols-2 gap-10">
                 <div className="flex w-full max-w-lg mx-auto">
-                    <RaffleCard raffle={raffle} onTicketClick={() => { }} />
+                    <RaffleArtboard raffle={raffle} onTicketClick={() => { }} />
                 </div>
                 <div className="flex flex-col">
                     <h2 className="text-lg text-center mb-3">Compradores</h2>
@@ -93,7 +93,7 @@ const RaffleViewPage: NextPage = () => {
                         {buyers.map((user, i) => (
                             <div key={i} className={`p-3 border-b flex justify-between ${raffle.winnerId === user.id ? 'bg-base-300' : ''}`}>
                                 <div className="flex items-center mr-3">
-                                    <input type="checkbox" className="toggle toggle-success tooltip" data-tip="Confirmar pagamento" onChange={(e) => onConfirmPayment(user, e.target.checked)} checked={user.paymentConfirmed} />
+                                    <input type="checkbox" className="toggle toggle-success tooltip" data-tip="Confirmar pagamento" onChange={(e) => onConfirmPayment(user, e.target.checked)} checked={user.paymentConfirmed} disabled={raffle.drawn} />
                                 </div>
                                 <div className="flex-1">
                                     <div className="text-lg font-extrabold">{user.name}</div>

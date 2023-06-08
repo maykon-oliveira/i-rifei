@@ -1,4 +1,5 @@
 import { Raffle } from "@prisma/client";
+import { isBefore } from "date-fns";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
@@ -24,9 +25,11 @@ const RaffleOverviewPage: NextPageWithLayout = () => {
         return <h1>Carregando...</h1>
     }
 
+    const isExpired = isBefore(raffle.drawDate, new Date());
+
     const handleTicketClick = (ticket: number) => {
         if (!loggedUser) {
-            toast.custom("Você precisa fazer login para comprar um número")
+            toast.custom("Você precisa fazer login para comprar um número.")
             return;
         }
 
@@ -54,25 +57,40 @@ const RaffleOverviewPage: NextPageWithLayout = () => {
     }
 
     return (
-        <div className="hero min-h-screen bg-base-200">
+        <div className="hero min-h-screen">
             <div className="hero-content flex-col">
-                <div className="flex justify-center flex-col items-center">
-                    <p className="text-base-content/70 text-sm mb-3">Cronômetro para o dia do sorteio</p>
-                    <RaffleCountdown date={raffle.drawDate} />
-                </div>
+                {!raffle.drawn && (
+                    <div className="flex justify-center flex-col items-center">
+                        {!isExpired && (
+                            <>
+                                <p className="text-base-content/70 text-sm mb-3">Cronômetro para o dia do sorteio.</p>
+                                <RaffleCountdown date={raffle.drawDate} />
+                            </>
+                        )}
+                        {isExpired && <h1 className="text-lg text-warning">A rifa será sorteada em breve.</h1>}
+                    </div>
+                )}
+                {raffle.drawn && (
+                    <div className="flex justify-center pb-10 flex-col items-center">
+                        <h2 className="text-5xl">Rifa Sorteada</h2>
+                        <h3 className="my-5">
+                            <span className="font-semibold mr-1 text-base-content/70">Ganhador:</span> {raffle.winner?.name}
+                        </h3>
+                    </div>
+                )}
                 <div className="text-center">
                     <h1 className="text-5xl font-bold">{raffle.title}</h1>
                     <p className="py-6">{raffle.description}</p>
                 </div>
-                <div className="my-5 mb-10 shadow-xl">
+                <div className="my-5 mb-10 shadow-xl w-full max-w-lg">
                     <RaffleTable size={raffle.size} tickets={raffle.tickets} onTicketClick={handleTicketClick} />
                 </div>
                 <div className="flex flex-col w-full">
                     <h3 className="text-3xl text-center mb-3">Prêmios</h3>
-                    <ul className="list-decimal menu">
+                    <ul className="list-decimal menu menu-md">
                         {raffle.awards.map((award, i) => (
                             <li key={award.id} className="hover-bordered">
-                                <a className="cursor-default">{i + 1}. {award.name}</a>
+                                <a className="cursor-default">{i + 1}º {award.name}</a>
                             </li>
                         ))}
                     </ul>

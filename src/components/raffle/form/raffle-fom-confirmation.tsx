@@ -49,7 +49,7 @@ const RaffleFormConfirmation: React.FC<Props> = ({ form }) => {
     }
 
     function onSubmit(value: CreateRaffleInput) {
-        const drawDate = parse(value.drawDate, 'yyyy-MM-dd\'T\'hh:mm', new Date());
+        const drawDate = parse(value.drawDate, 'yyyy-MM-dd\'T\'HH:mm', new Date());
 
         mutate({ ...value, drawDate: formatISO(drawDate) }, {
             onSuccess(data) {

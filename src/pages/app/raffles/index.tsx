@@ -69,12 +69,14 @@ const MyRafflesPage: NextPage = () => {
                                     <div className="dropdown dropdown-hover dropdown-end">
                                         <label tabIndex={0} className="btn btn-ghost m-1"><IoEllipsisVertical /></label>
                                         <ul tabIndex={0} className="dropdown-content z-30 menu menu-compact p-2 shadow bg-base-100 rounded-box w-52">
-                                            <li className="hover-bordered">
-                                                <a onClick={() => onClickDelete(raffle.id)} className="flex justify-between">
-                                                    Deletar
-                                                    <IoTrashOutline />
-                                                </a>
-                                            </li>
+                                            {!raffle.drawn && (
+                                                <li className="hover-bordered">
+                                                    <a onClick={() => onClickDelete(raffle.id)} className="flex justify-between">
+                                                        Deletar
+                                                        <IoTrashOutline />
+                                                    </a>
+                                                </li>
+                                            )}
                                             <SocialShare raffle={raffle} />
                                         </ul>
                                     </div>
