@@ -49,10 +49,8 @@ const Notifications: React.FC<Props> = () => {
                         }}
                         {...toast.ariaProps}
                     >
-                        <div>
-                            {toast.icon}
-                            <span>{toast.message as any}</span>
-                        </div>
+                        {toast.icon}
+                        <span>{toast.message as any}</span>
                     </div>
                 );
             })}

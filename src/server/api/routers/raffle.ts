@@ -233,6 +233,7 @@ export const raffleRouter = createTRPCRouter({
       },
       include: {
         awards: true,
+        winner: true,
         tickets: {
           include: {
             user: {

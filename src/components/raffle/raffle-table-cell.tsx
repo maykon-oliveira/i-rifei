@@ -15,8 +15,8 @@ const RaffleTableCell: React.FC<Props> = ({ col, bought, drawn, onClick, highlig
 
     return (
         <div onClick={handleClick}
-            style={{ minWidth: '45px', aspectRatio: '1/1' }}
-            className={`box-border flex justify-center items-center border hover:bg-secondary ${bought ? 'bg-accent cursor-not-allowed' : 'hover:cursor-pointer'} ${(drawn || highlight) ? 'bg-error tooltip' : ''} ${highlight ? 'animate-ping-once' : ''}`}
+            style={{ aspectRatio: '1/1' }}
+            className={`box-border flex justify-center items-center border border-gray-300 ${bought ? 'bg-primary cursor-not-allowed' : 'bg-neutral hover:cursor-pointer hover:bg-neutral-400'} ${(drawn || highlight) ? 'bg-error tooltip' : ''} ${highlight ? 'animate-ping-once' : ''}`}
             data-tip="Número sorteado">
             {col}
         </div>

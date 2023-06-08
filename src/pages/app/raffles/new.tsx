@@ -5,11 +5,11 @@ import { CreateRaffleInput } from '~/server/schema/raffle';
 import RaffleForm from '~/components/raffle/form/raffle-form';
 import { IoTicketOutline } from 'react-icons/io5';
 import StepperProvider from '~/utils/context/stepper';
-import RaffleCard from '~/components/raffle/raffle-card';
 import { format } from "date-fns";
 import { BreadcrumbsContext } from '~/utils/context/breadcrumbs';
 import { useContext, useEffect } from 'react';
 import { rafflesRouter } from '~/utils/routes';
+import RaffleArtboard from '~/components/raffle/artboard/raffle-artboard';
 
 const RaffleNewPage: NextPage = () => {
     const { setBreadcrumbs } = useContext(BreadcrumbsContext);
@@ -47,7 +47,7 @@ const RaffleNewPage: NextPage = () => {
             </div>
             <div className="max-w-full mx-auto">
                 <h1 className="text-1xl font-thin text-center mb-5">Pre-visualização</h1>
-                <RaffleCard raffle={raffle as any} onTicketClick={() => { }} />
+                <RaffleArtboard raffle={raffle as any} onTicketClick={() => { }} />
             </div>
         </section>
     )
