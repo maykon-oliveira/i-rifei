@@ -21,8 +21,9 @@ model Raffle {
   price        Float
   size         Int
   drawDate     DateTime
+  published    Boolean       @default(false)
   drawn        Boolean       @default(false)
-  drawnStarted Boolean       @default(false)
+  realDrawDate DateTime?
   // owner and winner
   ownerId      String
   owner        User          @relation("raffles", fields: [ownerId], references: [id])

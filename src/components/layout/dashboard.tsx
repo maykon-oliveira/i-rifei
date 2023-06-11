@@ -32,6 +32,9 @@ const DashboardLayout: React.FC<Props> = ({ children }) => {
             <div className="drawer-side z-50">
                 <label htmlFor="drawer" className="drawer-overlay"></label>
                 <aside className="bg-base-100 w-80 h-full">
+                    <div className="px-4 pt-4">
+                        <Link href="/" className="btn btn-ghost normal-case text-xl w-full justify-start">I-Rifei</Link>
+                    </div>
                     <ul className="menu menu-sm lg:menu-md px-4">
                         {routes.map((nav, i) => (
                             <li key={i} className="hover-bordered my-1">

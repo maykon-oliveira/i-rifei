@@ -34,11 +34,16 @@ const NavBar: React.FC<Props> = ({ routes }) => {
                 <div className="dropdown dropdown-end">
                     <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                         <div className="w-10 rounded-full">
-                            <img src={sessionData?.user.image || ''} referrerPolicy="no-referrer" />
+                            <img src={sessionData?.user.image ?? ''} referrerPolicy="no-referrer" />
                         </div>
                     </label>
                     <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-                        <li><a onClick={() => void signOut({ callbackUrl: '/' })}>Sair</a></li>
+                        <li>
+                            <a onClick={() => void signOut({ callbackUrl: '/' })}>
+                                <IoLogOutOutline/>
+                                Sair
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

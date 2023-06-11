@@ -54,7 +54,6 @@ export const raffleRouter = createTRPCRouter({
     return ctx.prisma.raffle.findMany({
       where: {
         drawn: false,
-        drawnStarted: false
       },
       include: {
         awards: true,
@@ -198,7 +197,7 @@ export const raffleRouter = createTRPCRouter({
       })
     }
 
-    if (raffle.drawnStarted) {
+    if (raffle.drawn) {
       throw new TRPCError({
         code: 'CONFLICT',
         message: 'Não é possivel comprar números.'
@@ -223,7 +222,7 @@ export const raffleRouter = createTRPCRouter({
         }
       });
 
-      return "Número comprado";
+      return "Número comprado.";
     }
 
     throw new TRPCError({
@@ -295,26 +294,27 @@ export const raffleRouter = createTRPCRouter({
       });
     }
 
-    const drawnNumbers: (Ticket & {
+    const drawnTickets: (Ticket & {
       user: User;
     })[] = [];
 
     for (let time = 0; time < 10; time++) {
       const randomIndex = Math.floor(Math.random() * tickets.length);
-      drawnNumbers.push(tickets[randomIndex]!);
+      drawnTickets.push(tickets[randomIndex]!);
     }
 
-    const drawNumber = drawnNumbers[drawnNumbers.length - 1]!;
+    const ticketDrawn = drawnTickets[drawnTickets.length - 1]!;
 
     try {
       await ctx.prisma.$transaction(async (prisma) => {
         await prisma.raffle.update({
           data: {
-            drawnStarted: true,
-            winnerId: drawNumber.userId
+            drawn: true,
+            winnerId: ticketDrawn.userId,
+            realDrawDate: new Date()
           },
           where: {
-            id: drawNumber.raffleId
+            id: ticketDrawn.raffleId
           }
         });
         await prisma.ticket.update({
@@ -322,7 +322,7 @@ export const raffleRouter = createTRPCRouter({
             drawn: true
           },
           where: {
-            id: drawNumber.id
+            id: ticketDrawn.id
           }
         });
       });
@@ -337,7 +337,7 @@ export const raffleRouter = createTRPCRouter({
     }
 
     return {
-      drawnNumbers: drawnNumbers.map(({ number }) => number)
+      drawnTickets: drawnTickets.map(({ number }) => number)
     }
   }),
 
@@ -358,7 +358,7 @@ export const raffleRouter = createTRPCRouter({
 
     await ctx.prisma.raffle.update({
       data: {
-        drawn: true
+        published: true,
       },
       where: {
         id: raffle.id
