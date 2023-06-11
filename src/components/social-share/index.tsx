@@ -1,3 +1,5 @@
+"use client";
+
 import { WhatsappShareButton, WhatsappIcon, FacebookShareButton, FacebookIcon, TwitterShareButton, TwitterIcon, EmailShareButton, EmailIcon } from 'next-share';
 import React from "react";
 import SocialShareItem from './social-share-item';
@@ -33,21 +35,21 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                 <a onClick={onCopyLinkClick} className="justify-between">Copiar Link <IoLinkOutline /></a>
             </li>
             <li className="hover-bordered">
-                <SocialShareItem render={(ref => (
+                <SocialShareItem render={ref => (
                     <a onClick={() => ref.current?.click()} className="flex justify-between">
                         Whatsapp
-                        {/* <WhatsappShareButton
+                        <WhatsappShareButton
                             url={url}
                             title={raffle.title}
                             separator=":: "
-                            // ref={ref}
-                        > */}
-                        {/* <WhatsappIcon size={20} round /> */}
-                        {/* </WhatsappShareButton> */}
+                            ref={ref}
+                        >
+                            {/* <WhatsappIcon size={20} round /> */}
+                        </WhatsappShareButton>
                     </a>
-                ))} />
+                )} />
             </li>
-            {/* <li className="hover-bordered">
+            <li className="hover-bordered">
                 <SocialShareItem render={(ref) => (
                     <a onClick={() => ref.current?.click()} className="flex justify-between">
                         Facebook
@@ -57,7 +59,7 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                             hashtag='#irifei'
                             ref={ref}
                         >
-                            <FacebookIcon size={20} round />
+                            {/* <FacebookIcon size={20} round /> */}
                         </FacebookShareButton>
                     </a>
                 )} />
@@ -71,7 +73,7 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                             title={raffle.description}
                             ref={ref}
                         >
-                            <TwitterIcon size={20} round />
+                            {/* <TwitterIcon size={20} round /> */}
                         </TwitterShareButton>
                     </a>
                 )} />
@@ -86,11 +88,11 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                             body={raffle.description}
                             ref={ref}
                         >
-                            <EmailIcon size={20} round />
+                            {/* <EmailIcon size={20} round /> */}
                         </EmailShareButton>
                     </a>
                 )} />
-            </li> */}
+            </li>
         </>
     )
 };

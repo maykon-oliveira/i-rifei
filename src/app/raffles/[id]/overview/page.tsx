@@ -5,6 +5,8 @@ import { helpers } from "~/server/api/helpers";
 import { isBefore } from "date-fns";
 import OverviewTable from "./overview-table";
 import dynamic from "next/dynamic";
+import { IoShareSocialOutline } from "react-icons/io5";
+import SocialShare from "~/components/social-share";
 
 const RaffleCountdown = dynamic(
     () => import('~/components/raffle/raffle-countdown'),
@@ -40,7 +42,7 @@ export default async function Page({ params }: Props) {
 
     const isExpired = isBefore(raffle.drawDate, new Date());
 
-    if (raffle.drawnStarted && !raffle.drawn) {
+    if (raffle.drawn && !raffle.published) {
         return (
             <div className="hero my-auto">
                 <div className="hero-content text-center -mt-32">
@@ -57,14 +59,14 @@ export default async function Page({ params }: Props) {
         <div className="hero min-h-full">
             <div className="hero-content flex-col relative m-0 sm:mt-5 w-full sm:w-auto">
                 <div className="absolute top-0 right-0 mr-2">
-                    {/* <div className="dropdown dropdown-hover dropdown-end w-full">
+                    <div className="dropdown dropdown-hover dropdown-end w-full">
                         <label tabIndex={0} className="btn btn-outline btn-circle m-1 btn-block px-3">
                             <IoShareSocialOutline />
                         </label>
                         <ul tabIndex={0} className="dropdown-content z-30 menu menu-compact p-2 shadow bg-base-100 rounded-box w-52">
                             <SocialShare raffle={raffle} />
                         </ul>
-                    </div> */}
+                    </div>
                 </div>
                 {!raffle.drawn && (
                     <div className="flex justify-center flex-col items-center">

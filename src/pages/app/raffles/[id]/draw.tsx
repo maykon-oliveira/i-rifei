@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -38,10 +37,10 @@ const RaffleDrawPage: React.FC<Props> = () => {
         setDrawning(true);
 
         try {
-            const { drawnNumbers } = await startDrawn({ id: raffle.id });
+            const { drawnTickets } = await startDrawn({ id: raffle.id });
 
-            for (const drawnNumber of drawnNumbers) {
-                setNumbersHighlight(drawnNumber);
+            for (const drawnTicket of drawnTickets) {
+                setNumbersHighlight(drawnTicket);
                 await new Promise((resolve) => setTimeout(resolve, 500));
             }
 
@@ -80,7 +79,7 @@ const RaffleDrawPage: React.FC<Props> = () => {
                             <h2 className="text-2xl py-5 font-bold">{raffle.winner.name}</h2>
                             <div className="avatar justify-center pb-10">
                                 <div className="w-24 rounded-full">
-                                    <Image alt={raffle.winner.name} src={raffle.winner.image ?? ''} referrerPolicy="no-referrer" />
+                                    <img alt={raffle.winner.name} src={raffle.winner.image ?? ''} referrerPolicy="no-referrer" />
                                 </div>
                             </div>
                             <button disabled={modalIsOpen} onClick={onDrawnConfirm} className="btn btn-primary">Confirmar</button>

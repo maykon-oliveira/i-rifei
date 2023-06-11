@@ -6,7 +6,6 @@ import { ModalContext } from "~/utils/context/modal";
 import { rafflesRouter } from "~/utils/routes";
 import { api } from "~/utils/trpc";
 import { IoCloseCircleOutline } from "react-icons/io5";
-import Image from "next/image";
 
 type Props = {
     raffle: Raffle & {
@@ -47,7 +46,7 @@ const RaffleDrawnConfirmationModal: React.FC<Props> = ({ raffle }) => {
                     <h2 className="text-2xl py-5 font-bold">{raffle.winner?.name}</h2>
                     <div className="avatar justify-center pb-10">
                         <div className="w-24 rounded-full">
-                            <Image alt="" src={raffle.winner?.image ?? ''} referrerPolicy="no-referrer" />
+                            <img alt={raffle.winner?.image ?? ''} src={raffle.winner?.image ?? ''} referrerPolicy="no-referrer" />
                         </div>
                     </div>
                     <button disabled={isConfirming} onClick={handleOnConfirm} className="btn btn-primary">Confirmar</button>

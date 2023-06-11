@@ -23,7 +23,7 @@ const RaffleViewPage: NextPage = () => {
 
     useEffect(() => {
         if (raffle) {
-            const actions = raffle.drawn ? [] : [rafflesRouter.draw(raffle)];
+            const actions = raffle.published ? [] : [rafflesRouter.draw(raffle)];
             setBreadcrumbs([rafflesRouter.list, rafflesRouter.view(raffle)], actions);
         }
     }, [raffle]);
@@ -70,7 +70,7 @@ const RaffleViewPage: NextPage = () => {
 
     return (
         <section className="flex flex-col m-auto">
-            {!raffle.drawnStarted && (
+            {!raffle.drawn && (
                 <div className="flex justify-center pb-10 flex-col items-center">
                     <p className="text-base-content/70 text-sm mb-3">
                         {shouldBeDrawn ? 'A Rifa já deveria ter sido sorteada.' : 'Cronômetro para o dia do sorteio'}
@@ -78,13 +78,13 @@ const RaffleViewPage: NextPage = () => {
                     <RaffleCountdown date={raffle.drawDate} />
                 </div>
             )}
-            {raffle.drawnStarted && (
+            {raffle.drawn && (
                 <div className="flex justify-center pb-10 flex-col items-center">
                     <h2 className="text-5xl">Rifa Sorteada</h2>
                     <h3 className="my-5">
                         <span className="font-semibold mr-1 text-base-content/70">Ganhador:</span> {raffle.winner?.name}
                     </h3>
-                    {!raffle.drawn && <p className="text-sm text-warning">Aguardando confirmação para publicar o resultado. <Link href={`/app/raffles/${raffle.id}/draw`} className="underline">Vá para a página de sorteio.</Link></p>}
+                    {!raffle.published && <p className="text-sm text-warning">Aguardando confirmação para publicar o resultado. <Link href={`/app/raffles/${raffle.id}/draw`} className="underline">Vá para a página de sorteio.</Link></p>}
                 </div>
             )}
             <div className="grid lg:grid-cols-2 gap-10">
@@ -98,7 +98,7 @@ const RaffleViewPage: NextPage = () => {
                         {buyers.map((user, i) => (
                             <div key={i} className={`p-3 border-b flex justify-between ${raffle.winnerId === user.id ? 'bg-success' : ''}`}>
                                 <div className="flex items-center mr-3">
-                                    <input type="checkbox" className={`toggle toggle-success ${user.paymentConfirmed ? '' : 'tooltip'}`} data-tip="Confirmar pagamento" onChange={(e) => onConfirmPayment(user, e.target.checked)} checked={user.paymentConfirmed} disabled={raffle.drawnStarted} />
+                                    <input type="checkbox" className={`toggle toggle-success ${user.paymentConfirmed ? '' : 'tooltip'}`} data-tip="Confirmar pagamento" onChange={(e) => onConfirmPayment(user, e.target.checked)} checked={user.paymentConfirmed} disabled={raffle.drawn} />
                                 </div>
                                 <div className="flex-1">
                                     <div className="text-lg font-extrabold">{user.name}</div>
