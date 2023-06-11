@@ -6,7 +6,7 @@ import { api } from "~/utils/trpc";
 
 import "~/styles/globals.css";
 import { ModalProvider } from "~/utils/context/modal";
-import { type NextPageWithLayout } from "~/utils";
+import { type NextPageWithLayout } from "~/utils/a-index";
 import DashboardLayout from "~/components/layout/dashboard";
 import { IconContext } from "react-icons";
 import Notifications from "~/components/notifications";
