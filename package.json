@@ -6,7 +6,7 @@
     "build": "next build",
     "dev": "next dev",
     "postinstall": "prisma generate",
-    "lint": "next lint",
+    "lint": "next lint --fix",
     "start": "next start"
   },
   "dependencies": {
@@ -21,7 +21,7 @@
     "@trpc/server": "^10.18.0",
     "daisyui": "^3.0.4",
     "date-fns": "^2.30.0",
-    "next": "^13.2.4",
+    "next": "^13.4.5-canary.9",
     "next-auth": "^4.21.0",
     "next-share": "^0.20.0",
     "react": "18.2.0",
@@ -34,6 +34,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^4.29.9",
     "@types/eslint": "^8.21.3",
     "@types/node": "^18.15.5",
     "@types/prettier": "^2.7.2",

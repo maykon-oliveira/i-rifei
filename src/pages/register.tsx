@@ -3,15 +3,15 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { api } from "~/utils/trpc";
-import { CreateUserInput } from '~/server/schema/user'
+import { type CreateUserInput } from '~/server/schema/user'
 
 const Register: NextPage = () => {
     const router = useRouter()
     const { handleSubmit, register } = useForm<CreateUserInput>()
 
     const { mutate, error } = api.user.register.useMutation({
-        onSuccess: () => {
-            router.push('/login')
+        onSuccess: async () => {
+            await router.push('/login');
         },
     })
 
@@ -22,7 +22,7 @@ const Register: NextPage = () => {
     return (
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
-                {error && error.message}
+                {error?.message}
                 <h1>Registrar</h1>
 
                 <input

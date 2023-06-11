@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
-import { SubmitErrorHandler, UseFormReturn, FieldErrors } from "react-hook-form";
+import { type SubmitErrorHandler, type UseFormReturn, type FieldErrors } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { CreateRaffleInput } from "~/server/schema/raffle";
+import { type CreateRaffleInput } from "~/server/schema/raffle";
 import { StepperContext } from "~/utils/context/stepper";
 import { api } from "~/utils/trpc";
 import { parse, formatISO } from "date-fns";
@@ -52,9 +52,9 @@ const RaffleFormConfirmation: React.FC<Props> = ({ form }) => {
         const drawDate = parse(value.drawDate, 'yyyy-MM-dd\'T\'HH:mm', new Date());
 
         mutate({ ...value, drawDate: formatISO(drawDate) }, {
-            onSuccess(data) {
+            async onSuccess(data) {
                 toast.success(data);
-                router.push('/app/raffles');
+                await router.push('/app/raffles');
             },
             onError(error) {
                 toast.error(error.message);

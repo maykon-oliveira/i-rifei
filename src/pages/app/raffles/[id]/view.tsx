@@ -46,16 +46,19 @@ const RaffleViewPage: NextPage = () => {
             return [user, ...acc];
         } else {
             user.tickets.push(curr.number);
+            if (!curr.paymentConfirmed) {
+                user.paymentConfirmed = false;
+            }
         }
 
         return [...acc];
     }, []);
 
-    const onConfirmPayment = async (buyerWithTicket: BuyerWithTicket, value: boolean) => {
+    const onConfirmPayment = (buyerWithTicket: BuyerWithTicket, value: boolean) => {
         confirmPayment({ userId: buyerWithTicket.id, raffleId: raffle.id, value }, {
-            onSuccess(data) {
+            async onSuccess(data) {
                 toast.success(data);
-                refetch();
+                await refetch();
             },
             onError(error) {
                 toast.error(error.message);
@@ -86,7 +89,7 @@ const RaffleViewPage: NextPage = () => {
             )}
             <div className="grid lg:grid-cols-2 gap-10">
                 <div className="flex w-full max-w-lg mx-auto">
-                    <RaffleArtboard raffle={raffle} onTicketClick={() => { }} />
+                    <RaffleArtboard raffle={raffle} />
                 </div>
                 <div className="flex flex-col">
                     <h2 className="text-lg text-center mb-3">Compradores</h2>

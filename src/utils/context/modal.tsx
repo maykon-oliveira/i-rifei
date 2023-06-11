@@ -1,4 +1,4 @@
-import React, { ReactNode, createContext } from "react";
+import React, { type ReactNode, createContext } from "react";
 import ModalContainer from "~/components/modal/modal-container";
 import useModal from "../hook/use-modal";
 
@@ -11,8 +11,12 @@ type ModalContext = {
 
 export const ModalContext = createContext<ModalContext>({
     isOpen: false,
-    openModal: (content) => { },
-    closeModal: () => { },
+    openModal: (_) => {
+        // pass
+    },
+    closeModal: () => {
+        // pass
+    },
     modalContent: ''
 });
 

@@ -47,7 +47,7 @@ const RaffleNewPage: NextPage = () => {
             </div>
             <div className="max-w-full mx-auto">
                 <h1 className="text-1xl font-thin text-center mb-5">Pre-visualização</h1>
-                <RaffleArtboard raffle={raffle as any} onTicketClick={() => { }} />
+                <RaffleArtboard raffle={raffle as any} />
             </div>
         </section>
     )

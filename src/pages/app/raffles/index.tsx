@@ -9,7 +9,8 @@ import { format, isBefore } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { BreadcrumbsContext } from '~/utils/context/breadcrumbs';
 import { rafflesRouter } from '~/utils/routes';
-import { Raffle } from '@prisma/client';
+import { type Raffle } from '@prisma/client';
+import Drawn from '~/components/drawn';
 
 const MyRafflesPage: NextPage = () => {
     const { setBreadcrumbs } = useContext(BreadcrumbsContext);
@@ -21,9 +22,9 @@ const MyRafflesPage: NextPage = () => {
 
     const onClickDelete = (id: string) => {
         mutate({ id }, {
-            onSuccess(data) {
+            async onSuccess(data) {
                 toast.success(data);
-                refetch();
+                await refetch();
             },
             onError(error) {
                 toast.error(error.message);
@@ -45,7 +46,7 @@ const MyRafflesPage: NextPage = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data?.map((raffle, i) => {
+                    {data?.map((raffle) => {
                         const totalTickets = raffle.size * raffle.size;
 
                         return (
@@ -56,11 +57,11 @@ const MyRafflesPage: NextPage = () => {
                                 <td>{raffle.title}</td>
                                 <td>
                                     <div className="flex justify-center">
-                                        <div className={`badge rounded ${raffle.tickets?.length === totalTickets && 'badge-success tooltip'}`} data-tip="Todos os números vendidos">{raffle.tickets?.length}/{totalTickets}</div>
+                                        <div className={`badge rounded ${raffle.tickets?.length === totalTickets ? 'badge-success tooltip' : ''}`} data-tip="Todos os números vendidos">{raffle.tickets?.length}/{totalTickets}</div>
                                     </div>
                                 </td>
                                 <td>
-                                    <span className={`${!raffle.drawn && isBefore(raffle.drawDate, new Date()) && 'badge-error tooltip rounded px-2'}`} data-tip="Data do sorteio expirou">
+                                    <span className={`${!raffle.drawn && isBefore(raffle.drawDate, new Date()) ? 'badge-error tooltip rounded px-2' : ''}`} data-tip="Data do sorteio expirou">
                                         {format(raffle.drawDate, 'P p', { locale: ptBR })}
                                     </span>
                                 </td>
@@ -91,12 +92,6 @@ const MyRafflesPage: NextPage = () => {
 }
 
 export default MyRafflesPage;
-
-const Drawn: React.FC<{ drawn: boolean }> = ({ drawn }) => (
-    <div className={`badge ${drawn ? 'badge-success' : 'badge-error'} gap-2`}>
-        {drawn ? 'Sim' : 'Não'}
-    </div>
-);
 
 const ViewButton: React.FC<{ raffle: Raffle }> = ({ raffle }) => {
     const routeItem = rafflesRouter.view(raffle);

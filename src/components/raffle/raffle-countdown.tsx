@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { differenceInMilliseconds, isBefore } from "date-fns";
 

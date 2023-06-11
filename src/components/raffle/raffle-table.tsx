@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import RaffleTableCell from "./raffle-table-cell";
 
@@ -23,25 +25,23 @@ const gridVariants = {
     '10': 'grid-cols-10',
 }
 
-const RaffleTable: React.FC<Props> = ({ size, tickets = [], onTicketClick = () => { }, numberHighlight }) => {
-    const [matrix, setMatrix] = useState<number[][]>([]);
-    const [gridClass, setGridClass] = useState<string>('');
+const RaffleTable: React.FC<Props> = ({ size, tickets = [], onTicketClick = () => {}, numberHighlight }) => {
+    const [matrix, setMatrix] = useState<number[][]>(createMatrix(size));
+    const [gridClass, setGridClass] = useState<string>(gridVariants[matrix.length.toString() as Key0to10]);
 
     useEffect(() => {
         setMatrix(createMatrix(size));
-    }, [size])
 
-    useEffect(() => {
         if (10 > matrix.length && matrix.length < 2) {
             return;
         }
-
-        setGridClass(gridVariants[matrix.length.toString() as Key0to10])
-    }, [matrix]);
+    
+        setGridClass(gridVariants[matrix.length.toString() as Key0to10]);
+    }, [size]);
 
     return (
         <div className={`box-border grid ${gridClass} border border-gray-300 box-border w-full`}>
-            {matrix.map(row => row.map((col, i) => {
+            {matrix.map(row => row.map((col) => {
                 const ticket = tickets.find(({ number }) => number === col);
                 const highlight = !!numberHighlight && numberHighlight === col;
 

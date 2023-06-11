@@ -1,24 +1,25 @@
+import Link from "next/link";
 import { IoArrowForwardOutline, IoTicketOutline } from "react-icons/io5";
 import LandpageLayout from "~/components/layout/landpage";
 
 import RaffleCardShowcase from "~/components/raffle/raffles-card-showcase";
-import { NextPageWithLayout } from "~/utils";
+import { type NextPageWithLayout } from "~/utils";
 
 const Home: NextPageWithLayout = () => {
   return (
     <>
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content flex-col lg:flex-row">
-          <img src="/index-hero.jpg" className="w-auto md:max-w-md rounded-lg shadow-2xl" />
+          <img alt="" src="/index-hero.jpg" className="w-auto md:max-w-md rounded-lg shadow-2xl" />
           <div>
             <h1 className="text-3xl font-bold">Bem-vindo ao nosso Web App de Sorteios!</h1>
             <div className="py-6">
               Participe da emoção e da expectativa de ganhar prêmios incríveis com nossa inovadora plataforma de sorteios. Nosso aplicativo web oferece uma forma fácil e agradável para os usuários criarem, participarem e compartilharem sorteios. Seja um entusiasta de sorteios ou um jogador de primeira viagem, temos algo emocionante reservado para você.
             </div>
-            <a href="/app/raffles/new" className="btn btn-primary">
+            <Link href="/app/raffles/new" className="btn btn-primary">
               CRIAR
               <IoArrowForwardOutline />
-            </a>
+            </Link>
           </div>
         </div>
       </div>

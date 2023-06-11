@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import RaffleTable from "../raffle-table";
-import { Raffle, RaffleAward } from "@prisma/client";
+import { type Raffle, type RaffleAward } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import { CurrencyBRLFormatter } from "~/components/input/currency";
@@ -49,7 +49,7 @@ const RaffleArtboard: React.FC<Props> = ({ raffle, onTicketClick = () => { } }) 
     }
 
     return (
-        <div className="artboard phone-3 bg-neutral rounded-md p-3 pb-5 flex flex-col shadow-md">
+        <div className="artboard phone-2 bg-neutral rounded-md p-3 pb-5 flex flex-col shadow-md">
             <div className="flex flex-1 flex-col">
                 <h2 className="text-2xl text-center font-extrabold break-words my-3">{raffle.title}</h2>
                 <div className="flex justify-between mb-3 items-center">
