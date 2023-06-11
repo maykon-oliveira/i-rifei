@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import NavBar from "./navbar";
 import Link from "next/link";
 import BreadcrumbsProvider from "~/utils/context/breadcrumbs";

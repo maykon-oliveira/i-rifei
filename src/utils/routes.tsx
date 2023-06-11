@@ -1,5 +1,5 @@
-import { Raffle } from '@prisma/client';
-import { ReactNode } from 'react';
+import { type Raffle } from '@prisma/client';
+import { type ReactNode } from 'react';
 import { IoBagOutline, IoCreateOutline, IoExtensionPuzzleOutline, IoEyeOutline, IoTicketOutline } from 'react-icons/io5';
 
 export type RouteItem = {

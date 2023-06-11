@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -44,7 +45,7 @@ const RaffleDrawPage: React.FC<Props> = () => {
                 await new Promise((resolve) => setTimeout(resolve, 500));
             }
 
-            refetch();
+            await refetch();
         } catch (error: any) {
             toast.error(error.message);
         }
@@ -52,7 +53,7 @@ const RaffleDrawPage: React.FC<Props> = () => {
         setDrawning(false);
     };
 
-    const onDrawnConfirm = async () => {
+    const onDrawnConfirm = () => {
         openModal(<RaffleDrawnConfirmationModal raffle={raffle} />)
     };
 
@@ -60,7 +61,7 @@ const RaffleDrawPage: React.FC<Props> = () => {
         <div className="flex flex-col items-center">
             <div className="text-center">
                 <h4 className="font-bold mb-2">Instruções</h4>
-                <p className="text-sm">Ao clicar em Sortear, será escolhido aleatoriamente 1 números da rifa.</p>
+                <p className="text-sm">Ao clicar em Sortear, será escolhido aleatoriamente 1 número comprado da rifa.</p>
             </div>
 
             <div className="w-96 mx-auto my-10">
@@ -79,7 +80,7 @@ const RaffleDrawPage: React.FC<Props> = () => {
                             <h2 className="text-2xl py-5 font-bold">{raffle.winner.name}</h2>
                             <div className="avatar justify-center pb-10">
                                 <div className="w-24 rounded-full">
-                                    <img src={raffle.winner.image ?? ''} referrerPolicy="no-referrer" />
+                                    <Image alt={raffle.winner.name} src={raffle.winner.image ?? ''} referrerPolicy="no-referrer" />
                                 </div>
                             </div>
                             <button disabled={modalIsOpen} onClick={onDrawnConfirm} className="btn btn-primary">Confirmar</button>

@@ -4,7 +4,7 @@ import SocialShareItem from './social-share-item';
 import { rafflesRouter } from '~/utils/routes';
 import { IoLinkOutline } from "react-icons/io5";
 import { toast } from 'react-hot-toast';
-import { Raffle } from '@prisma/client';
+import { type Raffle } from '@prisma/client';
 
 type Props = {
     raffle: Raffle
@@ -21,8 +21,7 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
     const url = `${baseurl}${routeItem.link}`;
 
     const onCopyLinkClick = () => {
-        navigator.clipboard.writeText(url);
-        toast.custom('Link copiado!');
+        navigator.clipboard.writeText(url).then(() => toast.custom('Link copiado!'));
     }
 
     return (
@@ -37,18 +36,18 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                 <SocialShareItem render={(ref => (
                     <a onClick={() => ref.current?.click()} className="flex justify-between">
                         Whatsapp
-                        <WhatsappShareButton
+                        {/* <WhatsappShareButton
                             url={url}
                             title={raffle.title}
                             separator=":: "
-                            ref={ref}
-                        >
-                            <WhatsappIcon size={20} round />
-                        </WhatsappShareButton>
+                            // ref={ref}
+                        > */}
+                        {/* <WhatsappIcon size={20} round /> */}
+                        {/* </WhatsappShareButton> */}
                     </a>
                 ))} />
             </li>
-            <li className="hover-bordered">
+            {/* <li className="hover-bordered">
                 <SocialShareItem render={(ref) => (
                     <a onClick={() => ref.current?.click()} className="flex justify-between">
                         Facebook
@@ -91,7 +90,7 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                         </EmailShareButton>
                     </a>
                 )} />
-            </li>
+            </li> */}
         </>
     )
 };

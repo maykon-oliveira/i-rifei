@@ -1,7 +1,7 @@
 import React from "react";
-import { UseFormReturn } from "react-hook-form";
+import { type UseFormReturn } from "react-hook-form";
 import { CurrencyBRLInput } from "~/components/input/currency";
-import { CreateRaffleInput } from "~/server/schema/raffle";
+import { type CreateRaffleInput } from "~/server/schema/raffle";
 
 type Props = {
     form: UseFormReturn<CreateRaffleInput>

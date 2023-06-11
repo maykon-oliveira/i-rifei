@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import { RouteItem } from "../routes";
+import { type RouteItem } from "../routes";
 
 type BreadcrumbsContext = {
     paths: RouteItem[];
@@ -10,7 +10,7 @@ type BreadcrumbsContext = {
 export const BreadcrumbsContext = createContext<BreadcrumbsContext>({
     paths: [],
     actions: [],
-    setBreadcrumbs(paths, actions) {
+    setBreadcrumbs(_, __) {
         // pass
     },
 });
@@ -26,7 +26,7 @@ const BreadcrumbsProvider: React.FC<Props> = ({ children }) => {
     });
 
     const setBreadcrumbs = (paths: RouteItem[], actions: RouteItem[]) => {
-        upBreadcrumbs({ paths: paths as RouteItem[], actions })
+        upBreadcrumbs({ paths: paths , actions })
     }
 
     return (

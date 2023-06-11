@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import { UseFormReturn } from "react-hook-form";
-import { CreateRaffleInput } from "~/server/schema/raffle";
+import { type UseFormReturn } from "react-hook-form";
+import { type CreateRaffleInput } from "~/server/schema/raffle";
 import RaffleFormDetail from "./raffle-form-datail";
 import RaffleFormAward from "./raffle-form-award";
 import RaffleFormConfirmation from "./raffle-fom-confirmation";

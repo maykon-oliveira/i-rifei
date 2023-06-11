@@ -16,15 +16,20 @@ export const ticketRouter = createTRPCRouter({
                     select: {
                         id: true,
                         title: true,
-                        drawDate: true
+                        drawDate: true,
+                        drawn: true
                     }
                 }
             },
-            orderBy: {
+            orderBy: [{
+                raffle: {
+                    drawn: 'asc'
+                }
+            }, {
                 raffle: {
                     drawDate: 'desc'
                 }
-            }
+            }]
         });
     }),
     confirmPayment: protectedProcedure.input(z.object({

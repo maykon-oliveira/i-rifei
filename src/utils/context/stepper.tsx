@@ -13,8 +13,8 @@ type StepperContext = {
 
 export const StepperContext = createContext<StepperContext>({
     step: Step.DETAILS,
-    goTo(target) {
-
+    goTo(_) {
+        // pass
     },
 });
 

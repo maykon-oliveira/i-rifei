@@ -1,4 +1,4 @@
-import { ReactElement, useRef } from "react";
+import { type ReactElement, useRef } from "react";
 
 type Props = {
     render: (ref: React.RefObject<HTMLButtonElement>) => ReactElement

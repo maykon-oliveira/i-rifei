@@ -1,66 +1,44 @@
-import { Raffle } from "@prisma/client";
+import { type Metadata } from "next";
+import { raffleRouter } from "~/server/api/routers/raffle";
+import { prisma } from "~/server/db";
+import { helpers } from "~/server/api/helpers";
 import { isBefore } from "date-fns";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import React, { useContext } from "react";
-import { toast } from "react-hot-toast";
-import LandpageLayout from "~/components/layout/landpage";
-import RaffleBuyModal from "~/components/modal/raffle-buy-modal";
-import RaffleCountdown from "~/components/raffle/raffle-countdown";
-import RaffleTable from "~/components/raffle/raffle-table";
-import { NextPageWithLayout } from "~/utils";
-import { ModalContext } from "~/utils/context/modal";
-import { api } from "~/utils/trpc";
-import { IoShareSocialOutline } from "react-icons/io5";
-import SocialShare from "~/components/social-share";
+import OverviewTable from "./overview-table";
+import dynamic from "next/dynamic";
 
-const RaffleOverviewPage: NextPageWithLayout = () => {
-    const { data: loggedUser } = useSession();
-    const { openModal } = useContext(ModalContext);
-    const router = useRouter()
-    const { mutate } = api.raffle.buyTicket.useMutation();
-    const { data: raffle, isLoading, refetch } = api.raffle.overviewDetails.useQuery({
-        id: router.query.id as string
+const RaffleCountdown = dynamic(
+    () => import('~/components/raffle/raffle-countdown'),
+    {
+        ssr: false,
+        loading: () => <p>Carregando...</p>,
+    }
+)
+
+type Props = {
+    params: {
+        id: string;
+    }
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const caller = raffleRouter.createCaller({ prisma, session: null });
+    const raffle = await caller.overviewDetails({
+        id: params.id
     });
 
-    if (!raffle || isLoading) {
-        return <h1>Carregando...</h1>
+    return {
+        title: raffle.title,
+        description: raffle.description,
+        publisher: raffle.owner.name,
     }
+}
+
+export default async function Page({ params }: Props) {
+    const raffle = await helpers.raffle.overviewDetails.fetch({
+        id: params.id
+    });
 
     const isExpired = isBefore(raffle.drawDate, new Date());
-
-    const handleTicketClick = (ticket: number) => {
-        if (raffle.drawnStarted) {
-            return;
-        }
-
-        if (!loggedUser) {
-            toast.custom("Você precisa fazer login para comprar um número.");
-            return;
-        }
-
-        if (raffle.ownerId === loggedUser.user.id) {
-            toast.custom("Você não pode comprar números da sua rifa.", { className: "alert-warning" })
-            return;
-        }
-
-        openModal(<RaffleBuyModal ticketNumber={ticket} onConfirm={() => buyTicket(raffle, ticket)} />)
-    }
-
-    const buyTicket = (raffle: Raffle, ticket: number) => {
-        mutate({
-            id: raffle.id,
-            ticket
-        }, {
-            onSuccess(data) {
-                toast.success(data || 'Sucesso');
-                refetch();
-            },
-            onError(error) {
-                toast.error(error.message)
-            },
-        })
-    }
 
     if (raffle.drawnStarted && !raffle.drawn) {
         return (
@@ -76,17 +54,17 @@ const RaffleOverviewPage: NextPageWithLayout = () => {
     }
 
     return (
-        <div className="hero min-h-screen">
-            <div className="hero-content flex-col relative mt-5">
+        <div className="hero min-h-full">
+            <div className="hero-content flex-col relative m-0 sm:mt-5 w-full sm:w-auto">
                 <div className="absolute top-0 right-0 mr-2">
-                    <div className="dropdown dropdown-hover dropdown-end w-full">
+                    {/* <div className="dropdown dropdown-hover dropdown-end w-full">
                         <label tabIndex={0} className="btn btn-outline btn-circle m-1 btn-block px-3">
                             <IoShareSocialOutline />
                         </label>
                         <ul tabIndex={0} className="dropdown-content z-30 menu menu-compact p-2 shadow bg-base-100 rounded-box w-52">
                             <SocialShare raffle={raffle} />
                         </ul>
-                    </div>
+                    </div> */}
                 </div>
                 {!raffle.drawn && (
                     <div className="flex justify-center flex-col items-center">
@@ -111,8 +89,8 @@ const RaffleOverviewPage: NextPageWithLayout = () => {
                     <h1 className="text-5xl font-bold">{raffle.title}</h1>
                     <p className="py-6 break-all">{raffle.description}</p>
                 </div>
-                <div className="my-5 mb-10 shadow-xl w-96">
-                    <RaffleTable size={raffle.size} tickets={raffle.tickets} onTicketClick={handleTicketClick} />
+                <div className="my-5 mb-10 shadow-xl w-full sm:w-96">
+                    <OverviewTable raffle={raffle} />
                 </div>
                 <div className="flex flex-col w-full">
                     <h3 className="text-3xl text-center mb-3 underline">Prêmios</h3>
@@ -126,11 +104,5 @@ const RaffleOverviewPage: NextPageWithLayout = () => {
                 </div>
             </div>
         </div>
-    );
-}
-
-export default RaffleOverviewPage;
-
-RaffleOverviewPage.getLayout = function (page) {
-    return <LandpageLayout>{page}</LandpageLayout>
+    )
 }

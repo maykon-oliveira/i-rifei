@@ -1,7 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import { IoLogOutOutline, IoSearchOutline, IoNotificationsOutline, IoMenuOutline } from 'react-icons/io5';
 
-import { RouteItem } from "~/utils/routes";
+import { type RouteItem } from "~/utils/routes";
 
 type Props = {
     routes: RouteItem[];

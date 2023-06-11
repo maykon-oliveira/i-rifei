@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import Link from "next/link";
 import React, { useContext, useEffect } from "react";
-import { IoEyeOutline } from "react-icons/io5";
+import Drawn from "~/components/drawn";
 import { BreadcrumbsContext } from "~/utils/context/breadcrumbs";
 import { purchasesRouter, rafflesRouter } from "~/utils/routes";
 import { api } from "~/utils/trpc";
@@ -15,6 +15,7 @@ type RaffleTicketGrouped = {
     id: string;
     title: string;
     drawDate: Date;
+    drawn: boolean;
     tickets: number[];
 }
 
@@ -50,6 +51,7 @@ const MyPurchasesPage: React.FC<Props> = () => {
                         <th>Título</th>
                         <th>Data do Sorteio</th>
                         <th>Números</th>
+                        <th>Sorteada</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,6 +72,7 @@ const MyPurchasesPage: React.FC<Props> = () => {
                                 <td>
                                     <span className="badge rounded text-lg py-4">{raffle.tickets.sort((a, b) => a < b ? -1 : 1).join(", ")}</span>
                                 </td>
+                                <td><Drawn drawn={raffle.drawn} /></td>
                             </tr>
                         )
                     })}

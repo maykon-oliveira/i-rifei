@@ -7,7 +7,7 @@ import {
 } from "~/server/api/trpc";
 import { CreateRaffleInput } from "~/server/schema/raffle";
 import { parseISO } from "date-fns";
-import { Ticket, User } from "@prisma/client";
+import { type Ticket, type User } from "@prisma/client";
 
 export const raffleRouter = createTRPCRouter({
   create: protectedProcedure
@@ -242,6 +242,7 @@ export const raffleRouter = createTRPCRouter({
       include: {
         awards: true,
         winner: true,
+        owner: true,
         tickets: {
           include: {
             user: {
@@ -285,14 +286,14 @@ export const raffleRouter = createTRPCRouter({
         code: 'CONFLICT',
         message: 'Nenhum número foi vendido para iniciar o sorteio.'
       });
-    };
+    }
 
     if (tickets.some(({ paymentConfirmed }) => !paymentConfirmed)) {
       throw new TRPCError({
         code: 'CONFLICT',
         message: 'Confirme o pagamento de todos os número antes de sortear.'
       });
-    };
+    }
 
     const drawnNumbers: (Ticket & {
       user: User;
@@ -300,10 +301,10 @@ export const raffleRouter = createTRPCRouter({
 
     for (let time = 0; time < 10; time++) {
       const randomIndex = Math.floor(Math.random() * tickets.length);
-      drawnNumbers.push(tickets[randomIndex]!!);
+      drawnNumbers.push(tickets[randomIndex]!);
     }
 
-    const drawNumber = drawnNumbers[drawnNumbers.length - 1]!!;
+    const drawNumber = drawnNumbers[drawnNumbers.length - 1]!;
 
     try {
       await ctx.prisma.$transaction(async (prisma) => {

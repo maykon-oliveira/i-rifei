@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
-import { UseFormReturn, useFieldArray } from "react-hook-form";
-import { CreateRaffleInput } from "~/server/schema/raffle";
+import { type UseFormReturn, useFieldArray } from "react-hook-form";
+import { type CreateRaffleInput } from "~/server/schema/raffle";
 import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 
 type Props = {

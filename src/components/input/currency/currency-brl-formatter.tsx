@@ -1,4 +1,4 @@
-import { NumberFormatBase, NumericFormatProps } from "react-number-format";
+import { NumberFormatBase, type NumericFormatProps } from "react-number-format";
 
 export const CurrencyBRLFormatter: React.FC<NumericFormatProps> = (props: any) => {
     const formatter = new Intl.NumberFormat("pt-BR", {
