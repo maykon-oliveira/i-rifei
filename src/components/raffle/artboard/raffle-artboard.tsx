@@ -21,7 +21,9 @@ type Props = {
     onTicketClick?: (raffle: Raffle, ticket: number) => void
 }
 
-const RaffleArtboard: React.FC<Props> = ({ raffle, onTicketClick = () => { } }) => {
+const RaffleArtboard: React.FC<Props> = ({ raffle, onTicketClick = () => {
+    // pass
+} }) => {
     const { data } = useSession();
     const [formattedDate, setFormattedDate] = useState('');
     const routeItem = rafflesRouter.overview(raffle.id);
@@ -31,7 +33,7 @@ const RaffleArtboard: React.FC<Props> = ({ raffle, onTicketClick = () => { } }) 
     }, [raffle.drawDate]);
 
     const handleTicketClick = (ticket: number) => {
-        if (raffle.drawnStarted) {
+        if (raffle.drawn) {
             return;
         }
 

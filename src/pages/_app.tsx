@@ -6,7 +6,7 @@ import { api } from "~/utils/trpc";
 
 import "~/styles/globals.css";
 import { ModalProvider } from "~/utils/context/modal";
-import { type NextPageWithLayout } from "~/utils/a-index";
+import { type NextPageWithLayout } from "~/utils/index";
 import DashboardLayout from "~/components/layout/dashboard";
 import { IconContext } from "react-icons";
 import Notifications from "~/components/notifications";
@@ -25,15 +25,18 @@ const MyApp: AppType<{ session: Session | null }> = ({
   const iconConfig = useMemo(() => ({ size: "1.3em" }), []);
 
   return (
-    <SessionProvider session={session}>
-      <IconContext.Provider value={iconConfig}>
-        <Notifications/>
-        <ModalProvider>
-          {getLayout(<Component {...pageProps} />)}
-        </ModalProvider>
-        <div id="modal-root"></div>
-      </IconContext.Provider>
-    </SessionProvider>
+    <>
+      {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+      <SessionProvider session={session}>
+        <IconContext.Provider value={iconConfig}>
+          <Notifications />
+          <ModalProvider>
+            {getLayout(<Component {...pageProps} />)}
+          </ModalProvider>
+          <div id="modal-root"></div>
+        </IconContext.Provider>
+      </SessionProvider>
+    </>
   );
 };
 

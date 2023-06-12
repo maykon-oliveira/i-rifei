@@ -13,7 +13,7 @@ export const CurrencyBRLInput: React.FC<Props> = ({ control, name }) => {
     }) => (
         <>
             <CurrencyBRLFormatter
-                value={value}
+                value={value as string}
                 onBlur={onBlur}
                 onValueChange={(values) => onChange(values.floatValue)}
                 className={`input input-bordered w-full ${error ? 'input-error' : 'input-primary'}`}

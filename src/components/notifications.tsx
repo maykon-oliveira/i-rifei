@@ -32,7 +32,7 @@ const Notifications: React.FC<Props> = () => {
             onMouseLeave={endPause}
         >
             {toasts.map((toast) => {
-                const ref = (el: any) => {
+                const ref = (el: HTMLDivElement) => {
                     if (el && typeof toast.height !== "number") {
                         const height = el.getBoundingClientRect().height;
                         updateHeight(toast.id, height);

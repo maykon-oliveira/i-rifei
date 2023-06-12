@@ -29,13 +29,13 @@ const RaffleForm: React.FC<Props> = ({ form }) => {
                 {getStepComponent()}
             </form>
             <ul className="steps w-full pt-5">
-                <li onClick={() => goTo(Step.DETAILS)} className={`step step-neutral cursor-pointer ${step >= 0 && 'step-primary'}`}>
+                <li onClick={() => goTo(Step.DETAILS)} className={`step step-neutral cursor-pointer ${step >= 0 ? 'step-primary' : ''}`}>
                     Detalhes
                 </li>
-                <li onClick={() => goTo(Step.AWARDS)} className={`step step-neutral cursor-pointer ${step >= 1 && 'step-primary'}`}>
+                <li onClick={() => goTo(Step.AWARDS)} className={`step step-neutral cursor-pointer ${step >= 1 ? 'step-primary' : ''}`}>
                     Prêmios
                 </li>
-                <li onClick={(e) => goTo(Step.CONFIRMATION)} className={`step step-neutral cursor-pointer ${step >= 2 && 'step-primary'}`}>
+                <li onClick={() => goTo(Step.CONFIRMATION)} className={`step step-neutral cursor-pointer ${step >= 2 ? 'step-primary' : ''}`}>
                     Confirmar
                 </li>
             </ul>

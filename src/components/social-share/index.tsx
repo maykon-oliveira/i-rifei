@@ -23,7 +23,7 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
     const url = `${baseurl}${routeItem.link}`;
 
     const onCopyLinkClick = () => {
-        navigator.clipboard.writeText(url).then(() => toast.custom('Link copiado!'));
+        void navigator.clipboard.writeText(url).then(() => toast.custom('Link copiado!'));
     }
 
     return (

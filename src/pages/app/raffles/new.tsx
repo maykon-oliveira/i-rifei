@@ -47,6 +47,7 @@ const RaffleNewPage: NextPage = () => {
             </div>
             <div className="max-w-full mx-auto">
                 <h1 className="text-1xl font-thin text-center mb-5">Pre-visualização</h1>
+                {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
                 <RaffleArtboard raffle={raffle as any} />
             </div>
         </section>
