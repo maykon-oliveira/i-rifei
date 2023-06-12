@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import RaffleDrawnConfirmationModal from "~/components/modal/raffle-drawn-confirmation-modal";
-import RaffleTable from "~/components/raffle/raffle-table";
+import RaffleGrid from "~/components/raffle/raffle-grid";
 import { BreadcrumbsContext } from "~/utils/context/breadcrumbs";
 import { ModalContext } from "~/utils/context/modal";
 import { rafflesRouter } from "~/utils/routes";
@@ -65,7 +65,7 @@ const RaffleDrawPage: React.FC<Props> = () => {
             </div>
 
             <div className="w-96 mx-auto my-10">
-                <RaffleTable size={raffle?.size} tickets={raffle.tickets} numberHighlight={numbersHighlight} />
+                <RaffleGrid size={raffle?.size} tickets={raffle.tickets} numberHighlight={numbersHighlight} />
             </div>
 
             {(!(drawning || raffle.winner)) && (

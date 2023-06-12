@@ -6,7 +6,7 @@ type Props = {
     onClick: (ticket: number) => void
 }
 
-const RaffleTableCell: React.FC<Props> = ({ col, bought, drawn, onClick, highlight = false }) => {
+const RaffleGridCell: React.FC<Props> = ({ col, bought, drawn, onClick, highlight = false }) => {
     const handleClick = () => {
         if (!bought) {
             onClick(col);
@@ -23,4 +23,4 @@ const RaffleTableCell: React.FC<Props> = ({ col, bought, drawn, onClick, highlig
     );
 };
 
-export default RaffleTableCell;
+export default RaffleGridCell;

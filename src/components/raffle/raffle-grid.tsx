@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import RaffleTableCell from "./raffle-table-cell";
+import RaffleGridCell from "./raffle-grid-cell";
 
 type Props = {
     size: number;
@@ -25,7 +25,7 @@ const gridVariants = {
     '10': 'grid-cols-10',
 }
 
-const RaffleTable: React.FC<Props> = ({ size, tickets = [], onTicketClick = () => {}, numberHighlight }) => {
+const RaffleGrid: React.FC<Props> = ({ size, tickets = [], onTicketClick = () => {}, numberHighlight }) => {
     const [matrix, setMatrix] = useState<number[][]>(createMatrix(size));
     const [gridClass, setGridClass] = useState<string>(gridVariants[matrix.length.toString() as Key0to10]);
 
@@ -46,14 +46,14 @@ const RaffleTable: React.FC<Props> = ({ size, tickets = [], onTicketClick = () =
                 const highlight = !!numberHighlight && numberHighlight === col;
 
                 return (
-                    <RaffleTableCell key={col} col={col} bought={!!ticket} drawn={ticket?.drawn ?? false} highlight={highlight} onClick={onTicketClick} />
+                    <RaffleGridCell key={col} col={col} bought={!!ticket} drawn={ticket?.drawn ?? false} highlight={highlight} onClick={onTicketClick} />
                 )
             }))}
         </div>
     );
 };
 
-export default RaffleTable;
+export default RaffleGrid;
 
 const createMatrix = (size: number): number[][] => {
     const matrix = [];

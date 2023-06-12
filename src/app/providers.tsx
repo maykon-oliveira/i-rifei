@@ -1,5 +1,6 @@
 "use client";
 
+import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import React, { useMemo } from "react";
 import { IconContext } from "react-icons";
@@ -9,13 +10,14 @@ import { api } from "~/utils/trpc";
 
 type Props = {
     children: React.ReactNode;
+    session: Session | null | undefined;
 }
 
-const Providers: React.FC<Props> = ({ children }) => {
+const Providers: React.FC<Props> = ({ children, session }) => {
     const iconConfig = useMemo(() => ({ size: "1.3em" }), []);
 
     return (
-        <SessionProvider session={null}>
+        <SessionProvider session={session}>
             <IconContext.Provider value={iconConfig}>
                 <Notifications />
                 <ModalProvider>
