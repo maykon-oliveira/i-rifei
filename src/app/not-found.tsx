@@ -1,4 +1,4 @@
-export default async function Page() {
+export default function Page() {
     return (
         <div className="hero my-auto">
             <div className="hero-content text-center -mt-32">
