@@ -1,7 +1,6 @@
 import { type Metadata } from "next";
 import { raffleRouter } from "~/server/api/routers/raffle";
 import { prisma } from "~/server/db";
-import { helpers } from "~/server/api/helpers";
 import { isBefore } from "date-fns";
 import OverviewTable from "./overview-table";
 import dynamic from "next/dynamic";
@@ -22,11 +21,16 @@ type Props = {
     }
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+async function getRaffleData(id: string) {
     const caller = raffleRouter.createCaller({ prisma, session: null });
     const raffle = await caller.overviewDetails({
-        id: params.id
+        id
     });
+    return raffle;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const raffle = await getRaffleData(params.id);
 
     return {
         title: raffle.title,
@@ -36,9 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Props) {
-    const raffle = await helpers.raffle.overviewDetails.fetch({
-        id: params.id
-    });
+    const raffle = await getRaffleData(params.id);
 
     const isExpired = isBefore(raffle.drawDate, new Date());
 

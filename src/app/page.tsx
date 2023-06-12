@@ -1,8 +1,7 @@
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 import { IoArrowForwardOutline, IoTicketOutline } from "react-icons/io5";
 import RaffleCardShowcase from "~/components/raffle/raffles-card-showcase";
-import { helpers } from "~/server/api/helpers";
 
 type Props = {
     params: {
@@ -10,9 +9,7 @@ type Props = {
     }
 }
 
-export default async function Page({ params }: Props) {
-    const raffles = await helpers.raffle.getAll.fetch();
-
+export default function Page({ params }: Props) {
     return (
         <>
             <div className="hero min-h-screen bg-base-200">
@@ -101,7 +98,9 @@ export default async function Page({ params }: Props) {
                 <div className="text-center">
                     <h1 className="text-5xl font-bold py-5 md:pt-0 md:pb-10">Rifas</h1>
                 </div>
-                <RaffleCardShowcase raffles={raffles} />
+                <Suspense fallback={<h1>Carregando...</h1>}>
+                    <RaffleCardShowcase />
+                </Suspense>
             </div>
         </>
     );

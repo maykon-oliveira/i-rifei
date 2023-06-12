@@ -4,8 +4,10 @@ import { Raffle, Ticket } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import React, { useContext } from "react";
 import { toast } from "react-hot-toast";
+import Loading from "~/components/loading";
 import RaffleBuyModal from "~/components/modal/raffle-buy-modal";
-import RaffleTable from "~/components/raffle/raffle-table";
+import Overlay from "~/components/overlay";
+import RaffleGrid from "~/components/raffle/raffle-grid";
 import { ModalContext } from "~/utils/context/modal";
 import { api } from "~/utils/trpc";
 
@@ -23,10 +25,10 @@ type Props = {
 const OverviewTable: React.FC<Props> = ({ raffle: initialData }) => {
     const { data: loggedUser } = useSession();
     const { openModal } = useContext(ModalContext);
-    const { data: raffle, refetch } = api.raffle.overviewDetails.useQuery({
+    const { data: raffle, isFetching, refetch } = api.raffle.overviewDetails.useQuery({
         id: initialData.id
     }, { enabled: false, initialData });
-    const { mutate } = api.raffle.buyTicket.useMutation();
+    const { mutate, isLoading: buying } = api.raffle.buyTicket.useMutation();
 
     const handleTicketClick = (ticket: number) => {
         if (raffle.drawn) {
@@ -52,8 +54,8 @@ const OverviewTable: React.FC<Props> = ({ raffle: initialData }) => {
             ticket
         }, {
             async onSuccess(data) {
-                toast.success(data || 'Sucesso');
                 await refetch();
+                toast.success(data || 'Sucesso');
             },
             onError(error) {
                 toast.error(error.message)
@@ -61,7 +63,11 @@ const OverviewTable: React.FC<Props> = ({ raffle: initialData }) => {
         })
     }
 
-    return <RaffleTable size={raffle.size} tickets={raffle.tickets} onTicketClick={handleTicketClick} />
+    return (
+        <Overlay active={isFetching || buying}>
+            <RaffleGrid size={raffle.size} tickets={raffle.tickets} onTicketClick={handleTicketClick} />
+        </Overlay>
+    );
 }
 
 export default OverviewTable;

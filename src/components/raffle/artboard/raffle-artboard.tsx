@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import RaffleTable from "../raffle-table";
+import RaffleGrid from "../raffle-grid";
 import { type Raffle, type RaffleAward } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
@@ -86,7 +86,7 @@ const RaffleArtboard: React.FC<Props> = ({ raffle, onTicketClick = () => {
                     </div>
                 </div>
             </div>
-            <RaffleTable size={raffle.size} tickets={raffle.tickets} onTicketClick={handleTicketClick} />
+            <RaffleGrid size={raffle.size} tickets={raffle.tickets} onTicketClick={handleTicketClick} />
         </div>
     );
 }

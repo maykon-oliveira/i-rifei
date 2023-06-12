@@ -70,6 +70,25 @@ export const raffleRouter = createTRPCRouter({
     });
   }),
 
+  getCardData: publicProcedure.input(z.object(
+    { id: z.string() }
+  )).query(({ ctx, input }) => {
+    return ctx.prisma.raffle.findUniqueOrThrow({
+      where: {
+        id: input.id
+      },
+      include: {
+        awards: true,
+        tickets: {
+          select: {
+            number: true,
+            drawn: true,
+          }
+        }
+      }
+    });
+  }),
+
   getMyRaffles: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.raffle.findMany({
       where: {
