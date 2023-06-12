@@ -154,7 +154,8 @@ export const raffleRouter = createTRPCRouter({
       include: {
         tickets: {
           select: {
-            id: true
+            id: true,
+            paymentConfirmed: false
           }
         }
       }

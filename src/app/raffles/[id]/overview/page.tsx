@@ -6,6 +6,8 @@ import OverviewTable from "./overview-table";
 import dynamic from "next/dynamic";
 import { IoShareSocialOutline } from "react-icons/io5";
 import SocialShare from "~/components/social-share";
+import { notFound } from "next/navigation";
+import { TRPCError } from "@trpc/server";
 
 const RaffleCountdown = dynamic(
     () => import('~/components/raffle/raffle-countdown'),
@@ -22,11 +24,20 @@ type Props = {
 }
 
 async function getRaffleData(id: string) {
-    const caller = raffleRouter.createCaller({ prisma, session: null });
-    const raffle = await caller.overviewDetails({
-        id
-    });
-    return raffle;
+    try {
+        const caller = raffleRouter.createCaller({ prisma, session: null });
+        const raffle = await caller.overviewDetails({
+            id
+        });
+        return raffle;
+    } catch (error) {
+        if (error instanceof TRPCError) {
+            if (error.code === 'NOT_FOUND') {
+                notFound();
+            }
+        }
+        throw error;
+    }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
