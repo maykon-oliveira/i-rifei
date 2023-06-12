@@ -27,4 +27,5 @@ const Providers: React.FC<Props> = ({ children }) => {
     );
 }
 
-export default api.withTRPC(Providers);
+// https://github.com/framer/motion/issues/1509
+export default api.withTRPC(Providers) as any;

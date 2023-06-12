@@ -45,7 +45,8 @@ const RaffleDrawPage: React.FC<Props> = () => {
             }
 
             await refetch();
-        } catch (error: any) {
+        } catch (e: any) {
+            const error = e as Error;
             toast.error(error.message);
         }
 

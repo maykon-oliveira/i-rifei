@@ -38,11 +38,13 @@ export const raffleRouter = createTRPCRouter({
           await Promise.all(awardsPromise);
         });
 
-      } catch (error: any) {
+      } catch (e: any) {
+        const error = e as Error;
+
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: error.message
-        })
+        });
       } finally {
         await ctx.prisma.$disconnect();
       }
@@ -327,11 +329,13 @@ export const raffleRouter = createTRPCRouter({
         });
       });
 
-    } catch (error: any) {
+    } catch (e: any) {
+      const error = e as Error;
+
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
         message: error.message
-      })
+      });
     } finally {
       await ctx.prisma.$disconnect();
     }

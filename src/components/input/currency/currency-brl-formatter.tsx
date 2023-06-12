@@ -6,13 +6,13 @@ export const CurrencyBRLFormatter: React.FC<NumericFormatProps> = (props: any) =
         currency: "BRL",
     });
 
-    const format = (numStr: any) => {
+    const format = (numStr: number | bigint | string) => {
         if (numStr === "")
             return "";
-        return formatter.format(numStr);
+        return formatter.format(numStr as number);
     };
 
-    const removeFormatting = (formattedValue: any) => {
+    const removeFormatting = (formattedValue: string) => {
         if (formattedValue === '') {
             return 0;
         }

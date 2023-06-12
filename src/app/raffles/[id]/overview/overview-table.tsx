@@ -29,7 +29,7 @@ const OverviewTable: React.FC<Props> = ({ raffle: initialData }) => {
     const { mutate } = api.raffle.buyTicket.useMutation();
 
     const handleTicketClick = (ticket: number) => {
-        if (raffle.drawnStarted) {
+        if (raffle.drawn) {
             return;
         }
 

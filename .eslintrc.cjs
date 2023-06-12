@@ -30,8 +30,17 @@ const config = {
       },
     ],
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
-    "@typescript-eslint/no-misused-promises": "warn",
-    "@typescript-eslint/ban-types": "warn"
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksVoidReturn": {
+          "attributes": false,
+          "returns": false
+        }
+      }
+    ],
+    "@typescript-eslint/ban-types": "warn",
+    "@typescript-eslint/no-empty-function": "warn",
   },
 };
 
