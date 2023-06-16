@@ -3,20 +3,19 @@ import ReactDOM from "react-dom";
 import { ModalContext } from "~/utils/context/modal";
 
 const ModalContainer = () => {
-    const { modalContent, isOpen: modal } = useContext(ModalContext);
+    const { modalContent } = useContext(ModalContext);
 
-    if (!modal) {
+    if (!modalContent) {
         return null;
     }
 
     return ReactDOM.createPortal(
         <>
-            <input type="checkbox" readOnly checked={modal} className="modal-toggle" />
-            <div className="modal">
-                <div className="modal-box">
+            <dialog id="modalContainer" className="modal">
+                <form method="dialog" className="modal-box">
                     {modalContent}
-                </div>
-            </div>
+                </form>
+            </dialog>
         </>,
         document.querySelector("#modal-root")!
     );

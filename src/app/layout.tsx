@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Providers from "./providers";
 import "~/styles/globals.css";
+import Navbar from "./navbar";
 
 export const metadata = {
   title: {
@@ -18,18 +19,16 @@ export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
-}) {  
+}) {
   return (
     <html lang="en">
       <body>
-        <div className="navbar bg-base-100 shadow-md">
-          <Link href="/" className="btn btn-ghost normal-case text-xl">I-Rifei</Link>
-        </div>
-        <main className="container mx-auto flex min-h-screen flex-col">
-          <Providers>
+        <Providers>
+          <Navbar />
+          <main className="container mx-auto flex min-h-screen flex-col">
             {children}
-          </Providers>
-        </main>
+          </main>
+        </Providers>
       </body>
     </html>
   )
