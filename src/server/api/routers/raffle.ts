@@ -155,7 +155,7 @@ export const raffleRouter = createTRPCRouter({
         tickets: {
           select: {
             id: true,
-            paymentConfirmed: false
+            paymentConfirmed: true
           }
         }
       }
@@ -180,7 +180,7 @@ export const raffleRouter = createTRPCRouter({
       });
     }
 
-    if (raffle.tickets.length > 0) {
+    if (raffle.tickets.some(({ paymentConfirmed }) => paymentConfirmed)) {
       throw new TRPCError({
         code: "CONFLICT",
         message: "Rifa com números vendidos não pode ser apagada."

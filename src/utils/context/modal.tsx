@@ -1,4 +1,4 @@
-import React, { type ReactNode, createContext } from "react";
+import React, { type ReactNode, createContext, useMemo } from "react";
 import ModalContainer from "~/components/modal/modal-container";
 import useModal from "../hook/use-modal";
 
@@ -27,8 +27,10 @@ type Props = {
 export const ModalProvider: React.FC<Props> = ({ children }) => {
     const { isOpen, openModal, closeModal, modalContent } = useModal();
 
+    const value = useMemo(() => ({isOpen, openModal, closeModal, modalContent}), [isOpen, openModal, closeModal, modalContent]);
+
     return (
-        <ModalContext.Provider value={{ isOpen, openModal, closeModal, modalContent }}>
+        <ModalContext.Provider value={value}>
             <ModalContainer />
             {children}
         </ModalContext.Provider>

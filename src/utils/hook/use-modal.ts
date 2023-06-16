@@ -1,20 +1,31 @@
-import { type ReactNode, useState } from "react";
+/* eslint-disable no-var */
+import { type ReactNode, useState, useEffect } from "react";
+
+// Modals should add their id here, to typescript support
+declare global {
+    var modalContainer: {
+        showModal: () => void
+    } | null
+}
 
 const useModal = () => {
-    const [isOpen, setIsOpen] = useState(false);
     const [modalContent, setModalContent] = useState<ReactNode | null>(null);
 
+    useEffect(() => {
+        if (modalContent) {
+            window.modalContainer?.showModal();
+        }
+    }, [modalContent]);
+
     const openModal = (content: ReactNode) => {
-        setIsOpen(true);
         setModalContent(content);
     };
 
     const closeModal = () => {
-        setIsOpen(false);
         setModalContent(null);
     };
 
-    return { isOpen, openModal, closeModal, modalContent };
+    return { isOpen: !!modalContent, openModal, closeModal, modalContent };
 };
 
 export default useModal;
