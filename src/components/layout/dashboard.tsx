@@ -5,6 +5,7 @@ import BreadcrumbsProvider from "~/utils/context/breadcrumbs";
 import Breadcrumbs from "../breadcrumbs";
 import routes from "~/utils/routes";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 type Props = {
     children: ReactNode
@@ -33,11 +34,13 @@ const DashboardLayout: React.FC<Props> = ({ children }) => {
                 <label htmlFor="drawer" className="drawer-overlay"></label>
                 <aside className="bg-base-100 w-80 h-full">
                     <div className="px-4 pt-4">
-                        <Link href="/" className="btn btn-ghost normal-case text-xl w-full justify-start">I-Rifei</Link>
+                        <Link href="/" className="btn btn-ghost normal-case text-xl w-full justify-start">
+                            <Image src="/brand/brand.svg" alt="" height={55} width={55} />
+                        </Link>
                     </div>
                     <ul className="menu menu-sm lg:menu-md px-4">
                         {routes.map((nav, i) => (
-                            <li key={i} className="hover-bordered my-1">
+                            <li key={nav.link} className="hover-bordered my-1">
                                 <Link className={(router.asPath.startsWith(nav.link)) ? "active" : ''} href={nav.link}>
                                     {nav.icon}
                                     {nav.label}

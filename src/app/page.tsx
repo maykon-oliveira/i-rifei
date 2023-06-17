@@ -12,13 +12,13 @@ type Props = {
 export default function Page({ params }: Props) {
     return (
         <>
-            <div className="hero min-h-screen bg-base-200">
-                <div className="hero-content flex-col lg:flex-row">
-                    <img alt="" src="/index-hero.jpg" className="w-auto md:max-w-md rounded-lg shadow-2xl" />
+            <div className="hero items-start lg:min-h-screen lg:items-center lg:-mt-14">
+                <div className="hero-content flex-col justify-start lg:flex-row">
+                    <img alt="" src="/brand/brand-full.svg" className="w-auto md:max-w-md" />
                     <div>
                         <h1 className="text-3xl font-bold">Bem-vindo ao nosso Web App de Sorteios!</h1>
                         <div className="py-6">
-                            Participe da emoção e da expectativa de ganhar prêmios incríveis com nossa inovadora plataforma de sorteios. Nosso aplicativo web oferece uma forma fácil e agradável para os usuários criarem, participarem e compartilharem sorteios. Seja um entusiasta de sorteios ou um jogador de primeira viagem, temos algo emocionante reservado para você.
+                            Nosso aplicativo web oferece uma forma fácil e agradável para os usuários criarem, participarem e compartilharem sorteios. Seja um entusiasta de sorteios ou um jogador de primeira viagem, temos algo emocionante reservado para você.
                         </div>
                         <Link href="/app/raffles/new" className="btn btn-primary">
                             CRIAR
@@ -27,10 +27,10 @@ export default function Page({ params }: Props) {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col w-full bg-base-300 sm:p-10 lg:flex-row">
+            <div className="flex flex-col w-full sm:p-10 lg:flex-row">
                 <div className="card lg:w-1/2 shadow-xl image-full m-10">
                     <figure>
-                        <img src="/index-hand-ticket.jpg" />
+                        <img src="/index-hero.jpg" />
                     </figure>
                 </div>
                 <div className="divider lg:divider-horizontal">

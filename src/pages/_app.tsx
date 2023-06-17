@@ -11,6 +11,13 @@ import DashboardLayout from "~/components/layout/dashboard";
 import { IconContext } from "react-icons";
 import Notifications from "~/components/notifications";
 import { useMemo } from "react";
+import { Roboto } from 'next/font/google';
+
+const font = Roboto({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
@@ -28,6 +35,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <>
       {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
       <SessionProvider session={session}>
+        <style jsx global>{`
+        html {
+          font-family: ${font.style.fontFamily};
+        }
+      `}</style>
         <IconContext.Provider value={iconConfig}>
           <Notifications />
           <ModalProvider>

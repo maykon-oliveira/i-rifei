@@ -51,11 +51,11 @@ const RaffleArtboard: React.FC<Props> = ({ raffle, onTicketClick = () => {
     }
 
     return (
-        <div className="artboard phone-2 bg-neutral rounded-md p-3 pb-5 flex flex-col shadow-md">
+        <div className="artboard phone-2 bg-base-300 rounded-md p-3 pb-5 flex flex-col shadow-md">
             <div className="flex flex-1 flex-col">
                 <h2 className="text-2xl text-center font-extrabold break-words my-3">{raffle.title}</h2>
                 <div className="flex justify-between mb-3 items-center">
-                    <p className="text-base-content/70 text-sm">Data do Sorteio: {formattedDate}</p>
+                    <p className="text-sm">Data do Sorteio: {formattedDate}</p>
                     <div className="flex items-center">
                         <div className="badge badge-primary">
                             <CurrencyBRLFormatter displayType="text" value={raffle.price} />
@@ -67,23 +67,18 @@ const RaffleArtboard: React.FC<Props> = ({ raffle, onTicketClick = () => {
                 </div>
                 <p className="break-words overflow-ellipsis line-clamp-3">{raffle.description}</p>
                 <div className="flex flex-1 items-center mb-2">
-                    <div className="flex-1">
-                        <ul className="menu menu-sm p-0 -ml-3">
-                            <li>
-                                <h2 className="menu-title">Prêmios</h2>
-                                <ul className="overflow-y-auto max-h-24">
-                                    {raffle.awards.map((award, i) => (
-                                        <li key={i} className="hover-bordered">
-                                            <a className="hover:cursor-default">{i + 1}º - {award.name}</a>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="ml-2 mr-8">
-                        <HiOutlineTrophy className="text-warning" size={50} />
-                    </div>
+                    <ul className="menu menu-sm p-0 -ml-3">
+                        <li>
+                            <h2 className="menu-title">Prêmios</h2>
+                            <ul className="overflow-y-auto max-h-24">
+                                {raffle.awards.map((award, i) => (
+                                    <li key={i} className="hover-bordered">
+                                        <a className="hover:cursor-default">{i + 1}º - {award.name}</a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
             <RaffleGrid size={raffle.size} tickets={raffle.tickets} onTicketClick={handleTicketClick} />

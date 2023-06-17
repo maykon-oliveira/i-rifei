@@ -11,6 +11,6 @@ export default {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["dracula"],
+    themes: ["cmyk"],
   },
 } satisfies Config;

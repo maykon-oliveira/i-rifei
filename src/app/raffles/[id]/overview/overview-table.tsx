@@ -1,10 +1,9 @@
 "use client";
 
-import { Raffle, Ticket } from "@prisma/client";
+import { type Raffle, type Ticket } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import React, { useContext } from "react";
 import { toast } from "react-hot-toast";
-import Loading from "~/components/loading";
 import RaffleBuyModal from "~/components/modal/raffle-buy-modal";
 import Overlay from "~/components/overlay";
 import RaffleGrid from "~/components/raffle/raffle-grid";
