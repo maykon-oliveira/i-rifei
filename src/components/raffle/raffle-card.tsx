@@ -1,6 +1,6 @@
 "use client";
 
-import { Raffle, RaffleAward } from "@prisma/client";
+import { type Raffle, type RaffleAward } from "@prisma/client";
 import React, { useContext } from "react";
 import { api } from "~/utils/trpc";
 import RaffleArtboard from "./artboard/raffle-artboard";

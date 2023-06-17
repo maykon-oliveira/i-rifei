@@ -1,7 +1,14 @@
-import Link from "next/link";
 import Providers from "./providers";
 import "~/styles/globals.css";
 import Navbar from "./navbar";
+
+import { Roboto } from 'next/font/google';
+
+const font = Roboto({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export const metadata = {
   title: {
@@ -21,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={font.className}>
       <body>
         <Providers>
           <Navbar />
