@@ -3,7 +3,7 @@ import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 
 type Props = {
 
@@ -12,8 +12,10 @@ type Props = {
 const Navbar: React.FC<Props> = () => {
     const { status } = useSession();
     const router = useRouter();
+    const [loading, setLoading] = useState(false);
 
     const onLogin = () => {
+        setLoading(true);
         if (status === 'authenticated') {
             router.push('/app/raffles');
             return;
@@ -21,7 +23,7 @@ const Navbar: React.FC<Props> = () => {
 
         void signIn('google', {
             callbackUrl: '/app/raffles'
-        });
+        }).then(() => setLoading(false));
     };
 
     return (
@@ -32,7 +34,7 @@ const Navbar: React.FC<Props> = () => {
                 </Link>
             </div>
             <div className="navbar-end">
-                <button className="btn btn-outline btn-primary" onClick={onLogin}>ENTRAR</button>
+                <button disabled={loading} className="btn btn-outline btn-primary" onClick={onLogin}>ENTRAR</button>
             </div>
         </div>
     );

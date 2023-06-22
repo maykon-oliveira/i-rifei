@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const CreateRaffleInput = z.object({
-    title: z.string().nonempty(),
+    title: z.string().nonempty().max(40),
     description: z.string().max(300).nonempty(),
     price: z.number().positive().safe(),
     size: z.number().lte(100).gte(2).positive().safe(),

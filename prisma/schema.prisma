@@ -18,8 +18,8 @@ datasource db {
 
 model Raffle {
   id           String        @id @default(cuid())
-  title        String
-  description  String
+  title        String        @db.VarChar(40)
+  description  String        @db.VarChar(300)
   price        Float
   size         Int
   drawDate     DateTime
