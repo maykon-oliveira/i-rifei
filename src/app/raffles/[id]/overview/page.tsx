@@ -69,8 +69,8 @@ export default async function Page({ params }: Props) {
     }
 
     return (
-        <div className="hero min-h-full">
-            <div className="hero-content flex-col relative m-0 sm:mt-5 w-full sm:w-auto">
+        <div className="hero flex-1">
+            <div className="hero-content flex-col relative m-0 mt-3 w-full sm:w-auto">
                 <div className="absolute top-0 right-0 mr-2">
                     <div className="dropdown dropdown-hover dropdown-end w-full">
                         <label tabIndex={0} className="btn btn-outline btn-circle m-1 btn-block px-3">
@@ -102,7 +102,7 @@ export default async function Page({ params }: Props) {
                 )}
                 <div className="text-center">
                     <h1 className="text-5xl font-bold">{raffle.title}</h1>
-                    <p className="py-6 break-all">{raffle.description}</p>
+                    <p className="py-6 break-all max-w-xl">{raffle.description}</p>
                 </div>
                 <div className="my-5 mb-10 shadow-xl w-full sm:w-96">
                     <OverviewTable raffle={raffle} />
