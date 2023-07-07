@@ -34,7 +34,10 @@ const Navbar: React.FC<Props> = () => {
                 </Link>
             </div>
             <div className="navbar-end">
-                <button disabled={loading} className="btn btn-outline btn-primary" onClick={onLogin}>ENTRAR</button>
+                <button disabled={loading} className="btn btn-outline btn-primary" onClick={onLogin}>
+                    {loading && <span className="loading loading-spinner"></span>}
+                    ENTRAR
+                </button>
             </div>
         </div>
     );

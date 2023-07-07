@@ -31,13 +31,14 @@ const RaffleGrid: React.FC<Props> = ({ size, tickets = [], onTicketClick = () =>
 
     useEffect(() => {
         setMatrix(createMatrix(size));
-
+    }, [size]);
+    
+    useEffect(() => {    
         if (10 > matrix.length && matrix.length < 2) {
             return;
         }
-    
         setGridClass(gridVariants[matrix.length.toString() as Key0to10]);
-    }, [size]);
+    }, [matrix]);
 
     return (
         <div className={`box-border grid ${gridClass} border border-gray-300 box-border w-full`}>

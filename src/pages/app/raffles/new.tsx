@@ -21,7 +21,6 @@ const RaffleNewPage: NextPage = () => {
         resolver: zodResolver(CreateRaffleInput),
         defaultValues: {
             drawDate: format(new Date(), 'yyyy-MM-dd\'T\'hh:mm'),
-            price: 0,
             size: 10,
             awards: [{ name: "" }]
         },

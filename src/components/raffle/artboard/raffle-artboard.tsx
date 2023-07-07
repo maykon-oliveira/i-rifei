@@ -8,7 +8,6 @@ import { rafflesRouter } from "~/utils/routes";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import Link from "next/link";
-import { HiOutlineTrophy } from "react-icons/hi2";
 
 type Props = {
     raffle: Raffle & {
@@ -55,13 +54,13 @@ const RaffleArtboard: React.FC<Props> = ({ raffle, onTicketClick = () => {
             <div className="flex flex-1 flex-col">
                 <h2 className="text-2xl text-center font-extrabold break-words my-3">{raffle.title}</h2>
                 <div className="flex justify-between mb-3 items-center">
-                    <p className="text-sm">Data do Sorteio: {formattedDate}</p>
+                    <p className="text-sm">Data do Sorteio: <time>{formattedDate}</time></p>
                     <div className="flex items-center">
-                        <div className="badge badge-primary">
+                        <div className="badge badge-primary mx-2">
                             <CurrencyBRLFormatter displayType="text" value={raffle.price} />
                         </div>
                         {raffle.id && (
-                            <Link href={routeItem.link} className="ml-2 btn btn-sm btn-circle btn-outline" >{routeItem.icon}</Link>
+                            <Link href={routeItem.link} className="btn btn-sm btn-circle btn-outline" >{routeItem.icon}</Link>
                         )}
                     </div>
                 </div>
