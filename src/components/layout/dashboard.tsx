@@ -22,7 +22,7 @@ const DashboardLayout: React.FC<Props> = ({ children }) => {
                     <div className="sticky top-0 z-10 flex bg-opacity-90 backdrop-blur shadow-md bg-base-100">
                         <NavBar routes={routes} />
                     </div>
-                    <div className="flex-1 overflow-y-auto pt-3 px-6  bg-base-200">
+                    <div className="min-h-[92vh] overflow-y-auto pt-3 px-6  bg-base-200">
                         <Breadcrumbs />
                         <main className="card bg-base-100 p-6 mt-5">
                             {children}
@@ -32,7 +32,7 @@ const DashboardLayout: React.FC<Props> = ({ children }) => {
             </BreadcrumbsProvider>
             <div className="drawer-side z-50">
                 <label htmlFor="drawer" className="drawer-overlay"></label>
-                <aside className="bg-base-100 w-80 h-full">
+                <aside className="bg-base-100 w-64 h-full">
                     <div className="px-4 pt-4">
                         <Link href="/" className="btn btn-ghost normal-case text-xl w-full justify-start">
                             <Image src="/brand/brand.svg" alt="" height={55} width={55} />

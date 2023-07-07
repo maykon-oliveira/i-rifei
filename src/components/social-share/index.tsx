@@ -44,7 +44,7 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                             separator=":: "
                             ref={ref}
                         >
-                            {/* <WhatsappIcon size={20} round /> */}
+                            <WhatsappIcon size={20} round />
                         </WhatsappShareButton>
                     </a>
                 )} />
@@ -59,7 +59,7 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                             hashtag='#irifei'
                             ref={ref}
                         >
-                            {/* <FacebookIcon size={20} round /> */}
+                            <FacebookIcon size={20} round />
                         </FacebookShareButton>
                     </a>
                 )} />
@@ -73,7 +73,7 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                             title={raffle.description}
                             ref={ref}
                         >
-                            {/* <TwitterIcon size={20} round /> */}
+                            <TwitterIcon size={20} round />
                         </TwitterShareButton>
                     </a>
                 )} />
@@ -88,7 +88,7 @@ const SocialShare: React.FC<Props> = ({ raffle }) => {
                             body={raffle.description}
                             ref={ref}
                         >
-                            {/* <EmailIcon size={20} round /> */}
+                            <EmailIcon size={20} round />
                         </EmailShareButton>
                     </a>
                 )} />
