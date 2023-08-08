@@ -2,6 +2,7 @@ import Link from "next/link";
 import React, { Suspense } from "react";
 import { IoArrowForwardOutline, IoTicketOutline } from "react-icons/io5";
 import RaffleCardShowcase from "~/components/raffle/raffles-card-showcase";
+import LandpageLayout from "~/app/components/landpage-layout";
 
 type Props = {
     params: {
@@ -11,7 +12,7 @@ type Props = {
 
 export default function Page({ params }: Props) {
     return (
-        <>
+        <LandpageLayout>
             <div className="hero items-start lg:min-h-screen lg:items-center lg:-mt-14">
                 <div className="hero-content flex-col justify-start lg:flex-row">
                     <img alt="" src="/brand/brand-full.svg" className="w-auto md:max-w-md" />
@@ -102,6 +103,6 @@ export default function Page({ params }: Props) {
                     <RaffleCardShowcase />
                 </Suspense>
             </div>
-        </>
+        </LandpageLayout>
     );
 }

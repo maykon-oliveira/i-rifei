@@ -18,6 +18,9 @@ const Notifications: React.FC<Props> = () => {
         },
         custom: {
             icon: <IoInformationCircleOutline />
+        },
+        loading: {
+            icon: <span className="loading loading-spinner loading-sm"></span>
         }
     });
     const { startPause, endPause, updateHeight } = handlers;

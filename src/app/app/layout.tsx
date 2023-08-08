@@ -1,18 +1,17 @@
-import React, { type ReactNode } from "react";
-import NavBar from "./navbar";
-import Link from "next/link";
 import BreadcrumbsProvider from "~/utils/context/breadcrumbs";
-import Breadcrumbs from "../breadcrumbs";
-import routes from "~/utils/routes";
-import { useRouter } from "next/router";
+import NavBar from "~/components/layout/navbar";
+import Breadcrumbs from "~/components/breadcrumbs";
+import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import routes from "~/utils/routes";
 
-type Props = {
-    children: ReactNode
-}
-
-const DashboardLayout: React.FC<Props> = ({ children }) => {
-    const router = useRouter();
+export default function DashboardLayout({
+    children,
+}: {
+    children: React.ReactNode
+}) {
+    const pathname = usePathname();
 
     return (
         <div className="drawer lg:drawer-open">
@@ -39,9 +38,9 @@ const DashboardLayout: React.FC<Props> = ({ children }) => {
                         </Link>
                     </div>
                     <ul className="menu menu-sm lg:menu-md px-4">
-                        {routes.map((nav, i) => (
+                        {routes.map((nav) => (
                             <li key={nav.link} className="hover-bordered my-1">
-                                <Link className={(router.asPath.startsWith(nav.link)) ? "active" : ''} href={nav.link}>
+                                <Link className={(pathname?.startsWith(nav.link)) ? "active" : ''} href={nav.link}>
                                     {nav.icon}
                                     {nav.label}
                                 </Link>
@@ -51,7 +50,5 @@ const DashboardLayout: React.FC<Props> = ({ children }) => {
                 </aside>
             </div>
         </div>
-    );
+    )
 }
-
-export default DashboardLayout;

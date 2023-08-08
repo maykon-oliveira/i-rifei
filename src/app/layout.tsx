@@ -1,6 +1,5 @@
 import Providers from "./providers";
 import "~/styles/globals.css";
-import Navbar from "./navbar";
 
 import { Roboto } from 'next/font/google';
 import dynamic from "next/dynamic";
@@ -38,10 +37,7 @@ export default function RootLayout({
       <body>
         <Providers>
           {/* <GoogleOneTap clientId={process.env.GOOGLE_CLIENT_ID as string} /> */}
-          <Navbar />
-          <main className="container mx-auto flex min-h-[94vh] flex-col">
-            {children}
-          </main>
+          {children}
         </Providers>
       </body>
     </html>

@@ -7,8 +7,8 @@ import {
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "~/server/db";
 import GoogleProvider from "next-auth/providers/google";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { OAuth2Client } from "google-auth-library";
+// import CredentialsProvider from "next-auth/providers/credentials";
+// import { OAuth2Client } from "google-auth-library";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -31,7 +31,7 @@ declare module "next-auth" {
   // }
 }
 
-const oauth2Client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
+// const oauth2Client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.

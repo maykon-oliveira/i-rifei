@@ -1,13 +1,12 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+"use client";
+
+import { signOut, useSession } from "next-auth/react";
 import { IoLogOutOutline, IoSearchOutline, IoNotificationsOutline, IoMenuOutline } from 'react-icons/io5';
 
-import { type RouteItem } from "~/utils/routes";
-
 type Props = {
-    routes: RouteItem[];
 }
 
-const NavBar: React.FC<Props> = ({ routes }) => {
+const NavBar: React.FC<Props> = () => {
     const { data: sessionData } = useSession();
 
     return (
