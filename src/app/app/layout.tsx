@@ -3,15 +3,13 @@ import NavBar from "~/components/layout/navbar";
 import Breadcrumbs from "~/components/breadcrumbs";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import routes from "~/utils/routes";
+import Sidenav from "./sidenav";
 
 export default function DashboardLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
-    const pathname = usePathname();
 
     return (
         <div className="drawer lg:drawer-open">
@@ -37,16 +35,7 @@ export default function DashboardLayout({
                             <Image src="/brand/brand.svg" alt="" height={55} width={55} />
                         </Link>
                     </div>
-                    <ul className="menu menu-sm lg:menu-md px-4">
-                        {routes.map((nav) => (
-                            <li key={nav.link} className="hover-bordered my-1">
-                                <Link className={(pathname?.startsWith(nav.link)) ? "active" : ''} href={nav.link}>
-                                    {nav.icon}
-                                    {nav.label}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
+                    <Sidenav/>
                 </aside>
             </div>
         </div>

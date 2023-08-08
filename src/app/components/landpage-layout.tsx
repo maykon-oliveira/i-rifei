@@ -1,10 +1,11 @@
+import React from "react";
 import Navbar from "./navbar"
 
-export default function LandpageLayout({
-    children,
-}: {
+type Props = {
     children: React.ReactNode
-}) {
+}
+
+const LandpageLayout: React.FC<Props> = ({ children }) => {
     return (
         <>
             <Navbar />
@@ -14,3 +15,5 @@ export default function LandpageLayout({
         </>
     )
 }
+
+export default LandpageLayout;
